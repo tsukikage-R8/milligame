@@ -76,11 +76,16 @@ html, body {
 }
 
 #video-status-bar {
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  right: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 24px;
-  background: rgba(255,255,255,0.05);
+  height: 20px;
+  pointer-events: none;
+  z-index: 2;
 }
 
 #video-status {

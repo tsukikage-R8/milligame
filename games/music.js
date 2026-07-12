@@ -143,7 +143,7 @@
       events: {
         onReady: function () {
           playerReady = true;
-          elStatusText.textContent = "再生準備完了";
+          elStatusText.parentElement.style.display = "none";
         },
         onStateChange: function (e) {
           if (e.data === YT.PlayerState.ENDED && running && !fadeOutActive) {
@@ -151,6 +151,7 @@
           }
         },
         onError: function () {
+          elStatusText.parentElement.style.display = "";
           elStatusText.textContent = "動画の読み込みに失敗しました";
         }
       }
@@ -449,18 +450,35 @@
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, cw, ch);
 
-    // ===== レーン背景（中央に向かって明るく） =====
+    // ===== レーン背景・奥行き（上部が暗く、判定線に近づくほど明るく） =====
     for (var i = 0; i < LANE_COUNT; i++) {
-      ctx.fillStyle = i % 2 === 0 ? "rgba(255,255,255,0.025)" : "rgba(255,255,255,0.008)";
+      var laneGrad = ctx.createLinearGradient(0, 0, 0, judgeY);
+      laneGrad.addColorStop(0, "rgba(0,0,0,0.35)");
+      laneGrad.addColorStop(0.6, "rgba(0,0,0,0.1)");
+      laneGrad.addColorStop(1, "rgba(255,255,255,0.03)");
+      ctx.fillStyle = laneGrad;
       ctx.fillRect(i * lw, 0, lw, ch);
+      // 市松模様の代わりにレーンごとの微差
+      if (i % 2 === 0) {
+        ctx.fillStyle = "rgba(255,255,255,0.015)";
+        ctx.fillRect(i * lw, 0, lw, ch);
+      }
     }
 
-    // レーン線（白）
-    ctx.strokeStyle = "rgba(255,255,255,0.06)";
-    ctx.lineWidth = 1;
-    for (var i = 0; i <= LANE_COUNT; i++) {
-      ctx.beginPath(); ctx.moveTo(i * lw, 0); ctx.lineTo(i * lw, ch); ctx.stroke();
+    // レーン側面影（立体的な区切り）
+    for (var i = 1; i < LANE_COUNT; i++) {
+      ctx.fillStyle = "rgba(0,0,0,0.12)";
+      ctx.fillRect(i * lw - 1, 0, 2, ch);
+      ctx.fillStyle = "rgba(255,255,255,0.04)";
+      ctx.fillRect(i * lw + 1, 0, 1, ch);
     }
+
+    // レーン下端（判定線手前）に明るい輝き
+    var laneBottomGrad = ctx.createLinearGradient(0, judgeY * 0.85, 0, judgeY);
+    laneBottomGrad.addColorStop(0, "rgba(187,134,252,0)");
+    laneBottomGrad.addColorStop(1, "rgba(187,134,252,0.05)");
+    ctx.fillStyle = laneBottomGrad;
+    ctx.fillRect(0, judgeY * 0.85, cw, judgeY * 0.15);
 
     // レーンカバー（上部）
     var coverH = judgeY * 0.08;
@@ -1027,14 +1045,15 @@
   // ============================================
   function startGame() {
     if (!player || !playerReady) {
-      elStatusText.textContent = "YouTubeプレーヤー準備中... しばらくお待ちください";
-      // ボタンを点滅させて視覚的なフィードバック
+      elStatusText.parentElement.style.display = "";
+      elStatusText.textContent = "YouTubeプレーヤー準備中...";
       elBtnStart.style.opacity = "0.5";
       setTimeout(function () { elBtnStart.style.opacity = "1"; }, 300);
       return;
     }
 
     if (!selectedSongId || typeof CHARTS === "undefined" || !CHARTS[selectedSongId]) {
+      elStatusText.parentElement.style.display = "";
       elStatusText.textContent = "譜面データの読み込みに失敗しました";
       return;
     }
