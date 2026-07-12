@@ -486,6 +486,31 @@ html, body {
 #offset-hud { display: none; }
 #offset-display { color: #bb86fc; font-size: 0.85rem; }
 
+/* ===== プレイ中終了ボタン ===== */
+#quit-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 8;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 50%;
+  background: rgba(0,0,0,0.4);
+  color: rgba(255,255,255,0.5);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  line-height: 1;
+}
+#quit-btn:hover { background: rgba(255,80,80,0.3); color: #fff; }
+#quit-btn:active { transform: scale(0.9); }
+#quit-btn.visible { display: flex; }
+
 /* ===== 操作ヒント ===== */
 #controls-hint {
   flex-shrink: 0;

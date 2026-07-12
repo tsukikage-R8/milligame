@@ -67,6 +67,7 @@
   var elSettingsSongArtist = document.getElementById("settings-song-artist");
   var elResultSongTitle = document.getElementById("result-song-title");
   var elResultDifficulty = document.getElementById("result-difficulty");
+  var elQuitBtn = document.getElementById("quit-btn");
 
   // ============================================
   // 状態
@@ -84,7 +85,7 @@
   var chart = null, noteIdx = 0;
   var flickTracker = [null, null, null, null];
   var fadeOutActive = false, fadeOutStart = 0;
-  var FADE_DURATION = 3.0;
+  var FADE_DURATION = 4.0;
   var selectedSongId = null;
   var offsetToastTimer = 0;
   var rings = [];
@@ -147,7 +148,8 @@
         },
         onStateChange: function (e) {
           if (e.data === YT.PlayerState.ENDED && running && !fadeOutActive) {
-            endGame();
+            fadeOutActive = true;
+            fadeOutStart = chartTime;
           }
         },
         onError: function () {
@@ -903,18 +905,7 @@
     spawnRipple(e.clientX, lane);
   });
 
-  canvas.addEventListener("pointermove", function (e) {
-    // スライド操作で別レーンに移動した場合
-    if (touchMap[e.pointerId] !== undefined) {
-      var newLane = getLaneFromX(e.clientX);
-      var oldLane = touchMap[e.pointerId];
-      if (newLane !== oldLane) {
-        releaseLane(oldLane);
-        touchMap[e.pointerId] = newLane;
-        hitLane(newLane);
-      }
-    }
-  });
+  // pointermoveはスライド追尾せず、hold維持のため何もしない
 
   canvas.addEventListener("pointerup", function (e) {
     var lane = touchMap[e.pointerId];
@@ -978,6 +969,7 @@
   // 曲選択
   // ============================================
   function showSongSelect() {
+    elQuitBtn.classList.remove("visible");
     elSongSelectOverlay.classList.add("active");
     elStartOverlay.classList.remove("active");
     elResultOverlay.classList.remove("active");
@@ -1086,6 +1078,7 @@
     elStartOverlay.classList.remove("active");
     elResultOverlay.classList.remove("active");
     document.getElementById("hud-row").style.display = "";
+    elQuitBtn.classList.add("visible");
 
     running = true; started = true;
 
@@ -1143,6 +1136,7 @@
       elBestResult.textContent = "ベスト: " + bestScore;
     }
 
+    elQuitBtn.classList.remove("visible");
     document.getElementById("hud-row").style.display = "none";
     elResultOverlay.classList.add("active");
   }
@@ -1185,6 +1179,16 @@
 
   // リトライ
   elBtnRetry.addEventListener("click", startGame);
+
+  // 途中終了
+  elQuitBtn.addEventListener("click", function () {
+    running = false; started = false;
+    if (animId) { cancelAnimationFrame(animId); animId = null; }
+    try { player.pauseVideo(); } catch (e) {}
+    elQuitBtn.classList.remove("visible");
+    document.getElementById("hud-row").style.display = "none";
+    showSongSelect();
+  });
 
   // 曲選択に戻る
   elBtnBackSelect.addEventListener("click", function () {
