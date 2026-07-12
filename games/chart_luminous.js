@@ -377,7 +377,7 @@ CHARTS.luminous = (function () {
     title: "ルミナス",
     bpm: BPM,
     offset: 0,
-    duration: 120,
+    duration: 93,
     notes: notes
   };
 
