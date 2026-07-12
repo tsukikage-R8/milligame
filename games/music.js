@@ -317,7 +317,6 @@
     updateHUD();
     elJudge.textContent = "MISS"; elJudge.style.color = "#E74C3C";
     spawnJudgeText("MISS", "#E74C3C", cw / 2, judgeY - 30, 0);
-    shakeTime = 6; shakeOffset = 6;
   }
 
   // ============================================
@@ -433,23 +432,14 @@
       }
     }
 
-    // シェイク更新
-    if (shakeTime > 0) {
-      shakeTime--;
-      shakeOffset = shakeTime > 0 ? (Math.random() - 0.5) * 8 : 0;
-    }
+    // シェイク（オフ）
+    shakeOffset = 0; shakeTime = 0;
   }
 
   // ============================================
   // 描画（3D立体風 + エフェクト強化）
   // ============================================
   function draw() {
-    // シェイク適用
-    ctx.save();
-    if (shakeOffset !== 0) {
-      ctx.translate(shakeOffset, 0);
-    }
-
     ctx.clearRect(0, 0, cw, ch);
 
     // ===== 背景 =====
@@ -712,57 +702,15 @@
     }
     ctx.globalAlpha = 1;
 
-    // ===== コンボ表示（画面中央、50↑で強調） =====
-    if (running && combo > 0) {
-      var comboSize = Math.min(64, 24 + combo * 0.3);
-      var comboAlpha = Math.min(1, 0.5 + combo * 0.01);
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.globalAlpha = comboAlpha;
-      // コンボ数
-      var comboColor = combo >= 100 ? "#ffd700" : combo >= 50 ? "#ff6b9d" : "#ffffff";
-      ctx.shadowColor = comboColor;
-      ctx.shadowBlur = combo >= 50 ? 16 : 4;
-      ctx.font = "bold " + Math.round(comboSize) + "px sans-serif";
-      ctx.fillStyle = comboColor;
-      ctx.fillText(combo, cw / 2, judgeY + 80 + (comboSize > 48 ? 10 : 0));
-      ctx.shadowBlur = 0;
-      if (combo >= 50) {
-        ctx.font = "bold 13px sans-serif";
-        ctx.fillStyle = comboColor;
-        ctx.fillText("COMBO", cw / 2, judgeY + 80 + comboSize * 0.7);
-      }
-      ctx.globalAlpha = 1;
-    }
-
-    // ===== 進行度バー（小節マーカー付き） =====
-    if (running && chart && chart.notes.length > 0 && chart.bpm) {
+    // ===== 進行度バー（シンプル） =====
+    if (running && chart && chart.notes.length > 0) {
       var lastNoteTime = chart.notes[chart.notes.length - 1].t;
       var progress = Math.min(chartTime / lastNoteTime, 1);
       if (progress >= 0) {
-        // 背景線
-        ctx.fillStyle = "rgba(255,255,255,0.05)";
+        ctx.fillStyle = "rgba(255,255,255,0.06)";
         ctx.fillRect(0, 0, cw, 3);
-        // 小節マーカー（BPMから計算）
-        var beatLen = 60 / chart.bpm;
-        var barLen = beatLen * 4;
-        for (var bi = 0; bi * barLen < lastNoteTime; bi++) {
-          var barProgress = (bi * barLen) / lastNoteTime;
-          if (barProgress < progress) {
-            ctx.fillStyle = "rgba(255,255,255,0.08)";
-            ctx.fillRect(cw * barProgress, 0, 1, 3);
-          }
-        }
-        // 進行ゲージ
         ctx.fillStyle = "#bb86fc";
         ctx.fillRect(0, 0, cw * progress, 3);
-        // 先端グロー
-        var tipGrad = ctx.createLinearGradient(cw * progress - 8, 0, cw * progress + 4, 0);
-        tipGrad.addColorStop(0, "rgba(187,134,252,0)");
-        tipGrad.addColorStop(0.5, "rgba(187,134,252,0.6)");
-        tipGrad.addColorStop(1, "rgba(187,134,252,0)");
-        ctx.fillStyle = tipGrad;
-        ctx.fillRect(Math.max(0, cw * progress - 8), 0, 12, 3);
       }
     }
 
@@ -785,7 +733,6 @@
       ctx.fillText(label, cw / 2, 6);
     }
 
-    ctx.restore(); // シェイクリセット
   }
 
   // ============================================
@@ -1016,6 +963,7 @@
     elSongSelectOverlay.classList.add("active");
     elStartOverlay.classList.remove("active");
     elResultOverlay.classList.remove("active");
+    document.getElementById("hud-row").style.display = "none";
   }
 
   function selectSong(songId) {
@@ -1118,6 +1066,7 @@
 
     elStartOverlay.classList.remove("active");
     elResultOverlay.classList.remove("active");
+    document.getElementById("hud-row").style.display = "";
 
     running = true; started = true;
 
@@ -1175,6 +1124,7 @@
       elBestResult.textContent = "ベスト: " + bestScore;
     }
 
+    document.getElementById("hud-row").style.display = "none";
     elResultOverlay.classList.add("active");
   }
 
