@@ -10,9 +10,9 @@ html,
 body {
   height: 100%;
   overflow: hidden;
-  font-family: "Segoe UI", "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", sans-serif;
-  background: #060a1a;
-  color: #eef2ff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", sans-serif;
+  background: linear-gradient(135deg, #f0ebf5, #e4d6ed, #d8c4e5);
+  color: #2d1b4e;
 }
 
 #top-bar {
@@ -20,26 +20,29 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 8px 16px;
-  background: rgba(6, 10, 26, 0.8);
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   flex-shrink: 0;
   height: 40px;
-  border-bottom: 1px solid rgba(110, 231, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 #back-link {
-  color: rgba(110, 231, 255, 0.6);
+  color: #8582fb;
   text-decoration: none;
   font-size: 0.85rem;
+  font-weight: 600;
   transition: color 0.2s;
 }
 
 #back-link:hover {
-  color: #6ee7ff;
+  color: #716ed5;
 }
 
 #song-title {
   font-size: 0.8rem;
-  color: rgba(238, 242, 255, 0.4);
+  color: rgba(45, 27, 78, 0.45);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -106,66 +109,112 @@ body {
   position: relative;
 }
 
-/* ===== HUD（ミニマル） ===== */
+/* ===== HUD（ガラス調） ===== */
 #hud-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 4px 12px;
   flex-shrink: 0;
-  height: 32px;
-  background: rgba(6, 10, 26, 0.5);
-  border-bottom: 1px solid rgba(110, 231, 255, 0.05);
+  height: 36px;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  gap: 14px;
+}
+
+.hud-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hud-label {
+  font-size: 0.6rem;
+  color: rgba(45, 27, 78, 0.45);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.hud-value {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #2d1b4e;
+  font-variant-numeric: tabular-nums;
 }
 
 #score {
-  font-size: 1.05rem;
+  color: #8582fb;
+  font-size: 1rem;
+}
+
+#judge {
+  font-size: 0.78rem;
   font-weight: 700;
-  color: #eef2ff;
-  letter-spacing: 0.04em;
-  font-variant-numeric: tabular-nums;
+  min-width: 56px;
 }
 
 #combo {
   font-size: 0.85rem;
   font-weight: 700;
-  color: rgba(238, 242, 255, 0.4);
-  text-align: center;
-  min-width: 60px;
+  color: rgba(45, 27, 78, 0.4);
+  min-width: 40px;
 }
 
 #combo.active {
-  color: #6ee7ff;
+  color: #8582fb;
 }
 
 #combo.high {
-  color: #fb7185;
+  color: #dbbee1;
 }
 
-.hud-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.hud-acc {
-  font-size: 0.78rem;
-  color: rgba(238, 242, 255, 0.5);
-  font-variant-numeric: tabular-nums;
-}
-
-#judge {
+#accuracy {
   font-size: 0.78rem;
   font-weight: 600;
-  min-width: 60px;
-  text-align: right;
+  color: rgba(45, 27, 78, 0.55);
 }
 
-.hud-best {
-  font-size: 0.72rem;
-  color: rgba(238, 242, 255, 0.25);
+#best-score {
+  font-size: 0.78rem;
+  color: rgba(45, 27, 78, 0.4);
 }
 
+/* ===== 終了ボタン（HUD内） ===== */
+#quit-btn {
+  margin-left: auto;
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgba(45, 27, 78, 0.12);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  color: rgba(45, 27, 78, 0.35);
+  font-size: 0.7rem;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+#quit-btn:hover {
+  background: rgba(231, 76, 60, 0.15);
+  color: #e74c3c;
+  border-color: rgba(231, 76, 60, 0.3);
+}
+
+#quit-btn:active {
+  transform: scale(0.9);
+}
+
+#quit-btn.visible {
+  display: flex;
+}
+
+/* ===== ゲームボード ===== */
 #board-wrapper {
   flex: 1;
   position: relative;
@@ -182,6 +231,7 @@ body {
   touch-action: none;
 }
 
+/* ===== レーンボタン ===== */
 #lane-buttons {
   position: absolute;
   bottom: 0;
@@ -196,35 +246,40 @@ body {
 .lane-btn {
   flex: 1;
   height: 44px;
-  border: none;
-  border-radius: 0 0 6px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0 0 8px 8px;
   font-size: 0.85rem;
   font-weight: 700;
   cursor: pointer;
   transition: background 0.08s;
-  color: rgba(238, 242, 255, 0.35);
-  background: rgba(238, 242, 255, 0.04);
+  color: rgba(238, 242, 255, 0.3);
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   -webkit-tap-highlight-color: transparent;
   touch-action: none;
 }
 
 .lane-btn:first-child {
-  border-radius: 0 0 0 6px;
+  border-radius: 0 0 0 8px;
 }
 
 .lane-btn:last-child {
-  border-radius: 0 0 6px 0;
+  border-radius: 0 0 8px 0;
 }
 
 .lane-btn.pressed {
-  background: rgba(238, 242, 255, 0.15);
+  background: rgba(133, 130, 251, 0.2);
+  border-color: rgba(133, 130, 251, 0.3);
 }
 
-/* ===== オーバーレイ ===== */
+/* ===== オーバーレイ（ガラス調） ===== */
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(6, 10, 26, 0.94);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   display: none;
   align-items: center;
   justify-content: center;
@@ -243,45 +298,49 @@ body {
 
 .overlay-inner {
   text-align: center;
-  padding: 28px;
+  padding: 32px;
   max-width: 340px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 32px rgba(45, 27, 78, 0.12);
 }
 
 .overlay-inner h2 {
   font-size: 1.4rem;
   font-weight: 800;
-  color: #6ee7ff;
+  color: #8582fb;
   margin-bottom: 4px;
   letter-spacing: 0.02em;
 }
 
 .overlay-artist {
   font-size: 0.95rem;
-  color: rgba(238, 242, 255, 0.45);
+  color: rgba(45, 27, 78, 0.45);
   margin-bottom: 14px;
 }
 
 .overlay-score {
   font-size: 1.15rem;
-  color: rgba(238, 242, 255, 0.6);
+  color: rgba(45, 27, 78, 0.6);
   margin-bottom: 6px;
 }
 
 .overlay-score span {
-  color: #eef2ff;
+  color: #2d1b4e;
   font-weight: 700;
 }
 
 .overlay-acc {
   font-size: 0.95rem;
-  color: #6ee7ff;
+  color: #8582fb;
   font-weight: 600;
   margin-bottom: 6px;
 }
 
 .overlay-best {
   font-size: 0.85rem;
-  color: #fb7185;
+  color: #dbbee1;
   margin-bottom: 14px;
 }
 
@@ -290,20 +349,20 @@ body {
   display: inline-block;
   padding: 13px 34px;
   border: none;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #6ee7ff, #0891b2);
-  color: #060a1a;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #8582fb, #716ed5);
+  color: #fff;
   font-size: 1rem;
   font-weight: 800;
   cursor: pointer;
   transition: transform 0.15s, box-shadow 0.15s;
-  box-shadow: 0 4px 20px rgba(110, 231, 255, 0.2);
+  box-shadow: 0 4px 16px rgba(133, 130, 251, 0.25);
   letter-spacing: 0.03em;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 28px rgba(110, 231, 255, 0.35);
+  box-shadow: 0 6px 24px rgba(133, 130, 251, 0.35);
 }
 
 .btn-primary:active {
@@ -315,9 +374,9 @@ body {
   margin-top: 10px;
   padding: 6px 16px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   background: transparent;
-  color: rgba(238, 242, 255, 0.35);
+  color: rgba(45, 27, 78, 0.35);
   font-size: 0.8rem;
   cursor: pointer;
   transition: color 0.15s;
@@ -325,16 +384,16 @@ body {
 }
 
 .btn-text:hover {
-  color: #6ee7ff;
+  color: #8582fb;
 }
 
 .btn-text:active {
-  color: #fb7185;
+  color: #716ed5;
 }
 
 #result-judges {
   font-size: 0.82rem;
-  color: rgba(238, 242, 255, 0.55);
+  color: rgba(45, 27, 78, 0.55);
   margin-bottom: 8px;
   line-height: 1.9;
 }
@@ -347,13 +406,13 @@ body {
 .config-label {
   display: block;
   font-size: 0.72rem;
-  color: rgba(238, 242, 255, 0.35);
+  color: rgba(45, 27, 78, 0.35);
   margin-bottom: 6px;
   letter-spacing: 0.06em;
 }
 
 #offset-value {
-  color: #6ee7ff;
+  color: #8582fb;
   font-weight: 700;
   font-size: 0.8rem;
 }
@@ -368,10 +427,10 @@ body {
   flex: 1;
   max-width: 90px;
   padding: 6px 0;
-  border: 1px solid rgba(238, 242, 255, 0.1);
-  border-radius: 6px;
-  background: rgba(238, 242, 255, 0.03);
-  color: rgba(238, 242, 255, 0.35);
+  border: 1px solid rgba(45, 27, 78, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  color: rgba(45, 27, 78, 0.4);
   font-size: 0.75rem;
   font-weight: 700;
   cursor: pointer;
@@ -380,9 +439,9 @@ body {
 }
 
 .diff-btn.active {
-  border-color: #6ee7ff;
-  background: rgba(110, 231, 255, 0.12);
-  color: #6ee7ff;
+  border-color: #8582fb;
+  background: rgba(133, 130, 251, 0.12);
+  color: #8582fb;
 }
 
 .offset-row {
@@ -397,7 +456,7 @@ body {
   appearance: none;
   height: 4px;
   border-radius: 2px;
-  background: rgba(238, 242, 255, 0.1);
+  background: rgba(45, 27, 78, 0.1);
   outline: none;
 }
 
@@ -407,7 +466,7 @@ body {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #6ee7ff;
+  background: #8582fb;
   cursor: pointer;
   border: none;
 }
@@ -416,7 +475,7 @@ body {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #6ee7ff;
+  background: #8582fb;
   cursor: pointer;
   border: none;
 }
@@ -424,10 +483,10 @@ body {
 .btn-small {
   width: 32px;
   height: 32px;
-  border: 1px solid rgba(238, 242, 255, 0.1);
-  border-radius: 6px;
-  background: rgba(238, 242, 255, 0.03);
-  color: rgba(238, 242, 255, 0.5);
+  border: 1px solid rgba(45, 27, 78, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  color: rgba(45, 27, 78, 0.5);
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.15s;
@@ -436,8 +495,8 @@ body {
 }
 
 .btn-small:active {
-  background: rgba(110, 231, 255, 0.12);
-  border-color: #6ee7ff;
+  background: rgba(133, 130, 251, 0.12);
+  border-color: #8582fb;
 }
 
 /* ===== 曲選択 ===== */
@@ -453,10 +512,10 @@ body {
   display: block;
   width: 100%;
   padding: 14px 16px;
-  border: 1px solid rgba(238, 242, 255, 0.06);
-  border-radius: 10px;
-  background: rgba(238, 242, 255, 0.02);
-  color: #eef2ff;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #2d1b4e;
   cursor: pointer;
   text-align: left;
   transition: all 0.15s;
@@ -464,29 +523,29 @@ body {
 }
 
 .song-card:active {
-  background: rgba(110, 231, 255, 0.08);
-  border-color: rgba(110, 231, 255, 0.2);
+  background: rgba(133, 130, 251, 0.1);
+  border-color: #8582fb;
 }
 
 .song-card .song-title {
   display: block;
   font-size: 1rem;
   font-weight: 700;
-  color: #6ee7ff;
+  color: #8582fb;
   margin-bottom: 2px;
 }
 
 .song-card .song-artist {
   display: block;
   font-size: 0.8rem;
-  color: rgba(238, 242, 255, 0.35);
+  color: rgba(45, 27, 78, 0.35);
   margin-bottom: 4px;
 }
 
 .song-card .song-meta {
   display: block;
   font-size: 0.7rem;
-  color: rgba(238, 242, 255, 0.2);
+  color: rgba(45, 27, 78, 0.2);
 }
 
 /* ===== ランクバッジ ===== */
@@ -512,46 +571,46 @@ body {
 }
 
 .rank-badge.rank-S {
-  color: #fb7185;
-  background: rgba(251, 113, 133, 0.1);
-  border: 2px solid #fb7185;
-  text-shadow: 0 0 16px rgba(251, 113, 133, 0.5);
+  color: #8582fb;
+  background: rgba(133, 130, 251, 0.1);
+  border: 2px solid #8582fb;
+  text-shadow: 0 0 16px rgba(133, 130, 251, 0.5);
 }
 
 .rank-badge.rank-A {
-  color: #6ee7ff;
-  background: rgba(110, 231, 255, 0.1);
-  border: 2px solid #6ee7ff;
+  color: #dbbee1;
+  background: rgba(219, 190, 225, 0.1);
+  border: 2px solid #dbbee1;
 }
 
 .rank-badge.rank-B {
-  color: #a78bfa;
-  background: rgba(167, 139, 250, 0.1);
-  border: 2px solid #a78bfa;
+  color: #b794d4;
+  background: rgba(183, 148, 212, 0.1);
+  border: 2px solid #b794d4;
 }
 
 .rank-badge.rank-C {
-  color: #fbbf24;
-  background: rgba(251, 191, 36, 0.06);
-  border: 2px solid rgba(251, 191, 36, 0.3);
+  color: #716ed5;
+  background: rgba(113, 110, 213, 0.06);
+  border: 2px solid rgba(113, 110, 213, 0.3);
 }
 
 .rank-badge.rank-D {
-  color: rgba(238, 242, 255, 0.25);
-  background: rgba(238, 242, 255, 0.04);
-  border: 2px solid rgba(238, 242, 255, 0.1);
+  color: rgba(45, 27, 78, 0.2);
+  background: rgba(45, 27, 78, 0.04);
+  border: 2px solid rgba(45, 27, 78, 0.1);
 }
 
 /* ===== リザルト ===== */
 .result-song-title {
   font-size: 0.9rem;
-  color: #6ee7ff;
+  color: #8582fb;
   margin-bottom: 2px;
 }
 
 .result-difficulty {
   font-size: 0.65rem;
-  color: rgba(238, 242, 255, 0.3);
+  color: rgba(45, 27, 78, 0.3);
   margin-bottom: 10px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -562,43 +621,8 @@ body {
 }
 
 #offset-display {
-  color: #6ee7ff;
+  color: #8582fb;
   font-size: 0.8rem;
-}
-
-/* ===== 終了ボタン ===== */
-#quit-btn {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  z-index: 8;
-  width: 30px;
-  height: 30px;
-  border: 1px solid rgba(238, 242, 255, 0.1);
-  border-radius: 50%;
-  background: rgba(6, 10, 26, 0.5);
-  color: rgba(238, 242, 255, 0.35);
-  font-size: 0.85rem;
-  cursor: pointer;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s;
-  -webkit-tap-highlight-color: transparent;
-  line-height: 1;
-}
-
-#quit-btn:hover {
-  background: rgba(251, 113, 133, 0.2);
-  color: #fb7185;
-}
-
-#quit-btn:active {
-  transform: scale(0.9);
-}
-
-#quit-btn.visible {
-  display: flex;
 }
 
 /* ===== 操作ヒント ===== */
@@ -607,19 +631,22 @@ body {
   text-align: center;
   padding: 5px;
   font-size: 0.7rem;
-  color: rgba(238, 242, 255, 0.18);
-  background: rgba(6, 10, 26, 0.3);
+  color: rgba(45, 27, 78, 0.18);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 #controls-hint kbd {
   display: inline-block;
   padding: 1px 5px;
-  border: 1px solid rgba(238, 242, 255, 0.08);
+  border: 1px solid rgba(45, 27, 78, 0.08);
   border-radius: 3px;
   font-size: 0.68rem;
-  color: rgba(238, 242, 255, 0.3);
+  color: rgba(45, 27, 78, 0.25);
   font-family: inherit;
   margin: 0 1px;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* ===== レスポンシブ ===== */
@@ -639,6 +666,10 @@ body {
 
   #score {
     font-size: 0.9rem;
+  }
+
+  .hud-label {
+    display: none;
   }
 
   .overlay-inner h2 {
