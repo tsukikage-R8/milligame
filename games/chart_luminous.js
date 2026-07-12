@@ -41,7 +41,9 @@ CHARTS.luminous = (function () {
   var notes = [];
 
   function push(t, l, type, dur, lvl) {
-    notes.push({ t: +t.toFixed(3), l: l, type: type || "tap", d: dur || 0, lvl: lvl || 0 });
+    var note = { t: +t.toFixed(3), l: l, type: type || "tap", d: dur || 0 };
+    if (lvl !== undefined) note.lvl = lvl;
+    notes.push(note);
   }
 
   function bar(n) { return n * b4; }
@@ -384,26 +386,35 @@ CHARTS.luminous = (function () {
   /*
     ===== 自分でノーツを編集する方法 =====
 
-    ■ ノーツの追加
-      例）10小節目の2拍目にレーン1にtapノーツを追加
-        push(bar(10) + beat(2), 1, "tap", 0, 0);
+    【基本のルール】
+      push(時間, レーン, 種類, 長さ, 難易度)
+      例）10小節目の2拍目、レーン1、通常ノーツ
+        push(bar(10) + beat(2), 1, "tap");
+        ※ 第5引数を省略すると lvl=0（全難易度）
 
-    ■ ノーツの種類
-      "tap"  : 通常ノーツ（シングルタップ）
-      "hold" : 長押しノーツ（durに長さを秒で指定）
-      "flick": フリックノーツ（矢印付き）
+      例）10小節目の2拍目、レーン1、通常ノーツ、Hardのみ
+        push(bar(10) + beat(2), 1, "tap", 0, 2);
 
-    ■ 難易度レベル
-      第5引数 lvl:
-        0 → Easy / Normal / Hard すべてに出る
-        1 → Normal / Hard のみ
-        2 → Hard のみ
+    【時間の書き方】
+      bar(小節番号) + beat(拍)
+      beat(0)〜beat(3) = 4拍子の各拍
+      beat(1.5) = 裏拍（8分音符）
 
-    ■ タイミングの調整
-      ノーツが曲より早い → t の値を大きくする（+0.05 ずつ試す）
-      ノーツが曲より遅い → t の値を小さくする（-0.05 ずつ試す）
+    【ノーツの種類】
+      "tap"   : 通常（シングルタップ）
+      "hold"  : 長押し（第4引数に長さを秒で指定）
+      "flick" : フリック（矢印付き）
 
-    ■ 譜面の構造
+    【難易度レベル（第5引数 lvl）】
+      0 = Easy / Normal / Hard すべてに出る
+      1 = Normal / Hard のみ
+      2 = Hard のみ
+
+    【タイミング調整】
+      ノーツが曲より早い → t を大きく（+0.05ずつ試す）
+      ノーツが曲より遅い → t を小さく（-0.05ずつ試す）
+
+    【譜面の構造】
       bar(n) = n小節目の先頭
       beat(n) = 小節内のn拍目（0始まり, 0〜3）
       beat(1.5) で裏拍にも配置可能

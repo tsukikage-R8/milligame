@@ -15,7 +15,9 @@ CHARTS.princess_viral = (function () {
   var notes = [];
 
   function push(t, l, type, dur, lvl) {
-    notes.push({ t: +t.toFixed(3), l: l, type: type || "tap", d: dur || 0, lvl: lvl || 0 });
+    var note = { t: +t.toFixed(3), l: l, type: type || "tap", d: dur || 0 };
+    if (lvl !== undefined) note.lvl = lvl;
+    notes.push(note);
   }
 
   function bar(n) { return n * b4; }
@@ -430,6 +432,20 @@ CHARTS.princess_viral = (function () {
 
   notes.sort(function (a, b) { return a.t - b.t; });
 
+  // 難易度自動振り分け:
+  //   lvl未指定のノーツを拍の位置で lvl 0（Easy） or 1（Normal）に割り振る
+  //   強拍（0, 2拍目）→ lvl 0, 弱拍/裏拍 → lvl 1
+  //   既にlvl指定があるもの（Hard専用など）は変更しない
+  var beatDur = 60 / BPM;
+  var barDur = beatDur * 4;
+  for (var i = 0; i < notes.length; i++) {
+    var n = notes[i];
+    if (n.lvl !== undefined) continue;
+    var beatInBar = (n.t % barDur) / beatDur;
+    var rounded = Math.round(beatInBar * 2) / 2;
+    n.lvl = (rounded === 0 || rounded === 2) ? 0 : 1;
+  }
+
   return {
     videoId: "MF4Yw8IS6og",
     bpm: BPM,
@@ -441,26 +457,40 @@ CHARTS.princess_viral = (function () {
   /*
     ===== 自分でノーツを編集する方法 =====
 
-    ■ ノーツの追加
-      例）10小節目の2拍目にレーン1にtapノーツを追加
-        push(bar(10) + beat(2), 1, "tap", 0, 0);
+    【基本のルール】
+      push(時間, レーン, 種類, 長さ, 難易度)
+      例）10小節目の2拍目、レーン1、通常ノーツ、Easy〜Hard全て
+        push(bar(10) + beat(2), 1, "tap");
+        ※第4引数以降は省略可能
 
-    ■ ノーツの種類
-      "tap"  : 通常ノーツ（シングルタップ）
-      "hold" : 長押しノーツ（durに長さを秒で指定）
-      "flick": フリックノーツ（矢印付き）
+      例）10小節目の2拍目、レーン1、通常ノーツ、Hardのみ
+        push(bar(10) + beat(2), 1, "tap", 0, 2);
 
-    ■ 難易度レベル
-      第5引数 lvl:
-        0 → Easy / Normal / Hard すべてに出る
-        1 → Normal / Hard のみ
-        2 → Hard のみ
+    【時間の書き方】
+      bar(小節番号) + beat(拍)
+      beat(0)〜beat(3) = 4拍子の各拍
+      beat(1.5) = 裏拍（8分音符）
+      beat(0.75) = 16分音符
 
-    ■ タイミングの調整
-      ノーツが曲より早い → t の値を大きくする（+0.05 ずつ試す）
-      ノーツが曲より遅い → t の値を小さくする（-0.05 ずつ試す）
+    【ノーツの種類】
+      "tap"   : 通常（シングルタップ）
+      "hold"  : 長押し（第4引数に長さを秒で指定）
+      "flick" : フリック（矢印付き）
 
-    ■ 既存ノーツのlvl変更
-      例）push(bar(10) + beat(2), 1, "tap", 0, 0); の最後の0を1や2に変える
+    【難易度レベル（第5引数）】
+      省略       → 自動で強拍=lvl0 / 弱拍=lvl1 に振り分け
+      0          → Easy / Normal / Hard すべてに出る（強制）
+      1          → Normal / Hard のみ（強制）
+      2          → Hard のみ
+
+    【タイミング調整】
+      ノーツが曲より早い → 時間の値を大きく（+0.05ずつ）
+      ノーツが曲より遅い → 時間の値を小さく（-0.05ずつ）
+
+    【lvlを手動で固定したい場合】
+      自動振り分けをさせず、特定の難易度だけに出すには第5引数を明示:
+        push(bar(5) + beat(0), 0, "tap", 0, 0);  // 強制的に全難易度
+        push(bar(5) + beat(1), 1, "tap", 0, 1);  // Normal〜Hardのみ
+        push(bar(5) + beat(1), 1, "tap", 0, 2);  // Hardのみ
   */
 })();
