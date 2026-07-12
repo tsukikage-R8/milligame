@@ -529,7 +529,6 @@
         ctx.fillRect(i * lw, 0, lw, ch);
       }
     }
-    }
 
     // レーン側面影（立体的な区切り）
     for (var i = 1; i < LANE_COUNT; i++) {
