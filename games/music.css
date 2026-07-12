@@ -1,52 +1,57 @@
-/* ============================================
-   リズムゲーム スタイル
-   ============================================ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html, body {
-  height: 100%;
-  overflow: hidden;
-  font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif;
-  background: #0d001a;
-  color: #fff;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* ===== トップバー ===== */
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  font-family: "Segoe UI", "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", sans-serif;
+  background: #060a1a;
+  color: #eef2ff;
+}
+
 #top-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 8px 16px;
-  background: rgba(0,0,0,0.5);
+  background: rgba(6, 10, 26, 0.8);
   flex-shrink: 0;
   height: 40px;
+  border-bottom: 1px solid rgba(110, 231, 255, 0.08);
 }
 
 #back-link {
-  color: #bb86fc;
+  color: rgba(110, 231, 255, 0.6);
   text-decoration: none;
   font-size: 0.85rem;
+  transition: color 0.2s;
 }
 
-#back-link:hover { color: #d4a0ff; }
+#back-link:hover {
+  color: #6ee7ff;
+}
 
 #song-title {
   font-size: 0.8rem;
-  color: rgba(255,255,255,0.6);
+  color: rgba(238, 242, 255, 0.4);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   margin-left: 12px;
 }
 
-/* ===== 全体ラッパー ===== */
 #game-wrapper {
   display: flex;
   flex-direction: column;
   height: calc(100vh - 40px);
 }
 
-/* ===== YouTube動画エリア ===== */
 #video-area {
   position: relative;
   width: 100%;
@@ -90,10 +95,9 @@ html, body {
 
 #video-status {
   font-size: 0.72rem;
-  color: rgba(255,255,255,0.4);
+  color: rgba(238, 242, 255, 0.3);
 }
 
-/* ===== ゲームエリア ===== */
 #game-area {
   flex: 1;
   display: flex;
@@ -102,37 +106,66 @@ html, body {
   position: relative;
 }
 
-/* ===== HUD ===== */
+/* ===== HUD（ミニマル） ===== */
 #hud-row {
   display: flex;
-  gap: 4px;
-  padding: 6px 8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 12px;
   flex-shrink: 0;
-  background: rgba(255,255,255,0.03);
+  height: 32px;
+  background: rgba(6, 10, 26, 0.5);
+  border-bottom: 1px solid rgba(110, 231, 255, 0.05);
 }
 
-.hud-item {
-  flex: 1;
-  text-align: center;
-  min-width: 0;
-}
-
-.hud-label {
-  display: block;
-  font-size: 0.6rem;
-  color: #bb86fc;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.hud-value {
-  display: block;
-  font-size: 0.95rem;
+#score {
+  font-size: 1.05rem;
   font-weight: 700;
-  color: #fff;
+  color: #eef2ff;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
 }
 
-/* ===== ゲームボード ===== */
+#combo {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: rgba(238, 242, 255, 0.4);
+  text-align: center;
+  min-width: 60px;
+}
+
+#combo.active {
+  color: #6ee7ff;
+}
+
+#combo.high {
+  color: #fb7185;
+}
+
+.hud-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hud-acc {
+  font-size: 0.78rem;
+  color: rgba(238, 242, 255, 0.5);
+  font-variant-numeric: tabular-nums;
+}
+
+#judge {
+  font-size: 0.78rem;
+  font-weight: 600;
+  min-width: 60px;
+  text-align: right;
+}
+
+.hud-best {
+  font-size: 0.72rem;
+  color: rgba(238, 242, 255, 0.25);
+}
+
 #board-wrapper {
   flex: 1;
   position: relative;
@@ -149,7 +182,6 @@ html, body {
   touch-action: none;
 }
 
-/* ===== レーンボタン ===== */
 #lane-buttons {
   position: absolute;
   bottom: 0;
@@ -163,40 +195,46 @@ html, body {
 
 .lane-btn {
   flex: 1;
-  height: 48px;
+  height: 44px;
   border: none;
   border-radius: 0 0 6px 6px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 700;
   cursor: pointer;
   transition: background 0.08s;
-  color: rgba(255,255,255,0.5);
-  background: rgba(255,255,255,0.06);
+  color: rgba(238, 242, 255, 0.35);
+  background: rgba(238, 242, 255, 0.04);
   -webkit-tap-highlight-color: transparent;
   touch-action: none;
 }
 
-.lane-btn:first-child { border-radius: 0 0 0 6px; }
-.lane-btn:last-child { border-radius: 0 0 6px 0; }
+.lane-btn:first-child {
+  border-radius: 0 0 0 6px;
+}
 
-.lane-btn.active,
+.lane-btn:last-child {
+  border-radius: 0 0 6px 0;
+}
+
 .lane-btn.pressed {
-  background: rgba(255,255,255,0.2);
+  background: rgba(238, 242, 255, 0.15);
 }
 
 /* ===== オーバーレイ ===== */
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(13,0,26,0.92);
+  background: rgba(6, 10, 26, 0.94);
   display: none;
   align-items: center;
   justify-content: center;
   z-index: 10;
-  animation: fadeIn 0.3s ease;
+  animation: fadeIn 0.25s ease;
 }
 
-.overlay.active { display: flex; }
+.overlay.active {
+  display: flex;
+}
 
 @keyframes fadeIn {
   0% { opacity: 0; }
@@ -205,95 +243,117 @@ html, body {
 
 .overlay-inner {
   text-align: center;
-  padding: 24px;
-  max-width: 320px;
+  padding: 28px;
+  max-width: 340px;
 }
 
 .overlay-inner h2 {
-  font-size: 1.5rem;
-  color: #bb86fc;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #6ee7ff;
   margin-bottom: 4px;
+  letter-spacing: 0.02em;
 }
 
 .overlay-artist {
-  font-size: 1rem;
-  color: rgba(255,255,255,0.6);
-  margin-bottom: 12px;
-}
-
-.overlay-sub {
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.5);
-  margin-bottom: 20px;
-  line-height: 1.6;
+  font-size: 0.95rem;
+  color: rgba(238, 242, 255, 0.45);
+  margin-bottom: 14px;
 }
 
 .overlay-score {
-  font-size: 1.2rem;
-  color: #d4c9a0;
-  margin-bottom: 8px;
+  font-size: 1.15rem;
+  color: rgba(238, 242, 255, 0.6);
+  margin-bottom: 6px;
 }
 
-.overlay-score span { color: #fff; font-weight: 700; }
+.overlay-score span {
+  color: #eef2ff;
+  font-weight: 700;
+}
 
 .overlay-acc {
-  font-size: 1rem;
-  color: #F1C40F;
+  font-size: 0.95rem;
+  color: #6ee7ff;
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .overlay-best {
-  font-size: 0.9rem;
-  color: #ff6b9d;
-  margin-bottom: 16px;
+  font-size: 0.85rem;
+  color: #fb7185;
+  margin-bottom: 14px;
 }
 
+/* ===== ボタン ===== */
 .btn-primary {
   display: inline-block;
-  padding: 14px 36px;
+  padding: 13px 34px;
   border: none;
   border-radius: 8px;
-  background: linear-gradient(135deg, #bb86fc, #6200ea);
-  color: #fff;
+  background: linear-gradient(135deg, #6ee7ff, #0891b2);
+  color: #060a1a;
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
   transition: transform 0.15s, box-shadow 0.15s;
-  box-shadow: 0 4px 16px rgba(187,134,252,0.3);
+  box-shadow: 0 4px 20px rgba(110, 231, 255, 0.2);
+  letter-spacing: 0.03em;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(187,134,252,0.5);
+  box-shadow: 0 6px 28px rgba(110, 231, 255, 0.35);
 }
 
 .btn-primary:active {
   transform: translateY(0);
 }
 
-#result-judges {
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.7);
-  margin-bottom: 8px;
-  line-height: 1.8;
+.btn-text {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 16px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(238, 242, 255, 0.35);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: color 0.15s;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* ===== 設定セクション ===== */
+.btn-text:hover {
+  color: #6ee7ff;
+}
+
+.btn-text:active {
+  color: #fb7185;
+}
+
+#result-judges {
+  font-size: 0.82rem;
+  color: rgba(238, 242, 255, 0.55);
+  margin-bottom: 8px;
+  line-height: 1.9;
+}
+
+/* ===== 難易度設定 ===== */
 .config-section {
   margin-bottom: 14px;
 }
 
 .config-label {
   display: block;
-  font-size: 0.75rem;
-  color: rgba(255,255,255,0.5);
+  font-size: 0.72rem;
+  color: rgba(238, 242, 255, 0.35);
   margin-bottom: 6px;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 #offset-value {
-  color: #bb86fc;
+  color: #6ee7ff;
   font-weight: 700;
   font-size: 0.8rem;
 }
@@ -308,10 +368,10 @@ html, body {
   flex: 1;
   max-width: 90px;
   padding: 6px 0;
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(238, 242, 255, 0.1);
   border-radius: 6px;
-  background: rgba(255,255,255,0.04);
-  color: rgba(255,255,255,0.5);
+  background: rgba(238, 242, 255, 0.03);
+  color: rgba(238, 242, 255, 0.35);
   font-size: 0.75rem;
   font-weight: 700;
   cursor: pointer;
@@ -320,9 +380,9 @@ html, body {
 }
 
 .diff-btn.active {
-  border-color: #bb86fc;
-  background: rgba(187,134,252,0.2);
-  color: #bb86fc;
+  border-color: #6ee7ff;
+  background: rgba(110, 231, 255, 0.12);
+  color: #6ee7ff;
 }
 
 .offset-row {
@@ -337,7 +397,7 @@ html, body {
   appearance: none;
   height: 4px;
   border-radius: 2px;
-  background: rgba(255,255,255,0.15);
+  background: rgba(238, 242, 255, 0.1);
   outline: none;
 }
 
@@ -347,7 +407,7 @@ html, body {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #bb86fc;
+  background: #6ee7ff;
   cursor: pointer;
   border: none;
 }
@@ -356,7 +416,7 @@ html, body {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #bb86fc;
+  background: #6ee7ff;
   cursor: pointer;
   border: none;
 }
@@ -364,10 +424,10 @@ html, body {
 .btn-small {
   width: 32px;
   height: 32px;
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(238, 242, 255, 0.1);
   border-radius: 6px;
-  background: rgba(255,255,255,0.04);
-  color: rgba(255,255,255,0.7);
+  background: rgba(238, 242, 255, 0.03);
+  color: rgba(238, 242, 255, 0.5);
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.15s;
@@ -376,8 +436,8 @@ html, body {
 }
 
 .btn-small:active {
-  background: rgba(187,134,252,0.2);
-  border-color: #bb86fc;
+  background: rgba(110, 231, 255, 0.12);
+  border-color: #6ee7ff;
 }
 
 /* ===== 曲選択 ===== */
@@ -393,10 +453,10 @@ html, body {
   display: block;
   width: 100%;
   padding: 14px 16px;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(238, 242, 255, 0.06);
   border-radius: 10px;
-  background: rgba(255,255,255,0.04);
-  color: #fff;
+  background: rgba(238, 242, 255, 0.02);
+  color: #eef2ff;
   cursor: pointer;
   text-align: left;
   transition: all 0.15s;
@@ -404,143 +464,184 @@ html, body {
 }
 
 .song-card:active {
-  background: rgba(187,134,252,0.15);
-  border-color: #bb86fc;
+  background: rgba(110, 231, 255, 0.08);
+  border-color: rgba(110, 231, 255, 0.2);
 }
 
 .song-card .song-title {
   display: block;
   font-size: 1rem;
   font-weight: 700;
-  color: #bb86fc;
+  color: #6ee7ff;
   margin-bottom: 2px;
 }
 
 .song-card .song-artist {
   display: block;
   font-size: 0.8rem;
-  color: rgba(255,255,255,0.5);
+  color: rgba(238, 242, 255, 0.35);
   margin-bottom: 4px;
 }
 
 .song-card .song-meta {
   display: block;
   font-size: 0.7rem;
-  color: rgba(255,255,255,0.3);
+  color: rgba(238, 242, 255, 0.2);
 }
-
-/* ===== テキストボタン ===== */
-.btn-text {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 6px 16px;
-  border: none;
-  border-radius: 6px;
-  background: transparent;
-  color: rgba(255,255,255,0.5);
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: color 0.15s;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.btn-text:hover { color: #bb86fc; }
-.btn-text:active { color: #d4a0ff; }
 
 /* ===== ランクバッジ ===== */
 .rank-badge {
   display: inline-block;
-  width: 72px;
-  height: 72px;
-  line-height: 72px;
+  width: 68px;
+  height: 68px;
+  line-height: 68px;
   border-radius: 50%;
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 900;
   text-align: center;
   margin-bottom: 10px;
-  box-shadow: 0 0 24px currentColor;
+  box-shadow: 0 0 28px currentColor;
   letter-spacing: 0;
 }
-.rank-badge.rank-SS { color: #ffd700; background: rgba(255,215,0,0.15); border: 2px solid #ffd700; text-shadow: 0 0 12px rgba(255,215,0,0.6); }
-.rank-badge.rank-S  { color: #ff6b9d; background: rgba(255,107,157,0.15); border: 2px solid #ff6b9d; text-shadow: 0 0 12px rgba(255,107,157,0.6); }
-.rank-badge.rank-A  { color: #4ade80; background: rgba(74,222,128,0.15); border: 2px solid #4ade80; }
-.rank-badge.rank-B  { color: #60a5fa; background: rgba(96,165,250,0.15); border: 2px solid #60a5fa; }
-.rank-badge.rank-C  { color: #a78bfa; background: rgba(167,139,250,0.15); border: 2px solid #a78bfa; }
-.rank-badge.rank-D  { color: #9ca3af; background: rgba(156,163,175,0.15); border: 2px solid #9ca3af; }
+
+.rank-badge.rank-SS {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.1);
+  border: 2px solid #fbbf24;
+  text-shadow: 0 0 16px rgba(251, 191, 36, 0.5);
+}
+
+.rank-badge.rank-S {
+  color: #fb7185;
+  background: rgba(251, 113, 133, 0.1);
+  border: 2px solid #fb7185;
+  text-shadow: 0 0 16px rgba(251, 113, 133, 0.5);
+}
+
+.rank-badge.rank-A {
+  color: #6ee7ff;
+  background: rgba(110, 231, 255, 0.1);
+  border: 2px solid #6ee7ff;
+}
+
+.rank-badge.rank-B {
+  color: #a78bfa;
+  background: rgba(167, 139, 250, 0.1);
+  border: 2px solid #a78bfa;
+}
+
+.rank-badge.rank-C {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.06);
+  border: 2px solid rgba(251, 191, 36, 0.3);
+}
+
+.rank-badge.rank-D {
+  color: rgba(238, 242, 255, 0.25);
+  background: rgba(238, 242, 255, 0.04);
+  border: 2px solid rgba(238, 242, 255, 0.1);
+}
 
 /* ===== リザルト ===== */
 .result-song-title {
-  font-size: 0.95rem;
-  color: #bb86fc;
+  font-size: 0.9rem;
+  color: #6ee7ff;
   margin-bottom: 2px;
 }
 
 .result-difficulty {
-  font-size: 0.7rem;
-  color: rgba(255,255,255,0.4);
+  font-size: 0.65rem;
+  color: rgba(238, 242, 255, 0.3);
   margin-bottom: 10px;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
 }
 
-#offset-hud { display: none; }
-#offset-display { color: #bb86fc; font-size: 0.85rem; }
+#offset-hud {
+  display: none;
+}
 
-/* ===== プレイ中終了ボタン ===== */
+#offset-display {
+  color: #6ee7ff;
+  font-size: 0.8rem;
+}
+
+/* ===== 終了ボタン ===== */
 #quit-btn {
   position: absolute;
   top: 4px;
   right: 4px;
   z-index: 8;
-  width: 32px;
-  height: 32px;
-  border: 1px solid rgba(255,255,255,0.15);
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(238, 242, 255, 0.1);
   border-radius: 50%;
-  background: rgba(0,0,0,0.4);
-  color: rgba(255,255,255,0.5);
-  font-size: 0.9rem;
+  background: rgba(6, 10, 26, 0.5);
+  color: rgba(238, 242, 255, 0.35);
+  font-size: 0.85rem;
   cursor: pointer;
   display: none;
   align-items: center;
   justify-content: center;
-  transition: background 0.15s;
+  transition: all 0.15s;
   -webkit-tap-highlight-color: transparent;
   line-height: 1;
 }
-#quit-btn:hover { background: rgba(255,80,80,0.3); color: #fff; }
-#quit-btn:active { transform: scale(0.9); }
-#quit-btn.visible { display: flex; }
+
+#quit-btn:hover {
+  background: rgba(251, 113, 133, 0.2);
+  color: #fb7185;
+}
+
+#quit-btn:active {
+  transform: scale(0.9);
+}
+
+#quit-btn.visible {
+  display: flex;
+}
 
 /* ===== 操作ヒント ===== */
 #controls-hint {
   flex-shrink: 0;
   text-align: center;
-  padding: 6px;
-  font-size: 0.72rem;
-  color: rgba(255,255,255,0.3);
-  background: rgba(255,255,255,0.02);
+  padding: 5px;
+  font-size: 0.7rem;
+  color: rgba(238, 242, 255, 0.18);
+  background: rgba(6, 10, 26, 0.3);
 }
 
 #controls-hint kbd {
   display: inline-block;
-  padding: 1px 6px;
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 4px;
-  font-size: 0.7rem;
-  color: rgba(255,255,255,0.5);
+  padding: 1px 5px;
+  border: 1px solid rgba(238, 242, 255, 0.08);
+  border-radius: 3px;
+  font-size: 0.68rem;
+  color: rgba(238, 242, 255, 0.3);
   font-family: inherit;
   margin: 0 1px;
 }
 
-/* ===== レスポンシブ微調整 ===== */
+/* ===== レスポンシブ ===== */
 @media (max-width: 500px) {
   #video-area {
     max-height: 160px;
   }
+
   #player-container {
     max-height: 160px;
   }
-  .lane-btn { height: 40px; font-size: 0.8rem; }
-  .hud-value { font-size: 0.85rem; }
-  .overlay-inner h2 { font-size: 1.3rem; }
+
+  .lane-btn {
+    height: 38px;
+    font-size: 0.75rem;
+  }
+
+  #score {
+    font-size: 0.9rem;
+  }
+
+  .overlay-inner h2 {
+    font-size: 1.2rem;
+  }
 }

@@ -17,7 +17,7 @@
   // 定数
   // ============================================
   var LANE_COUNT = 4;
-  var LANE_COLORS = ["#E74C3C", "#3498DB", "#2ECC71", "#F1C40F"];
+  var LANE_COLORS = ["#6ee7ff", "#fb7185", "#fbbf24", "#a78bfa"];
   var LANE_KEYS = ["KeyD", "KeyF", "KeyJ", "KeyK"];
   var JUDGE_Y_RATIO = 0.80;
   var SCROLL_AHEAD = 2.0;
@@ -282,11 +282,11 @@
     var judgeText = "", judgeColor = "", points = 0;
 
     if (absDiff <= PERFECT_RANGE) {
-      judgeText = "PERFECT"; judgeColor = "#F1C40F"; points = SCORE_PERFECT; counts.perfect++;
+      judgeText = "PERFECT"; judgeColor = "#6ee7ff"; points = SCORE_PERFECT; counts.perfect++;
     } else if (absDiff <= GREAT_RANGE) {
-      judgeText = "GREAT"; judgeColor = "#2ECC71"; points = SCORE_GREAT; counts.great++;
+      judgeText = "GREAT"; judgeColor = "#fbbf24"; points = SCORE_GREAT; counts.great++;
     } else if (absDiff <= GOOD_RANGE) {
-      judgeText = "GOOD"; judgeColor = "#3498DB"; points = SCORE_GOOD; counts.good++;
+      judgeText = "GOOD"; judgeColor = "#a78bfa"; points = SCORE_GOOD; counts.good++;
     } else {
       return;
     }
@@ -309,6 +309,8 @@
     elJudge.textContent = judgeText;
     elJudge.style.color = judgeColor;
 
+    playHitSound(judgeText);
+
     var nx = note.l * lw + lw / 2;
     spawnHitEffect(nx, judgeY, judgeColor);
     spawnRing(nx, judgeY, judgeColor);
@@ -318,8 +320,8 @@
   function autoMiss(note) {
     note.judged = true; judgedNotes++; combo = 0; counts.miss++;
     updateHUD();
-    elJudge.textContent = "MISS"; elJudge.style.color = "#E74C3C";
-    spawnJudgeText("MISS", "#E74C3C", cw / 2, judgeY - 30, 0);
+    elJudge.textContent = "MISS"; elJudge.style.color = "#fb7185";
+    spawnJudgeText("MISS", "#fb7185", cw / 2, judgeY - 30, 0);
   }
 
   // ============================================
@@ -343,6 +345,64 @@
 
   function spawnRipple(x, lane) {
     rippleEffects.push({ x: x, y: judgeY, lane: lane, life: 1 });
+  }
+
+  // ============================================
+  // 効果音（Web Audio API シンセ）
+  // ============================================
+  var audioCtx = null;
+
+  function getAudioCtx() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    return audioCtx;
+  }
+
+  function playHitSound(type) {
+    try {
+      var ctx = getAudioCtx();
+      var now = ctx.currentTime;
+
+      if (type === "PERFECT") {
+        var osc1 = ctx.createOscillator();
+        var gain1 = ctx.createGain();
+        osc1.connect(gain1); gain1.connect(ctx.destination);
+        osc1.type = "sine";
+        osc1.frequency.setValueAtTime(880, now);
+        osc1.frequency.setValueAtTime(1100, now + 0.04);
+        gain1.gain.setValueAtTime(0.12, now);
+        gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+        osc1.start(now); osc1.stop(now + 0.14);
+
+        var osc2 = ctx.createOscillator();
+        var gain2 = ctx.createGain();
+        osc2.connect(gain2); gain2.connect(ctx.destination);
+        osc2.type = "sine";
+        osc2.frequency.setValueAtTime(1320, now + 0.06);
+        gain2.gain.setValueAtTime(0.08, now + 0.06);
+        gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+        osc2.start(now + 0.06); osc2.stop(now + 0.2);
+      } else if (type === "GREAT") {
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(660, now);
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+        osc.start(now); osc.stop(now + 0.08);
+      } else if (type === "GOOD") {
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(440, now);
+        gain.gain.setValueAtTime(0.07, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+        osc.start(now); osc.stop(now + 0.06);
+      }
+    } catch (e) {}
   }
 
   function shouldInclude(note) {
@@ -381,7 +441,7 @@
         n.holdProgress = Math.min(1, (chartTime - n.t) / n.d);
         if (n.holdProgress >= 1) {
           score += HOLD_BONUS; updateHUD();
-          spawnJudgeText("HOLD OK", "#2ECC71", cw / 2, judgeY - 55, 0);
+          spawnJudgeText("HOLD OK", "#6ee7ff", cw / 2, judgeY - 55, 0);
           holdActive[n.l] = null;
         }
       }
@@ -447,22 +507,22 @@
 
     // ===== 背景 =====
     var grad = ctx.createLinearGradient(0, 0, 0, ch);
-    grad.addColorStop(0, "#0d001a");
-    grad.addColorStop(1, "#1a0a2e");
+    grad.addColorStop(0, "#060a1a");
+    grad.addColorStop(1, "#0f1a30");
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, cw, ch);
 
     // ===== レーン背景・奥行き（上部が暗く、判定線に近づくほど明るく） =====
     for (var i = 0; i < LANE_COUNT; i++) {
       var laneGrad = ctx.createLinearGradient(0, 0, 0, judgeY);
-      laneGrad.addColorStop(0, "rgba(0,0,0,0.35)");
-      laneGrad.addColorStop(0.6, "rgba(0,0,0,0.1)");
-      laneGrad.addColorStop(1, "rgba(255,255,255,0.03)");
+      laneGrad.addColorStop(0, "rgba(6,10,26,0.35)");
+      laneGrad.addColorStop(0.6, "rgba(6,10,26,0.1)");
+      laneGrad.addColorStop(1, "rgba(238,242,255,0.03)");
       ctx.fillStyle = laneGrad;
       ctx.fillRect(i * lw, 0, lw, ch);
       // 市松模様の代わりにレーンごとの微差
       if (i % 2 === 0) {
-        ctx.fillStyle = "rgba(255,255,255,0.015)";
+        ctx.fillStyle = "rgba(238,242,255,0.015)";
         ctx.fillRect(i * lw, 0, lw, ch);
       }
     }
@@ -477,8 +537,8 @@
 
     // レーン下端（判定線手前）に明るい輝き
     var laneBottomGrad = ctx.createLinearGradient(0, judgeY * 0.85, 0, judgeY);
-    laneBottomGrad.addColorStop(0, "rgba(187,134,252,0)");
-    laneBottomGrad.addColorStop(1, "rgba(187,134,252,0.05)");
+    laneBottomGrad.addColorStop(0, "rgba(110,231,255,0)");
+    laneBottomGrad.addColorStop(1, "rgba(110,231,255,0.05)");
     ctx.fillStyle = laneBottomGrad;
     ctx.fillRect(0, judgeY * 0.85, cw, judgeY * 0.15);
 
@@ -512,15 +572,15 @@
     ctx.fillRect(0, judgeY + 2, cw, 4);
     // メインライン
     ctx.beginPath(); ctx.moveTo(0, judgeY); ctx.lineTo(cw, judgeY);
-    ctx.strokeStyle = "rgba(255,255,255,0.5)"; ctx.lineWidth = 2; ctx.stroke();
+    ctx.strokeStyle = "rgba(238,242,255,0.5)"; ctx.lineWidth = 2; ctx.stroke();
     ctx.beginPath(); ctx.moveTo(0, judgeY); ctx.lineTo(cw, judgeY);
-    ctx.strokeStyle = "rgba(187,134,252,0.3)"; ctx.lineWidth = 6; ctx.stroke();
+    ctx.strokeStyle = "rgba(110,231,255,0.3)"; ctx.lineWidth = 6; ctx.stroke();
     // グロー
     var glowGrad = ctx.createLinearGradient(0, judgeY - 10, 0, judgeY + 10);
-    glowGrad.addColorStop(0, "rgba(187,134,252,0)");
-    glowGrad.addColorStop(0.4, "rgba(187,134,252,0.1)");
-    glowGrad.addColorStop(0.6, "rgba(187,134,252,0.1)");
-    glowGrad.addColorStop(1, "rgba(187,134,252,0)");
+    glowGrad.addColorStop(0, "rgba(110,231,255,0)");
+    glowGrad.addColorStop(0.4, "rgba(110,231,255,0.1)");
+    glowGrad.addColorStop(0.6, "rgba(110,231,255,0.1)");
+    glowGrad.addColorStop(1, "rgba(110,231,255,0)");
     ctx.fillStyle = glowGrad;
     ctx.fillRect(0, judgeY - 10, cw, 20);
     // レーン区切りマーカー
@@ -538,7 +598,7 @@
       var beatPhase = (elapsed % beatMs) / beatMs;
       var pulse = Math.max(0, 1 - beatPhase * 4);
       if (pulse > 0) {
-        ctx.fillStyle = "rgba(187,134,252," + (pulse * 0.05) + ")";
+        ctx.fillStyle = "rgba(110,231,255," + (pulse * 0.05) + ")";
         ctx.fillRect(0, 0, cw, ch);
       }
     }
@@ -580,18 +640,18 @@
           // 本体面（明るい）
           var tGrad = ctx.createLinearGradient(tx, 0, tx + tw, 0);
           if (n.hit) {
-            tGrad.addColorStop(0, "rgba(187,134,252,0.5)");
-            tGrad.addColorStop(0.5, "rgba(187,134,252,0.8)");
-            tGrad.addColorStop(1, "rgba(187,134,252,0.3)");
+            tGrad.addColorStop(0, "rgba(110,231,255,0.5)");
+            tGrad.addColorStop(0.5, "rgba(110,231,255,0.8)");
+            tGrad.addColorStop(1, "rgba(110,231,255,0.3)");
           } else {
-            tGrad.addColorStop(0, "rgba(255,255,255,0.08)");
-            tGrad.addColorStop(0.5, "rgba(255,255,255,0.15)");
+            tGrad.addColorStop(0, "rgba(238,242,255,0.08)");
+            tGrad.addColorStop(0.5, "rgba(238,242,255,0.15)");
             tGrad.addColorStop(1, color + "30");
           }
           ctx.fillStyle = tGrad;
           ctx.fillRect(tx, tt, tw, tb - tt);
           // 右側の影（立体感）
-          ctx.fillStyle = n.hit ? "rgba(100,50,150,0.3)" : "rgba(0,0,0,0.15)";
+          ctx.fillStyle = n.hit ? "rgba(6,10,26,0.3)" : "rgba(0,0,0,0.15)";
           ctx.fillRect(tx + tw, tt, 3, tb - tt);
         }
       }
@@ -727,9 +787,9 @@
       var lastNoteTime = chart.notes[chart.notes.length - 1].t;
       var progress = Math.min(chartTime / lastNoteTime, 1);
       if (progress >= 0) {
-        ctx.fillStyle = "rgba(255,255,255,0.06)";
+        ctx.fillStyle = "rgba(238,242,255,0.06)";
         ctx.fillRect(0, 0, cw, 3);
-        ctx.fillStyle = "#bb86fc";
+        ctx.fillStyle = "#6ee7ff";
         ctx.fillRect(0, 0, cw * progress, 3);
       }
     }
@@ -745,7 +805,7 @@
     // ===== オフセットトースト =====
     if (offsetToastTimer > 0) {
       offsetToastTimer--;
-      ctx.fillStyle = "rgba(187,134,252,0.85)";
+      ctx.fillStyle = "rgba(110,231,255,0.85)";
       ctx.font = "bold 14px sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "top";
@@ -832,9 +892,9 @@
         var completion = n.holdProgress;
         if (completion > 0.8) {
           score += HOLD_BONUS; updateHUD();
-          spawnJudgeText("HOLD OK", "#2ECC71", cw / 2, judgeY - 55, 0);
+          spawnJudgeText("HOLD OK", "#6ee7ff", cw / 2, judgeY - 55, 0);
         } else {
-          spawnJudgeText("HOLD BREAK", "#E74C3C", cw / 2, judgeY - 55, 0);
+          spawnJudgeText("HOLD BREAK", "#fb7185", cw / 2, judgeY - 55, 0);
         }
         n.holdProgress = 1;
       }
@@ -1071,7 +1131,7 @@
 
     updateHUD();
     elScore.textContent = "0"; elCombo.textContent = "0";
-    elJudge.textContent = "-"; elJudge.style.color = "#fff";
+    elJudge.textContent = "-"; elJudge.style.color = "#6ee7ff";
     elAccuracy.textContent = "100%";
     elOffsetHud.style.display = "";
 
@@ -1089,11 +1149,11 @@
   }
 
   function calcRank(accuracy) {
-    if (accuracy >= 98) return { rank: "SS", color: "#ffd700" };
-    if (accuracy >= 90) return { rank: "S", color: "#ff6b9d" };
-    if (accuracy >= 80) return { rank: "A", color: "#4ade80" };
-    if (accuracy >= 70) return { rank: "B", color: "#60a5fa" };
-    if (accuracy >= 60) return { rank: "C", color: "#a78bfa" };
+    if (accuracy >= 98) return { rank: "SS", color: "#fbbf24" };
+    if (accuracy >= 90) return { rank: "S", color: "#fb7185" };
+    if (accuracy >= 80) return { rank: "A", color: "#6ee7ff" };
+    if (accuracy >= 70) return { rank: "B", color: "#a78bfa" };
+    if (accuracy >= 60) return { rank: "C", color: "#fbbf24" };
     return { rank: "D", color: "#9ca3af" };
   }
 
@@ -1215,11 +1275,11 @@
   (function () {
     initCanvas();
     var grad = ctx.createLinearGradient(0, 0, 0, ch);
-    grad.addColorStop(0, "#0d001a");
-    grad.addColorStop(1, "#1a0a2e");
+    grad.addColorStop(0, "#060a1a");
+    grad.addColorStop(1, "#0f1a30");
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, cw, ch);
-    ctx.fillStyle = "rgba(255,255,255,0.1)";
+    ctx.fillStyle = "rgba(110,231,255,0.1)";
     ctx.font = "16px sans-serif";
     ctx.textAlign = "center";
     ctx.fillText("曲を選択してください", cw / 2, ch / 2);
