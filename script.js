@@ -13,6 +13,12 @@ const SITE_TYPE = "demo";
 // ============================================
 // UA通知
 // ============================================
+var deferredPrompt = null;
+window.addEventListener("beforeinstallprompt", function (e) {
+  e.preventDefault();
+  deferredPrompt = e;
+});
+
 (function () {
   // スタンドアロン（ホーム画面追加済み/PWA起動）なら何もしない
   if (window.navigator.standalone === true ||
@@ -101,11 +107,38 @@ const SITE_TYPE = "demo";
   if (isPC) {
     show(
       "より快適にプレイするには",
-      "全画面表示（<strong>F11キー</strong>）をおすすめします。<br><br>" +
-      "Chromeをお使いの場合、アドレスバーのインストールボタンから" +
-      "<strong>アプリとして追加</strong>すると、より快適にご利用いただけます。",
+      '<p style="margin:0 0 12px;font-size:0.85rem">全画面表示またはアプリとしてインストールすると、より快適にご利用いただけます。</p>' +
+      '<div class="ua-actions">' +
+        '<button id="ua-btn-fs" class="ua-btn">全画面表示</button>' +
+        '<button id="ua-btn-install" class="ua-btn ua-btn-primary">インストール</button>' +
+      '</div>',
       false
     );
+
+    document.getElementById("ua-btn-fs").addEventListener("click", function () {
+      var el = document.documentElement;
+      if (el.requestFullscreen) {
+        el.requestFullscreen().catch(function () {});
+      } else if (el.webkitRequestFullscreen) {
+        el.webkitRequestFullscreen();
+      } else if (el.msRequestFullscreen) {
+        el.msRequestFullscreen();
+      }
+      dismiss();
+    });
+
+    document.getElementById("ua-btn-install").addEventListener("click", function () {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function () { deferredPrompt = null; });
+        dismiss();
+      } else {
+        var note = document.createElement("p");
+        note.style.cssText = "margin:8px 0 0;font-size:0.75rem;color:rgba(45,27,78,0.4);text-align:center";
+        note.textContent = "このブラウザではインストールに対応していません。メニューから「インストール」をお試しください。";
+        document.getElementById("ua-btn-install").after(note);
+      }
+    });
     return;
   }
 
