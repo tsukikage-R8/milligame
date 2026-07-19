@@ -201,6 +201,16 @@ const games = [
     exp: "x1.0",
     tags: ["おすすめ"],
     link: "games/clicker.html"
+  },
+  {
+    id: 3,
+    title: "ミリプロ診断",
+    description: "10の質問に答えて、あなたにぴったりなミリプロメンバーを診断しよう！",
+    image: "https://picsum.photos/seed/diagnosis/400/250",
+    points: 0,
+    exp: "-",
+    tags: ["診断", "新着"],
+    link: "games/diagnosis.html"
   }
 ];
 

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ミリプロ診断 - Milli Games</title>
+  <link rel="icon" href="../images/icon/favicon.ico" sizes="any">
+  <link rel="icon" href="../images/icon/192.png" sizes="192x192" type="image/png">
+  <link rel="apple-touch-icon" href="../images/icon/192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="../images/icon/518.png" sizes="518x518">
+  <link rel="stylesheet" href="diagnosis.css">
+</head>
+<body>
+  <div id="bg-blur">
+    <div class="blob" style="width:300px;height:300px;top:-80px;left:-60px;background:var(--primary);animation-delay:0s;"></div>
+    <div class="blob" style="width:250px;height:250px;bottom:-60px;right:-40px;background:#b388ff;animation-delay:-7s;"></div>
+    <div class="blob" style="width:200px;height:200px;bottom:30%;left:10%;background:#e0b0ff;animation-delay:-14s;"></div>
+  </div>
+
+  <div id="top-bar">
+    <a href="../index.html">&larr; Milli Games</a>
+    <span>ミリプロ診断</span>
+  </div>
+
+  <div id="container">
+
+    <!-- START SCREEN -->
+    <div id="start-screen" class="screen active">
+      <div class="card">
+        <div class="logo-area">
+          <div class="logo-icon">🎯</div>
+          <h1>ミリプロ診断</h1>
+          <div class="subtitle">〜あなたにぴったりのメンバーは？〜</div>
+        </div>
+        <div class="desc-text">
+          <span>10の質問に答えると、</span>
+          <span>あなたに一番近いミリプロメンバーがわかります！</span>
+          <span style="margin-top:8px;color:var(--text-muted);font-size:13px;">正直な気持ちで答えてね 🎉</span>
+        </div>
+        <button class="btn-start" onclick="startDiagnosis()">診断を始める</button>
+      </div>
+    </div>
+
+    <!-- QUESTION SCREEN -->
+    <div id="question-screen" class="screen">
+      <div class="progress-section">
+        <div class="progress-label">
+          <span id="q-progress-text">1 / 10</span>
+          <span id="q-param-hint" style="font-size:12px;color:var(--text-muted);"></span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="q-progress-fill"></div>
+        </div>
+      </div>
+      <div class="question-card" id="question-card">
+        <span class="q-number" id="q-number">Q1</span>
+        <div class="q-text" id="q-text"></div>
+        <div class="options" id="q-options"></div>
+      </div>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div id="result-screen" class="screen">
+      <div class="card" id="result-main-card">
+        <div class="result-header" id="result-header"></div>
+        <div class="result-desc" id="result-desc"></div>
+      </div>
+      <div class="card">
+        <div class="radar-wrapper">
+          <canvas id="radar-chart" width="640" height="640"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="sub-result" id="sub-result"></div>
+      </div>
+      <div class="card">
+        <div style="font-size:14px;font-weight:600;margin-bottom:8px;text-align:center;">あなたのパラメーター</div>
+        <div class="params-grid" id="params-grid"></div>
+      </div>
+      <button class="btn-retry" onclick="retryDiagnosis()">もう一度診断する</button>
+    </div>
+
+  </div>
+
+  <script src="diagnosis.js"></script>
+</body>
+</html>
