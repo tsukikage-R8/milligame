@@ -134,13 +134,27 @@ ul, ol { list-style: none; }
 }
 
 #header-logo {
-  font-size: 1.4rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  background: linear-gradient(135deg, var(--primary-light), var(--primary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+#header-logo img {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+
+#header-badge {
+  margin-left: 8px;
+  padding: 2px 8px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  border: 1.5px solid var(--primary);
+  border-radius: 4px;
+  color: var(--primary);
+  line-height: 1.4;
 }
 
 #header-actions {

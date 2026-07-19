@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Milli Games</title>
+  <link rel="icon" href="images/icon/favicon.ico" sizes="any">
+  <link rel="icon" href="images/icon/192.png" sizes="192x192" type="image/png">
+  <link rel="apple-touch-icon" href="images/icon/192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="images/icon/518.png" sizes="518x518">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -18,7 +22,7 @@
   <!-- ヘッダー（固定） -->
   <header id="header" class="glass">
     <div id="header-inner">
-      <div id="header-logo">Milli Games</div>
+      <div id="header-logo"><img src="images/rogo.png" alt="Milli Games"><span id="header-badge">DEMO</span></div>
       <div id="header-actions">
         <button id="profile-btn" class="icon-btn" aria-label="プロフィール">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -68,10 +72,6 @@
         <h2 class="panel-title">お知らせ</h2>
         <div class="panel-content"></div>
       </section>
-      <section class="panel-section" id="ranking-panel">
-        <h2 class="panel-title">ランキング</h2>
-        <div class="panel-content"></div>
-      </section>
       <section class="panel-section" id="recent-panel">
         <h2 class="panel-title">最近追加されたゲーム</h2>
         <div class="panel-content"></div>
@@ -106,8 +106,7 @@
       <section class="menu-section menu-info-section">
         <h3>情報</h3>
         <button class="menu-popup-btn" data-section="news">お知らせ</button>
-        <button class="menu-popup-btn" data-section="ranking">ランキング</button>
-        <button class="menu-popup-btn" data-section="recent">最近追加されたゲーム</button>
+        <button class="menu-popup-btn" data-section="recent">ゲーム一覧</button>
       </section>
       <section class="menu-section">
         <h3>設定</h3>

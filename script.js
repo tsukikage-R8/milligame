@@ -4,9 +4,26 @@
 "use strict";
 
 // ============================================
+// サイトタイプ設定
+//   "demo"    : ポイント/EXPを非表示（獲得ポイント未実装の状態）
+//   "complete": ポイント/EXPを全て表示（完全版）
+// ============================================
+const SITE_TYPE = "demo";
+
+// ============================================
 // ゲームデータ
 // ============================================
 const games = [
+  {
+    id: 8,
+    title: "リズムゲーム",
+    description: "落ちてくるノーツにタイミングを合わせてタップする音ゲー。4段階判定でハイスコアを目指せ！",
+    image: "https://picsum.photos/seed/rhythm/400/250",
+    points: 150,
+    exp: "x1.3",
+    tags: ["おすすめ", "新着"],
+    link: "games/music.html"
+  },
   {
     id: 1,
     title: "爆弾回避マスター",
@@ -25,78 +42,12 @@ const games = [
     points: 50,
     exp: "x1.0",
     tags: ["おすすめ"],
-    link: "games/clicker.html",
-    comingSoon: false
-  },
-  {
-    id: 3,
-    title: "ファンタジークエスト",
-    description: "広大な世界を冒険するRPG。仲間と共に魔王を倒せ！100時間を超える壮大な物語。",
-    image: "https://picsum.photos/seed/fantasy/400/250",
-    points: 200,
-    exp: "x1.5",
-    tags: ["おすすめ"],
-    comingSoon: true
-  },
-  {
-    id: 4,
-    title: "スピードランナー",
-    description: "疾走感抜群のランニングアクション。障害物をかわしながらどこまでも走り続けろ！",
-    image: "https://picsum.photos/seed/speedrun/400/250",
-    points: 80,
-    exp: "x1.1",
-    tags: ["新着"],
-    comingSoon: true
-  },
-  {
-    id: 5,
-    title: "パズルワールド",
-    description: "1000以上のステージに挑戦。頭をひねる魅惑のパズルゲームであなたの知力を試せ！",
-    image: "https://picsum.photos/seed/puzzleworld/400/250",
-    points: 150,
-    exp: "x1.3",
-    tags: ["新着"],
-    comingSoon: true
-  },
-  {
-    id: 6,
-    title: "ドラゴンアドベンチャー",
-    description: "伝説のドラゴンを育成して冒険に出よう！ドラゴンとの絆が世界を救う鍵だ。",
-    image: "https://picsum.photos/seed/dragonadv/400/250",
-    points: 180,
-    exp: "x1.4",
-    tags: ["おすすめ", "新着"],
-    comingSoon: true
-  },
-  {
-    id: 7,
-    title: "スペースインベーダー",
-    description: "宇宙から迫る侵略者を撃ち落とせ！レトロで新しいシューティング体験。",
-    image: "https://picsum.photos/seed/spaceinv/400/250",
-    points: 120,
-    exp: "x1.2",
-    tags: ["新着"],
-    comingSoon: true
-  },
-  {
-    id: 8,
-    title: "リズムゲーム",
-    description: "落ちてくるノーツにタイミングを合わせてタップする音ゲー。4段階判定でハイスコアを目指せ！",
-    image: "https://picsum.photos/seed/rhythm/400/250",
-    points: 150,
-    exp: "x1.3",
-    tags: ["おすすめ", "新着"],
-    link: "games/music.html"
+    link: "games/clicker.html"
   }
 ];
 
 // お知らせデータ
-const newsData = [
-  { date: "2026.07.10", text: "夏のキャンペーン開催中！最大50%OFF" },
-  { date: "2026.07.08", text: "新作「クリッカーヒーロー」が登場！" },
-  { date: "2026.07.05", text: "【メンテナンス】7/15 2:00-5:00 サーバーメンテナンス" },
-  { date: "2026.07.01", text: "「爆弾回避マスター」がアップデート" }
-];
+const newsData = [];
 
 // ============================================
 // DOM参照（最小限）
@@ -163,8 +114,12 @@ function createCardHTML(game) {
     ? '<div class="card-badge coming-soon-badge">準備中</div>'
     : "";
 
-  var pointsHtml = game.comingSoon ? "???" : game.points + "pt";
-  var expHtml = game.comingSoon ? "???" : "EXP " + game.exp;
+  var pointsHtml = "";
+  var expHtml = "";
+  if (SITE_TYPE === "complete") {
+    pointsHtml = game.comingSoon ? "???" : game.points + "pt";
+    expHtml = game.comingSoon ? "???" : "EXP " + game.exp;
+  }
 
   return (
     '<div class="game-card">' +
@@ -178,10 +133,12 @@ function createCardHTML(game) {
         '<p class="card-description">' + game.description + "</p>" +
       "</div>" +
       '<div class="card-footer">' +
-        '<div class="card-stats">' +
-          '<span class="card-points">' + pointsHtml + "</span>" +
-          '<span class="card-exp">' + expHtml + "</span>" +
-        "</div>" +
+        (SITE_TYPE === "complete"
+          ? '<div class="card-stats">' +
+            '<span class="card-points">' + pointsHtml + "</span>" +
+            '<span class="card-exp">' + expHtml + "</span>" +
+          "</div>"
+          : "") +
         btnHtml +
       "</div>" +
     "</div>"
@@ -567,43 +524,29 @@ function generateSideContent() {
   // サイドパネルのお知らせ
   var newsPanel = document.querySelector("#news-panel .panel-content");
   if (newsPanel) {
-    var html = "";
-    for (var i = 0; i < newsData.length; i++) {
-      html +=
-        '<div class="news-item">' +
-        '<span class="news-date">' + newsData[i].date + "</span>" +
-        '<span class="news-text">' + newsData[i].text + "</span>" +
-        "</div>";
+    if (newsData.length > 0) {
+      var html = "";
+      for (var i = 0; i < newsData.length; i++) {
+        html +=
+          '<div class="news-item">' +
+          '<span class="news-date">' + newsData[i].date + "</span>" +
+          '<span class="news-text">' + newsData[i].text + "</span>" +
+          "</div>";
+      }
+      newsPanel.innerHTML = html;
+    } else {
+      newsPanel.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 12px;">お知らせはありません</p>';
     }
-    newsPanel.innerHTML = html;
-  }
-
-  // ランキング
-  var rankingPanel = document.querySelector("#ranking-panel .panel-content");
-  if (rankingPanel) {
-    var sorted = games.slice().sort(function (a, b) {
-      return b.points - a.points;
-    });
-    var html = "<ol>";
-    for (var i = 0; i < Math.min(5, sorted.length); i++) {
-      html += "<li>" + sorted[i].title + " - " + sorted[i].points + "pt</li>";
-    }
-    html += "</ol>";
-    rankingPanel.innerHTML = html;
   }
 
   // 最近追加
   var recentPanel = document.querySelector("#recent-panel .panel-content");
   if (recentPanel) {
-    var recent = games.filter(function (g) {
-      return g.tags.indexOf("新着") !== -1;
-    });
     var html = "";
-    for (var i = 0; i < recent.length; i++) {
+    for (var i = 0; i < games.length; i++) {
       html +=
         '<div class="recent-item">' +
-        '<span class="recent-title">' + recent[i].title + "</span>" +
-        '<span class="recent-tag">新着</span>' +
+        '<span class="recent-title">' + games[i].title + "</span>" +
         "</div>";
     }
     recentPanel.innerHTML = html;
@@ -756,33 +699,26 @@ for (var i = 0; i < el.menuPopupBtns.length; i++) {
       var content = "";
       if (section === "news") {
         title = "お知らせ";
-        var html = "";
-        for (var j = 0; j < newsData.length; j++) {
-          html +=
-            '<div class="news-item">' +
-            '<span class="news-date">' + newsData[j].date + "</span>" +
-            '<span class="news-text">' + newsData[j].text + "</span>" +
-            "</div>";
+        if (newsData.length > 0) {
+          var html = "";
+          for (var j = 0; j < newsData.length; j++) {
+            html +=
+              '<div class="news-item">' +
+              '<span class="news-date">' + newsData[j].date + "</span>" +
+              '<span class="news-text">' + newsData[j].text + "</span>" +
+              "</div>";
+          }
+          content = html;
+        } else {
+          content = '<p style="color: var(--text-muted); text-align: center; padding: 12px;">お知らせはありません</p>';
         }
-        content = html;
-      } else if (section === "ranking") {
-        title = "ランキング";
-        var sorted = games.slice().sort(function (a, b) { return b.points - a.points; });
-        var html = "<h3 class=\"panel-title\">ランキング</h3><ol>";
-        for (var j = 0; j < Math.min(5, sorted.length); j++) {
-          html += "<li>" + sorted[j].title + " - " + sorted[j].points + "pt</li>";
-        }
-        html += "</ol>";
-        content = html;
       } else if (section === "recent") {
-        title = "最近追加されたゲーム";
-        var recent = games.filter(function (g) { return g.tags.indexOf("新着") !== -1; });
-        var html = "<h3 class=\"panel-title\">最近追加されたゲーム</h3>";
-        for (var j = 0; j < recent.length; j++) {
+        title = "ゲーム一覧";
+        var html = "<h3 class=\"panel-title\">ゲーム一覧</h3>";
+        for (var j = 0; j < games.length; j++) {
           html +=
             '<div class="recent-item">' +
-            '<span class="recent-title">' + recent[j].title + "</span>" +
-            '<span class="recent-tag">新着</span>' +
+            '<span class="recent-title">' + games[j].title + "</span>" +
             "</div>";
         }
         content = html;

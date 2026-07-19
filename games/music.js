@@ -68,6 +68,10 @@
   var elResultSongTitle = document.getElementById("result-song-title");
   var elResultDifficulty = document.getElementById("result-difficulty");
   var elQuitBtn = document.getElementById("quit-btn");
+  var elShareCanvas = document.getElementById("share-canvas");
+  var elBtnSave = document.getElementById("btn-save");
+  var elBtnShare = document.getElementById("btn-share");
+  var elBtnX = document.getElementById("btn-x");
 
   // ============================================
   // 状態
@@ -77,6 +81,7 @@
   var totalNotes = 0, judgedNotes = 0, accuracyTotal = 0, accuracyMax = 0;
   var counts = { perfect: 0, great: 0, good: 0, miss: 0 };
   var running = false, started = false, chartTime = 0;
+  var lastResult = null;
   var player = null, playerReady = false, animId = null;
   var activeNotes = [], effects = [], judgeTexts = [];
   var laneFlash = [0, 0, 0, 0];
@@ -1199,9 +1204,258 @@
       elBestResult.textContent = "ベスト: " + bestScore;
     }
 
+    lastResult = {
+      score: score,
+      bestScore: bestScore,
+      isNewBest: score >= bestScore && score > 0,
+      acc: acc,
+      rankLabel: rankInfo.rank,
+      rankColor: rankInfo.color,
+      chartTitle: chart ? chart.title || "" : "",
+      difficulty: config.difficulty.toUpperCase(),
+      counts: {
+        perfect: counts.perfect,
+        great: counts.great,
+        good: counts.good,
+        miss: counts.miss
+      },
+      maxCombo: maxCombo
+    };
+
     elQuitBtn.classList.remove("visible");
     document.getElementById("hud-row").style.display = "none";
     elResultOverlay.classList.add("active");
+  }
+
+  // ============================================
+  // 共有機能
+  // ============================================
+  function getResultForShare() {
+    if (!lastResult) return null;
+    var r = lastResult;
+    var perfect = r.counts.perfect;
+    var great = r.counts.great;
+    var good = r.counts.good;
+    var miss = r.counts.miss;
+    var total = perfect + great + good + miss;
+    var acc = total > 0
+      ? Math.round((perfect * 3 + great * 2 + good) / (total * 3) * 100)
+      : 0;
+    return {
+      title: r.chartTitle,
+      difficulty: r.difficulty,
+      score: r.score,
+      acc: acc,
+      rank: r.rankLabel,
+      rankColor: r.rankColor,
+      perfect: perfect,
+      great: great,
+      good: good,
+      miss: miss,
+      maxCombo: r.maxCombo,
+      isNewBest: r.isNewBest,
+      bestScore: r.bestScore
+    };
+  }
+
+  function generateShareImage() {
+    var r = getResultForShare();
+    if (!r) return Promise.reject("no result");
+
+    var W = 360, H = 520;
+    var scale = 2;
+    var cvs = elShareCanvas;
+    cvs.width = W * scale;
+    cvs.height = H * scale;
+    var cx = cvs.getContext("2d");
+    cx.scale(scale, scale);
+
+    // background
+    var grad = cx.createLinearGradient(0, 0, 0, H);
+    grad.addColorStop(0, "#1a0a2e");
+    grad.addColorStop(1, "#2d1b4e");
+    cx.fillStyle = grad;
+    cx.fillRect(0, 0, W, H);
+
+    // border glow
+    cx.shadowColor = "rgba(133,130,251,0.3)";
+    cx.shadowBlur = 20;
+    cx.strokeStyle = "rgba(133,130,251,0.4)";
+    cx.lineWidth = 2;
+    cx.strokeRect(6, 6, W - 12, H - 12);
+    cx.shadowBlur = 0;
+
+    // title
+    cx.fillStyle = "#dbbee1";
+    cx.font = "bold 20px -apple-system, sans-serif";
+    cx.textAlign = "center";
+    cx.fillText(r.title, W / 2, 50);
+
+    // difficulty
+    cx.fillStyle = "rgba(238,242,255,0.4)";
+    cx.font = "11px -apple-system, sans-serif";
+    cx.fillText(r.difficulty, W / 2, 70);
+
+    // rank badge
+    var rankSize = 64;
+    cx.shadowColor = r.rankColor;
+    cx.shadowBlur = 28;
+    cx.beginPath();
+    cx.arc(W / 2, 130, rankSize / 2, 0, Math.PI * 2);
+    cx.fillStyle = r.rankColor + "18";
+    cx.fill();
+    cx.strokeStyle = r.rankColor;
+    cx.lineWidth = 2.5;
+    cx.stroke();
+    cx.shadowBlur = 0;
+    cx.fillStyle = r.rankColor;
+    cx.font = "bold 32px -apple-system, sans-serif";
+    cx.textAlign = "center";
+    cx.textBaseline = "middle";
+    cx.fillText(r.rank, W / 2, 130);
+
+    // score
+    cx.textBaseline = "top";
+    cx.fillStyle = "#8582fb";
+    cx.font = "bold 28px -apple-system, sans-serif";
+    cx.fillText(r.score.toLocaleString(), W / 2, 175);
+
+    cx.fillStyle = "rgba(238,242,255,0.3)";
+    cx.font = "12px -apple-system, sans-serif";
+    cx.fillText("SCORE", W / 2, 207);
+
+    // accuracy
+    cx.fillStyle = "#dbbee1";
+    cx.font = "20px -apple-system, sans-serif";
+    cx.fillText("ACCURACY " + r.acc + "%", W / 2, 238);
+
+    // divider line
+    cx.strokeStyle = "rgba(238,242,255,0.1)";
+    cx.lineWidth = 1;
+    cx.beginPath();
+    cx.moveTo(40, 268);
+    cx.lineTo(W - 40, 268);
+    cx.stroke();
+
+    // judge counts
+    var y = 285;
+    cx.textAlign = "left";
+    cx.font = "14px -apple-system, sans-serif";
+    var items = [
+      { label: "PERFECT", color: "#8582fb", val: r.perfect },
+      { label: "GREAT", color: "#dbbee1", val: r.great },
+      { label: "GOOD", color: "#b794d4", val: r.good },
+      { label: "MISS", color: "rgba(238,242,255,0.3)", val: r.miss }
+    ];
+    for (var i = 0; i < items.length; i++) {
+      cx.fillStyle = "rgba(238,242,255,0.25)";
+      cx.fillText(items[i].label, 55, y);
+      cx.fillStyle = items[i].color;
+      cx.textAlign = "right";
+      cx.fillText(String(items[i].val), W - 55, y);
+      cx.textAlign = "left";
+      y += 26;
+    }
+
+    // max combo
+    cx.fillStyle = "rgba(238,242,255,0.25)";
+    cx.textAlign = "center";
+    cx.font = "14px -apple-system, sans-serif";
+    cx.fillText("MAX COMBO", W / 2, y + 8);
+    cx.fillStyle = "#fff";
+    cx.font = "bold 18px -apple-system, sans-serif";
+    cx.fillText(String(r.maxCombo), W / 2, y + 32);
+
+    // best
+    y = y + 60;
+    if (r.isNewBest) {
+      cx.fillStyle = "#fbbf24";
+      cx.font = "bold 16px -apple-system, sans-serif";
+      cx.fillText("NEW BEST!", W / 2, y);
+    } else {
+      cx.fillStyle = "rgba(238,242,255,0.3)";
+      cx.font = "13px -apple-system, sans-serif";
+      cx.fillText("BEST " + r.bestScore.toLocaleString(), W / 2, y);
+    }
+
+    // brand
+    cx.fillStyle = "rgba(133,130,251,0.4)";
+    cx.font = "11px -apple-system, sans-serif";
+    cx.fillText("Milli Games", W / 2, H - 20);
+
+    return new Promise(function (resolve) {
+      cvs.toBlob(function (blob) {
+        resolve(blob);
+      }, "image/png");
+    });
+  }
+
+  function getXText() {
+    var r = getResultForShare();
+    if (!r) return "";
+    return "\uD83C\uDFB5 " + r.title + " / " + r.difficulty + " \u3092\u30D7\u30EC\u30A4\uFF01\n" +
+      "\u30B9\u30B3\u30A2: " + r.score.toLocaleString() + "\n" +
+      "ACCURACY: " + r.acc + "%\n" +
+      "\u30E9\u30F3\u30AF: " + r.rank + "\n" +
+      "#MilliGames #\u30DF\u30EA\u30D7\u30ED\n" +
+      "https://milli-games.onrender.com/games/music.html";
+  }
+
+  function handleSave() {
+    generateShareImage().then(function (blob) {
+      if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], "result.png", { type: "image/png" })] })) {
+        navigator.share({ files: [new File([blob], "result.png", { type: "image/png" })] });
+      } else {
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = "milligame_result.png";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+    });
+  }
+
+  function handleShare() {
+    generateShareImage().then(function (blob) {
+      var text = getXText();
+      var file = new File([blob], "result.png", { type: "image/png" });
+      if (navigator.share) {
+        var data = { title: "Milli Games", text: text };
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          data.files = [file];
+        }
+        navigator.share(data);
+      } else {
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = "milligame_result.png";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        try { navigator.clipboard.writeText(text); } catch (e) {}
+      }
+    });
+  }
+
+  function handlePostX() {
+    generateShareImage().then(function (blob) {
+      var text = getXText();
+      var file = new File([blob], "result.png", { type: "image/png" });
+      if (navigator.share) {
+        var data = { text: text };
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          data.files = [file];
+        }
+        navigator.share(data);
+      } else {
+        window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(text), "_blank");
+      }
+    });
   }
 
   // ============================================
@@ -1242,6 +1496,11 @@
 
   // リトライ
   elBtnRetry.addEventListener("click", startGame);
+
+  // 共有
+  elBtnSave.addEventListener("click", handleSave);
+  elBtnShare.addEventListener("click", handleShare);
+  elBtnX.addEventListener("click", handlePostX);
 
   // 途中終了
   elQuitBtn.addEventListener("click", function () {

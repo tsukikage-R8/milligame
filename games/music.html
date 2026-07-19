@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>リズムゲーム - Milli Games</title>
+  <link rel="icon" href="../images/icon/favicon.ico" sizes="any">
+  <link rel="icon" href="../images/icon/192.png" sizes="192x192" type="image/png">
+  <link rel="apple-touch-icon" href="../images/icon/192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="../images/icon/518.png" sizes="518x518">
   <link rel="stylesheet" href="music.css">
 </head>
 <body>
@@ -115,10 +119,17 @@
             <p class="overlay-acc" id="final-accuracy">ACCURACY: 0%</p>
             <p class="overlay-best" id="best-result"></p>
             <button id="btn-retry" class="btn-primary">もう一度遊ぶ</button>
+            <div id="share-buttons">
+              <button id="btn-save" class="btn-share">画像を保存</button>
+              <button id="btn-share" class="btn-share">共有</button>
+              <button id="btn-x" class="btn-x">Xでポスト</button>
+            </div>
             <button id="btn-back-select-result" class="btn-text">曲を選び直す</button>
           </div>
         </div>
       </div>
+
+      <canvas id="share-canvas" style="display:none"></canvas>
 
       <!-- 操作説明 -->
       <div id="controls-hint">

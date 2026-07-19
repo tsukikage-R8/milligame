@@ -675,4 +675,58 @@ body {
   .overlay-inner h2 {
     font-size: 1.2rem;
   }
+
+  #share-buttons {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
+/* ===== 共有ボタン ===== */
+#share-buttons {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0 6px;
+  justify-content: center;
+}
+
+.btn-share,
+.btn-x {
+  flex: 1;
+  max-width: 120px;
+  padding: 8px 0;
+  border: 1px solid rgba(45, 27, 78, 0.12);
+  border-radius: 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-share {
+  background: rgba(255, 255, 255, 0.3);
+  color: rgba(45, 27, 78, 0.5);
+}
+
+.btn-share:hover {
+  background: rgba(133, 130, 251, 0.1);
+  border-color: #8582fb;
+  color: #8582fb;
+}
+
+.btn-x {
+  background: rgba(45, 27, 78, 0.04);
+  color: rgba(45, 27, 78, 0.4);
+}
+
+.btn-x:hover {
+  background: rgba(45, 27, 78, 0.08);
+  border-color: #2d1b4e;
+  color: #2d1b4e;
+}
+
+.btn-share:active,
+.btn-x:active {
+  transform: scale(0.96);
 }
