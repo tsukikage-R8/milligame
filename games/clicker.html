@@ -64,23 +64,24 @@
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
-                overflow: hidden;
-                height: 100vh;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                min-height: 100dvh;
+                height: auto;
             }
             #left-panel {
-                flex: 1;
+                flex: 0 0 auto;
                 height: auto;
-                min-height: 0;
                 border-right: none;
                 border-bottom: 2px solid var(--primary-color);
                 padding: 10px;
+                justify-content: center;
             }
             #right-panel {
-                flex: none;
+                flex: 0 0 auto;
                 max-width: 100%;
                 height: auto;
                 border-left: none;
-                max-height: 45vh;
                 display: flex;
                 flex-direction: column;
             }
