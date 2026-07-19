@@ -9,7 +9,7 @@
      push(t, l, type, dur, lvl)
      t  = タイムスタンプ（秒）。曲開始からの経過秒
      l  = レーン番号（0=左端, 1, 2, 3=右端）
-     type = "tap"(通常) / "hold"(長押し) / "flick"(フリック)
+     type = "tap"(通常) / "hold"(長押し) / "tap"(フリック)
      dur = holdの場合の長さ（秒）。tap/flickは0
      lvl = 難易度レベル（0:全難易度 / 1:Normal〜Hard / 2:Hardのみ）
 
@@ -145,20 +145,20 @@ CHARTS.luminous = (function () {
   // ========================================
   // PRE-CHORUS (bar 16-20) フリック導入
   // ========================================
-  push(bar(16) + beat(0), 0, "flick", 0, 0);
+  push(bar(16) + beat(0), 0, "tap", 0, 0);
   push(bar(16) + beat(1), 2, "tap", 0, 0);
-  push(bar(16) + beat(2), 1, "flick", 0, 1);
+  push(bar(16) + beat(2), 1, "tap", 0, 1);
   push(bar(16) + beat(3), 3, "tap", 0, 0);
   push(bar(17) + beat(0), 0, "tap", 0, 0);
   push(bar(17) + beat(1), 2, "tap", 0, 1);
-  push(bar(17) + beat(2), 3, "flick", 0, 1);
+  push(bar(17) + beat(2), 3, "tap", 0, 1);
   push(bar(17) + beat(3), 1, "tap", 0, 0);
   push(bar(18) + beat(0), 0, "hold", beat(1), 1);
   push(bar(18) + beat(1), 2, "tap", 0, 1);
   push(bar(18) + beat(2), 1, "tap", 0, 0);
-  push(bar(18) + beat(3), 3, "flick", 0, 1);
+  push(bar(18) + beat(3), 3, "tap", 0, 1);
   push(bar(19) + beat(0), 0, "tap", 0, 0);
-  push(bar(19) + beat(1), 2, "flick", 0, 1);
+  push(bar(19) + beat(1), 2, "tap", 0, 1);
   push(bar(19) + beat(2), 1, "hold", beat(1), 1);
   push(bar(19) + beat(3), 3, "tap", 0, 0);
 
@@ -178,26 +178,26 @@ CHARTS.luminous = (function () {
   push(bar(20) + beat(0.5), 2, "hold", beat(0.5), 1);
   push(bar(20) + beat(1), 1, "tap", 0, 0);
   push(bar(20) + beat(1.5), 3, "tap", 0, 1);
-  push(bar(20) + beat(2), 0, "flick", 0, 1);
+  push(bar(20) + beat(2), 0, "tap", 0, 1);
   push(bar(20) + beat(3), 2, "tap", 0, 0);
   // bar 21
   push(bar(21) + beat(0), 1, "tap", 0, 0);
   push(bar(21) + beat(0.5), 3, "tap", 0, 1);
   push(bar(21) + beat(1), 0, "hold", beat(1), 1);
   push(bar(21) + beat(2), 2, "tap", 0, 0);
-  push(bar(21) + beat(3), 1, "flick", 0, 1);
+  push(bar(21) + beat(3), 1, "tap", 0, 1);
   // bar 22
   push(bar(22) + beat(0), 3, "tap", 0, 0);
   push(bar(22) + beat(0.5), 0, "tap", 0, 1);
   push(bar(22) + beat(1), 2, "hold", beat(0.5), 1);
   push(bar(22) + beat(1.5), 1, "tap", 0, 1);
-  push(bar(22) + beat(2), 3, "flick", 0, 1);
+  push(bar(22) + beat(2), 3, "tap", 0, 1);
   push(bar(22) + beat(3), 0, "tap", 0, 0);
   // bar 23
   push(bar(23) + beat(0), 1, "hold", beat(2), 0);
   push(bar(23) + beat(1), 3, "tap", 0, 1);
   push(bar(23) + beat(2), 0, "tap", 0, 0);
-  push(bar(23) + beat(3), 2, "flick", 0, 1);
+  push(bar(23) + beat(3), 2, "tap", 0, 1);
 
   // HD: 密度追加 bar 20-23
   push(bar(20) + beat(0.75), 0, "tap", 0, 2);
@@ -213,26 +213,26 @@ CHARTS.luminous = (function () {
   // bar 24 (repeat pattern)
   push(bar(24) + beat(0), 0, "tap", 0, 0);
   push(bar(24) + beat(0.5), 2, "hold", beat(0.5), 1);
-  push(bar(24) + beat(1), 1, "flick", 0, 0);
+  push(bar(24) + beat(1), 1, "tap", 0, 0);
   push(bar(24) + beat(1.5), 3, "tap", 0, 1);
   push(bar(24) + beat(2), 0, "tap", 0, 0);
-  push(bar(24) + beat(3), 2, "flick", 0, 1);
+  push(bar(24) + beat(3), 2, "tap", 0, 1);
   // bar 25
   push(bar(25) + beat(0), 1, "tap", 0, 0);
   push(bar(25) + beat(0.5), 3, "tap", 0, 1);
   push(bar(25) + beat(1), 0, "hold", beat(1), 0);
-  push(bar(25) + beat(2), 2, "flick", 0, 1);
+  push(bar(25) + beat(2), 2, "tap", 0, 1);
   push(bar(25) + beat(3), 1, "tap", 0, 0);
   // bar 26
   push(bar(26) + beat(0), 3, "tap", 0, 0);
   push(bar(26) + beat(0.5), 0, "tap", 0, 1);
   push(bar(26) + beat(1), 2, "hold", beat(0.5), 1);
-  push(bar(26) + beat(1.5), 1, "flick", 0, 1);
+  push(bar(26) + beat(1.5), 1, "tap", 0, 1);
   push(bar(26) + beat(2), 3, "tap", 0, 0);
   push(bar(26) + beat(3), 0, "tap", 0, 0);
   // bar 27
   push(bar(27) + beat(0), 1, "hold", beat(2), 0);
-  push(bar(27) + beat(1), 3, "flick", 0, 1);
+  push(bar(27) + beat(1), 3, "tap", 0, 1);
   push(bar(27) + beat(2), 2, "tap", 0, 0);
   push(bar(27) + beat(3), 0, "tap", 0, 1);
 
@@ -277,48 +277,48 @@ CHARTS.luminous = (function () {
   // bar 32 (same as bar 20)
   push(bar(32) + beat(0), 0, "tap", 0, 0);
   push(bar(32) + beat(0.5), 2, "hold", beat(0.5), 0);
-  push(bar(32) + beat(1), 1, "flick", 0, 0);
+  push(bar(32) + beat(1), 1, "tap", 0, 0);
   push(bar(32) + beat(1.5), 3, "tap", 0, 1);
   push(bar(32) + beat(2), 0, "tap", 0, 0);
-  push(bar(32) + beat(3), 2, "flick", 0, 1);
+  push(bar(32) + beat(3), 2, "tap", 0, 1);
   // bar 33
   push(bar(33) + beat(0), 1, "tap", 0, 0);
   push(bar(33) + beat(0.5), 3, "tap", 0, 0);
   push(bar(33) + beat(1), 0, "hold", beat(1), 0);
-  push(bar(33) + beat(2), 2, "flick", 0, 1);
+  push(bar(33) + beat(2), 2, "tap", 0, 1);
   push(bar(33) + beat(3), 1, "tap", 0, 1);
   // bar 34
   push(bar(34) + beat(0), 3, "tap", 0, 0);
   push(bar(34) + beat(0.5), 0, "tap", 0, 1);
   push(bar(34) + beat(1), 2, "hold", beat(0.5), 1);
-  push(bar(34) + beat(1.5), 1, "flick", 0, 1);
+  push(bar(34) + beat(1.5), 1, "tap", 0, 1);
   push(bar(34) + beat(2), 3, "tap", 0, 0);
   push(bar(34) + beat(3), 0, "tap", 0, 0);
   // bar 35
   push(bar(35) + beat(0), 1, "hold", beat(2), 0);
-  push(bar(35) + beat(1), 3, "flick", 0, 1);
+  push(bar(35) + beat(1), 3, "tap", 0, 1);
   push(bar(35) + beat(2), 2, "tap", 0, 0);
-  push(bar(35) + beat(3), 0, "flick", 0, 1);
+  push(bar(35) + beat(3), 0, "tap", 0, 1);
 
   // bar 36
   push(bar(36) + beat(0), 1, "tap", 0, 0);
   push(bar(36) + beat(0.5), 3, "tap", 0, 1);
   push(bar(36) + beat(1), 0, "tap", 0, 0);
   push(bar(36) + beat(1.5), 2, "tap", 0, 1);
-  push(bar(36) + beat(2), 1, "flick", 0, 1);
+  push(bar(36) + beat(2), 1, "tap", 0, 1);
   push(bar(36) + beat(3), 3, "hold", beat(1), 1);
   // bar 37
   push(bar(37) + beat(0), 0, "tap", 0, 0);
   push(bar(37) + beat(0.5), 2, "tap", 0, 1);
   push(bar(37) + beat(1), 1, "hold", beat(0.5), 1);
-  push(bar(37) + beat(1.5), 3, "flick", 0, 1);
+  push(bar(37) + beat(1.5), 3, "tap", 0, 1);
   push(bar(37) + beat(2), 0, "tap", 0, 0);
   push(bar(37) + beat(3), 2, "tap", 0, 0);
   // bar 38
   push(bar(38) + beat(0), 1, "tap", 0, 0);
   push(bar(38) + beat(1), 3, "tap", 0, 1);
   push(bar(38) + beat(2), 0, "hold", beat(1), 0);
-  push(bar(38) + beat(3), 2, "flick", 0, 1);
+  push(bar(38) + beat(3), 2, "tap", 0, 1);
   // bar 39
   push(bar(39) + beat(0), 1, "hold", beat(3), 0);
   push(bar(39) + beat(1), 3, "tap", 0, 1);
@@ -403,7 +403,7 @@ CHARTS.luminous = (function () {
     【ノーツの種類】
       "tap"   : 通常（シングルタップ）
       "hold"  : 長押し（第4引数に長さを秒で指定）
-      "flick" : フリック（矢印付き）
+      "tap" : フリック（矢印付き）
 
     【難易度レベル（第5引数 lvl）】
       0 = Easy / Normal / Hard すべてに出る

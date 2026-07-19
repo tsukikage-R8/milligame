@@ -29,7 +29,7 @@
   var SCORE_GREAT = 200;
   var SCORE_GOOD = 100;
   var HOLD_BONUS = 100;
-  var FLICK_BONUS = 50;
+
 
   // ============================================
   // DOM参照
@@ -88,7 +88,7 @@
   var laneHeld = [false, false, false, false];
   var holdActive = [null, null, null, null];
   var chart = null, noteIdx = 0;
-  var flickTracker = [null, null, null, null];
+
   var fadeOutActive = false, fadeOutStart = 0;
   var FADE_DURATION = 4.0;
   var selectedSongId = null;
@@ -299,7 +299,6 @@
     note.hit = true; note.judged = true; judgedNotes++;
 
     if (points > 0) {
-      if (note.type === "flick") points += FLICK_BONUS;
       combo++;
       if (combo > maxCombo) maxCombo = combo;
       points += Math.floor(combo * 5);
@@ -717,17 +716,7 @@
       ctx.fill();
       ctx.restore();
 
-      // フリック矢印（上部に大きく）
-      if (n.type === "flick") {
-        ctx.save();
-        ctx.fillStyle = "rgba(255,255,255,0.95)";
-        ctx.font = "bold " + Math.round(sH * 0.8) + "px sans-serif";
-        ctx.textAlign = "center"; ctx.textBaseline = "middle";
-        ctx.shadowColor = "rgba(0,0,0,0.5)";
-        ctx.shadowBlur = 4;
-        ctx.fillText("▶", nx, ny);
-        ctx.restore();
-      } else if (n.type === "hold") {
+      if (n.type === "hold") {
         ctx.save();
         ctx.fillStyle = "rgba(255,255,255,0.75)";
         ctx.font = "bold " + Math.round(sH * 0.6) + "px sans-serif";
@@ -869,8 +858,6 @@
 
     laneFlash[lane] = 1;
     laneHeld[lane] = true;
-    flickTracker[lane] = { x: 0, t: performance.now() };
-
     var closest = null, closestDist = Infinity;
     for (var i = 0; i < activeNotes.length; i++) {
       var n = activeNotes[i];
@@ -881,7 +868,6 @@
 
     if (!closest || closestDist > GOOD_RANGE + 0.02) return;
 
-    if (closest.type === "flick") { judgeNote(closest, closest.t - chartTime); return; }
     if (closest.type === "hold") {
       judgeNote(closest, closest.t - chartTime);
       if (closest.judged) holdActive[lane] = { note: closest };
@@ -907,12 +893,6 @@
         n.holdProgress = 1;
       }
       holdActive[lane] = null;
-    }
-
-    if (flickTracker[lane]) {
-      var elapsed = performance.now() - flickTracker[lane].t;
-      if (elapsed > 200) { flickTracker[lane] = null; return; }
-      flickTracker[lane] = null;
     }
   }
 
@@ -1139,7 +1119,7 @@
     activeNotes = []; effects = []; judgeTexts = []; rings = []; rippleEffects = [];
     touchMap = {}; shakeOffset = 0; shakeTime = 0;
     laneFlash = [0, 0, 0, 0]; laneHeld = [false, false, false, false];
-    holdActive = [null, null, null, null]; flickTracker = [null, null, null, null];
+    holdActive = [null, null, null, null];
     chartTime = 0;
     fadeOutActive = false;
 

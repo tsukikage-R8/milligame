@@ -95,27 +95,27 @@ CHARTS.princess_viral = (function () {
   // PRE-CHORUS (bar 14-18) 密度上昇、フリック導入
   // ========================================
   // bar 15
-  push(bar(15) + beat(0), 3, "flick");
+  push(bar(15) + beat(0), 3, "tap");
   push(bar(15) + beat(1), 1, "tap");
-  push(bar(15) + beat(2), 0, "flick");
+  push(bar(15) + beat(2), 0, "tap");
   push(bar(15) + beat(3), 2, "tap");
   // bar 16
   push(bar(16) + beat(0), 1, "hold", beat(1));
   push(bar(16) + beat(1), 3, "tap");
   push(bar(16) + beat(2), 0, "tap");
-  push(bar(16) + beat(3), 2, "flick");
+  push(bar(16) + beat(3), 2, "tap");
   // bar 17
   push(bar(17) + beat(0), 0, "tap");
   push(bar(17) + beat(0.5), 1, "tap");
   push(bar(17) + beat(1), 2, "tap");
   push(bar(17) + beat(1.5), 3, "tap");
-  push(bar(17) + beat(2), 0, "flick");
+  push(bar(17) + beat(2), 0, "tap");
   push(bar(17) + beat(3), 2, "hold", beat(1));
   // bar 18
   push(bar(18) + beat(0), 1, "tap");
   push(bar(18) + beat(1), 3, "tap");
   push(bar(18) + beat(2), 0, "tap");
-  push(bar(18) + beat(3), 2, "flick");
+  push(bar(18) + beat(3), 2, "tap");
 
   // ========================================
   // CHORUS A (bar 18-26) 高密度、全ノーツ種
@@ -125,45 +125,45 @@ CHARTS.princess_viral = (function () {
   push(bar(19) + beat(0.5), 2, "hold", beat(0.5));
   push(bar(19) + beat(1), 1, "tap");
   push(bar(19) + beat(1.5), 3, "tap");
-  push(bar(19) + beat(2), 0, "flick");
+  push(bar(19) + beat(2), 0, "tap");
   push(bar(19) + beat(3), 2, "tap");
   // bar 20
   push(bar(20) + beat(0), 1, "tap");
   push(bar(20) + beat(0.5), 3, "tap");
   push(bar(20) + beat(1), 0, "hold", beat(1));
   push(bar(20) + beat(2), 2, "tap");
-  push(bar(20) + beat(3), 1, "flick");
+  push(bar(20) + beat(3), 1, "tap");
   // bar 21
   push(bar(21) + beat(0), 3, "tap");
   push(bar(21) + beat(0.5), 0, "tap");
   push(bar(21) + beat(1), 2, "hold", beat(0.5));
   push(bar(21) + beat(1.5), 1, "tap");
-  push(bar(21) + beat(2), 3, "flick");
+  push(bar(21) + beat(2), 3, "tap");
   push(bar(21) + beat(3), 0, "tap");
   // bar 22
   push(bar(22) + beat(0), 1, "hold", beat(2));
   push(bar(22) + beat(1), 3, "tap");
   push(bar(22) + beat(2), 0, "tap");
-  push(bar(22) + beat(3), 2, "flick");
+  push(bar(22) + beat(3), 2, "tap");
   // bar 23
   push(bar(23) + beat(0), 1, "tap");
   push(bar(23) + beat(0.5), 3, "tap");
   push(bar(23) + beat(1), 0, "tap");
   push(bar(23) + beat(1.5), 2, "tap");
-  push(bar(23) + beat(2), 1, "flick");
+  push(bar(23) + beat(2), 1, "tap");
   push(bar(23) + beat(3), 3, "hold", beat(1));
   // bar 24
   push(bar(24) + beat(0), 0, "tap");
   push(bar(24) + beat(0.5), 2, "tap");
   push(bar(24) + beat(1), 1, "hold", beat(0.5));
   push(bar(24) + beat(1.5), 3, "tap");
-  push(bar(24) + beat(2), 0, "flick");
+  push(bar(24) + beat(2), 0, "tap");
   push(bar(24) + beat(3), 2, "tap");
   // bar 25
   push(bar(25) + beat(0), 1, "tap");
   push(bar(25) + beat(1), 3, "tap");
   push(bar(25) + beat(2), 0, "hold", beat(1));
-  push(bar(25) + beat(3), 2, "flick");
+  push(bar(25) + beat(3), 2, "tap");
 
   // ========================================
   // BRIDGE (bar 26-30) 低密度、長ホールド
@@ -191,32 +191,32 @@ CHARTS.princess_viral = (function () {
   push(bar(30) + beat(0.5), 2, "hold", beat(0.5));
   push(bar(30) + beat(1), 1, "tap");
   push(bar(30) + beat(1.5), 3, "tap");
-  push(bar(30) + beat(2), 0, "flick");
+  push(bar(30) + beat(2), 0, "tap");
   push(bar(30) + beat(3), 2, "tap");
   // bar 31
   push(bar(31) + beat(0), 1, "tap");
   push(bar(31) + beat(0.5), 3, "tap");
   push(bar(31) + beat(1), 0, "hold", beat(1));
   push(bar(31) + beat(2), 2, "tap");
-  push(bar(31) + beat(3), 1, "flick");
+  push(bar(31) + beat(3), 1, "tap");
   // bar 32
   push(bar(32) + beat(0), 3, "tap");
   push(bar(32) + beat(0.5), 0, "tap");
   push(bar(32) + beat(1), 2, "hold", beat(0.5));
   push(bar(32) + beat(1.5), 1, "tap");
-  push(bar(32) + beat(2), 3, "flick");
+  push(bar(32) + beat(2), 3, "tap");
   push(bar(32) + beat(3), 0, "tap");
   // bar 33
   push(bar(33) + beat(0), 1, "hold", beat(2));
   push(bar(33) + beat(1), 3, "tap");
   push(bar(33) + beat(2), 0, "tap");
-  push(bar(33) + beat(3), 2, "flick");
+  push(bar(33) + beat(3), 2, "tap");
   // bar 34
   push(bar(34) + beat(0), 0, "tap");
   push(bar(34) + beat(0.5), 2, "tap");
   push(bar(34) + beat(1), 1, "tap");
   push(bar(34) + beat(1.5), 3, "tap");
-  push(bar(34) + beat(2), 0, "flick");
+  push(bar(34) + beat(2), 0, "tap");
   push(bar(34) + beat(2.5), 2, "tap");
   push(bar(34) + beat(3), 1, "tap");
   push(bar(34) + beat(3.5), 3, "tap");
@@ -227,12 +227,12 @@ CHARTS.princess_viral = (function () {
   push(bar(35) + beat(3), 3, "tap");
   // bar 36
   push(bar(36) + beat(0), 0, "tap");
-  push(bar(36) + beat(0.5), 2, "flick");
+  push(bar(36) + beat(0.5), 2, "tap");
   push(bar(36) + beat(1), 1, "tap");
   push(bar(36) + beat(1.5), 3, "tap");
   push(bar(36) + beat(2), 0, "hold", beat(0.5));
   push(bar(36) + beat(2.5), 2, "tap");
-  push(bar(36) + beat(3), 1, "flick");
+  push(bar(36) + beat(3), 1, "tap");
   push(bar(36) + beat(3.5), 3, "tap");
   // bar 37
   push(bar(37) + beat(0), 0, "hold", beat(2));
@@ -259,48 +259,48 @@ CHARTS.princess_viral = (function () {
   // bar 40
   push(bar(40) + beat(0), 0, "tap");
   push(bar(40) + beat(0.5), 2, "tap");
-  push(bar(40) + beat(1), 1, "flick");
+  push(bar(40) + beat(1), 1, "tap");
   push(bar(40) + beat(1.5), 3, "tap");
   push(bar(40) + beat(2), 0, "hold", beat(0.5));
   push(bar(40) + beat(2.5), 2, "tap");
   push(bar(40) + beat(3), 1, "tap");
-  push(bar(40) + beat(3.5), 3, "flick");
+  push(bar(40) + beat(3.5), 3, "tap");
   // bar 41
   push(bar(41) + beat(0), 0, "tap");
   push(bar(41) + beat(1), 2, "hold", beat(1));
   push(bar(41) + beat(2), 1, "tap");
-  push(bar(41) + beat(3), 3, "flick");
+  push(bar(41) + beat(3), 3, "tap");
   // bar 42
   push(bar(42) + beat(0), 2, "tap");
-  push(bar(42) + beat(0.5), 0, "flick");
+  push(bar(42) + beat(0.5), 0, "tap");
   push(bar(42) + beat(1), 3, "hold", beat(0.5));
   push(bar(42) + beat(1.5), 1, "tap");
   push(bar(42) + beat(2), 2, "tap");
-  push(bar(42) + beat(3), 0, "flick");
+  push(bar(42) + beat(3), 0, "tap");
   // bar 43
   push(bar(43) + beat(0), 1, "hold", beat(2));
   push(bar(43) + beat(1), 3, "tap");
   push(bar(43) + beat(2), 2, "tap");
-  push(bar(43) + beat(3), 0, "flick");
+  push(bar(43) + beat(3), 0, "tap");
   // bar 44
   push(bar(44) + beat(0), 1, "tap");
   push(bar(44) + beat(0.5), 3, "tap");
   push(bar(44) + beat(1), 0, "tap");
   push(bar(44) + beat(1.5), 2, "tap");
-  push(bar(44) + beat(2), 1, "flick");
+  push(bar(44) + beat(2), 1, "tap");
   push(bar(44) + beat(3), 3, "hold", beat(1));
   // bar 45
   push(bar(45) + beat(0), 0, "tap");
   push(bar(45) + beat(0.5), 2, "tap");
   push(bar(45) + beat(1), 1, "hold", beat(0.5));
-  push(bar(45) + beat(1.5), 3, "flick");
+  push(bar(45) + beat(1.5), 3, "tap");
   push(bar(45) + beat(2), 0, "tap");
   push(bar(45) + beat(3), 2, "tap");
   // bar 46
   push(bar(46) + beat(0), 1, "tap");
   push(bar(46) + beat(1), 3, "tap");
   push(bar(46) + beat(2), 0, "hold", beat(1));
-  push(bar(46) + beat(3), 2, "flick");
+  push(bar(46) + beat(3), 2, "tap");
   // bar 47
   push(bar(47) + beat(0), 1, "hold", beat(3));
   push(bar(47) + beat(2), 3, "tap");
@@ -333,54 +333,54 @@ CHARTS.princess_viral = (function () {
   // bar 52
   push(bar(52) + beat(0), 0, "tap");
   push(bar(52) + beat(0.5), 2, "hold", beat(0.5));
-  push(bar(52) + beat(1), 1, "flick");
+  push(bar(52) + beat(1), 1, "tap");
   push(bar(52) + beat(1.5), 3, "tap");
   push(bar(52) + beat(2), 0, "tap");
-  push(bar(52) + beat(3), 2, "flick");
+  push(bar(52) + beat(3), 2, "tap");
   // bar 53
   push(bar(53) + beat(0), 1, "tap");
   push(bar(53) + beat(0.5), 3, "tap");
   push(bar(53) + beat(1), 0, "hold", beat(1));
-  push(bar(53) + beat(2), 2, "flick");
+  push(bar(53) + beat(2), 2, "tap");
   push(bar(53) + beat(3), 1, "tap");
   // bar 54
   push(bar(54) + beat(0), 3, "tap");
   push(bar(54) + beat(0.5), 0, "tap");
   push(bar(54) + beat(1), 2, "hold", beat(0.5));
-  push(bar(54) + beat(1.5), 1, "flick");
+  push(bar(54) + beat(1.5), 1, "tap");
   push(bar(54) + beat(2), 3, "tap");
   push(bar(54) + beat(3), 0, "tap");
   // bar 55
   push(bar(55) + beat(0), 1, "hold", beat(2));
-  push(bar(55) + beat(1), 3, "flick");
+  push(bar(55) + beat(1), 3, "tap");
   push(bar(55) + beat(2), 2, "tap");
   push(bar(55) + beat(3), 0, "tap");
   // bar 56
   push(bar(56) + beat(0), 1, "tap");
   push(bar(56) + beat(0.5), 3, "tap");
-  push(bar(56) + beat(1), 0, "flick");
+  push(bar(56) + beat(1), 0, "tap");
   push(bar(56) + beat(1.5), 2, "tap");
   push(bar(56) + beat(2), 1, "hold", beat(0.5));
   push(bar(56) + beat(2.5), 3, "tap");
-  push(bar(56) + beat(3), 0, "flick");
+  push(bar(56) + beat(3), 0, "tap");
   push(bar(56) + beat(3.5), 2, "tap");
   // bar 57
   push(bar(57) + beat(0), 1, "hold", beat(1));
-  push(bar(57) + beat(1), 3, "flick");
+  push(bar(57) + beat(1), 3, "tap");
   push(bar(57) + beat(2), 2, "hold", beat(1));
   push(bar(57) + beat(3), 0, "tap");
   // bar 58
   push(bar(58) + beat(0), 1, "tap");
   push(bar(58) + beat(0.5), 3, "tap");
   push(bar(58) + beat(1), 0, "hold", beat(0.5));
-  push(bar(58) + beat(1.5), 2, "flick");
+  push(bar(58) + beat(1.5), 2, "tap");
   push(bar(58) + beat(2), 1, "tap");
   push(bar(58) + beat(3), 3, "tap");
   // bar 59
   push(bar(59) + beat(0), 0, "hold", beat(3));
   push(bar(59) + beat(1), 2, "tap");
   push(bar(59) + beat(2), 1, "tap");
-  push(bar(59) + beat(3), 3, "flick");
+  push(bar(59) + beat(3), 3, "tap");
 
   // ========================================
   // HARDモード追加ノーツ（lvl: 2）
@@ -476,7 +476,7 @@ CHARTS.princess_viral = (function () {
     【ノーツの種類】
       "tap"   : 通常（シングルタップ）
       "hold"  : 長押し（第4引数に長さを秒で指定）
-      "flick" : フリック（矢印付き）
+      "tap" : フリック（矢印付き）
 
     【難易度レベル（第5引数）】
       省略       → 自動で強拍=lvl0 / 弱拍=lvl1 に振り分け
