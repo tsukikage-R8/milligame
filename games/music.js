@@ -1536,6 +1536,10 @@
     showSongSelect();
   });
 
+  // 長押しメニュー防止
+  canvas.addEventListener("contextmenu", function (e) { e.preventDefault(); });
+  boardWrapper.addEventListener("contextmenu", function (e) { e.preventDefault(); });
+
   window.addEventListener("resize", function () {
     if (!running) { initCanvas(); draw(); }
   });
