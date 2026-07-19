@@ -372,6 +372,17 @@ CHARTS.luminous = (function () {
   push(bar(42) + beat(1.5), 2, "tap", 0, 2);
   push(bar(42) + beat(2.5), 3, "tap", 0, 2);
 
+  // ========================================
+  // FILLER (bar 44-65) 仮置き
+  // ========================================
+  var fillLanes = [0, 2, 1, 3];
+  for (var fb = 44; fb < 66; fb++) {
+    for (var fb_i = 0; fb_i < 4; fb_i++) {
+      if (fb < 60 && fb_i % 2 === 0) continue;
+      push(bar(fb) + beat(fb_i), fillLanes[fb_i], "tap", 0, 0);
+    }
+  }
+
   notes.sort(function (a, b) { return a.t - b.t; });
 
   return {
