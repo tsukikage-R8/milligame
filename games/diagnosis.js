@@ -619,11 +619,11 @@ function startDiagnosis() {
 }
 
 function retryDiagnosis() {
+  showScreen('start');
+}
+
 elBtnSave.addEventListener('click', handleSave);
 elBtnShare.addEventListener('click', handleShare);
 elBtnX.addEventListener('click', handlePostX);
-
-showScreen('start');
-}
 
 showScreen('start');
