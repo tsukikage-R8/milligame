@@ -1159,8 +1159,6 @@ ul, ol { list-style: none; }
 
   .menu-info-section { display: none; }
 
-  #side-menu { display: none; }
-
   #side-panel .panel-section {
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: none !important;
