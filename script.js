@@ -892,6 +892,25 @@ el.menuBtn.addEventListener("click", openMenu);
 el.closeMenuBtn.addEventListener("click", closeMenu);
 el.menuOverlay.addEventListener("click", closeMenu);
 
+// インストールボタン（PCメニュー）
+var installBtn = document.getElementById("menu-install-btn");
+if (installBtn) {
+  installBtn.addEventListener("click", function () {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function () { deferredPrompt = null; });
+      closeMenu();
+    } else {
+      installBtn.textContent = "対応していません";
+      installBtn.style.opacity = "0.5";
+      setTimeout(function () {
+        installBtn.textContent = "アプリとしてインストール";
+        installBtn.style.opacity = "1";
+      }, 2000);
+    }
+  });
+}
+
 // ESCキーでメニュー・モーダルを閉じる
 document.addEventListener("keydown", function (e) {
   if (e.key === "Escape") {
