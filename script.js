@@ -142,10 +142,10 @@ window.addEventListener("beforeinstallprompt", function (e) {
     return;
   }
 
-  // スマホ 通常ブラウザ
-  var isSafari = /Safari/i.test(ua) && !/Chrome|Edg\//i.test(ua);
-  var isChrome = /Chrome/i.test(ua) && !/Edg\//i.test(ua);
-  var isEdge = /Edg\//i.test(ua);
+  // スマホ 通常ブラウザ（iOS ChromeはCriOSで判別）
+  var isSafari = /Safari/i.test(ua) && !/Chrome|CriOS|Edg\/|EdgiOS/i.test(ua);
+  var isChrome = /Chrome|CriOS/i.test(ua) && !/Edg\/|EdgiOS/i.test(ua);
+  var isEdge = /Edg\/|EdgiOS/i.test(ua);
 
   var steps = "";
   if (isSafari) {

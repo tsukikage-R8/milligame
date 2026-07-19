@@ -1036,12 +1036,23 @@
   // ============================================
   // 曲選択
   // ============================================
+  var elGameWrapper = document.getElementById("game-wrapper");
+
+  function setVideoVisible(show) {
+    if (show) {
+      elGameWrapper.classList.remove("video-hidden");
+    } else {
+      elGameWrapper.classList.add("video-hidden");
+    }
+  }
+
   function showSongSelect() {
     elQuitBtn.classList.remove("visible");
     elSongSelectOverlay.classList.add("active");
     elStartOverlay.classList.remove("active");
     elResultOverlay.classList.remove("active");
     document.getElementById("hud-row").style.display = "none";
+    setVideoVisible(false);
   }
 
   function selectSong(songId) {
@@ -1062,6 +1073,7 @@
     elSongSelectOverlay.classList.remove("active");
     elStartOverlay.classList.add("active");
     elResultOverlay.classList.remove("active");
+    setVideoVisible(true);
 
     // YouTubeプレーヤーを切り替え
     if (typeof CHARTS !== "undefined" && CHARTS[songId]) {
@@ -1147,6 +1159,7 @@
     elResultOverlay.classList.remove("active");
     document.getElementById("hud-row").style.display = "";
     elQuitBtn.classList.add("visible");
+    setVideoVisible(true);
 
     running = true; started = true;
 
@@ -1225,6 +1238,7 @@
     elQuitBtn.classList.remove("visible");
     document.getElementById("hud-row").style.display = "none";
     elResultOverlay.classList.add("active");
+    setVideoVisible(false);
   }
 
   // ============================================

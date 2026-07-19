@@ -61,6 +61,11 @@ body {
   max-height: 220px;
   flex-shrink: 0;
   background: #000;
+  transition: max-height 0.3s, opacity 0.3s;
+}
+
+#game-wrapper.video-hidden #video-area {
+  display: none;
 }
 
 #player-container {
@@ -289,6 +294,12 @@ body {
 
 .overlay.active {
   display: flex;
+}
+
+#overlay-result.active {
+  align-items: flex-start;
+  padding-top: 16px;
+  overflow-y: auto;
 }
 
 @keyframes fadeIn {
