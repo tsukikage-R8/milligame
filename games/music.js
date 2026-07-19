@@ -486,8 +486,7 @@
 
     if (!fadeOutActive) {
       var duration = (chart && chart.duration) ? chart.duration : 109;
-      var lastNoteTime = chart.notes.length > 0 ? chart.notes[chart.notes.length - 1].t : 0;
-      if (chartTime >= duration || (chartTime > lastNoteTime + 2 && judgedNotes >= totalNotes)) {
+      if (chartTime >= duration) {
         startFadeOut();
       }
     }
