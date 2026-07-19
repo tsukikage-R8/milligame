@@ -15,57 +15,57 @@ var PARAM_IDS = PARAMS.map(function(p) { return p.id; });
 
 var TALENTS = [
   {
-    id: 'konomi', name: '甘狼このみ', type: '🔥 情熱クリエイター',
+    id: 'konomi', name: '甘狼このみ', type: '🔥 情熱クリエイター', image: 'konomi.webp',
     desc: 'あなたは、「好き！」という気持ちをエネルギーに変えられる人です。\n\n興味を持ったことにはとことん夢中になり、ただ楽しむだけでなく、「自分でも何か作ってみたい！」と思うことが多いのでは？\n\n自分の好きなものを大切にしながら、それを新しい形にしていく行動力もあなたの魅力。情熱を形に変える、クリエイティブなタイプです。',
     profile: { netsu:100, sousaku:100, koudou:90, shakou:30, asobi:50, iyashi:50, mystery:20, cool:20, pon:80 }
   },
   {
-    id: 'nono', name: '音ノ乃のの', type: '🎶 ハッピーアーティスト',
+    id: 'nono', name: '音ノ乃のの', type: '🎶 ハッピーアーティスト', image: 'nono.webp',
     desc: 'あなたは、楽しいことや好きなことを、周りの人と一緒に楽しめる人です。\n\n自分が楽しむだけでなく、「これ楽しいよ！」と誰かに伝えたり、みんなで思い出を作ったりすることが好きなのでは？\n\n豊かな表現力と明るいエネルギーを持ち、あなたの楽しそうな姿が周囲まで明るくすることも。好きなものを全力で楽しむ、ハッピーな表現者です。',
     profile: { netsu:100, sousaku:50, koudou:100, shakou:60, asobi:50, iyashi:70, mystery:20, cool:80, pon:50 }
   },
   {
-    id: 'akubi', name: 'あくび・でもんすぺーど', type: '👑 個性派エンターテイナー',
+    id: 'akubi', name: 'あくび・でもんすぺーど', type: '👑 個性派エンターテイナー', image: 'akubi.webp',
     desc: 'あなたは、「自分は自分！」という個性を大切にする人です。\n\n周りと同じである必要はなく、自分が面白いと思ったことや、自分らしいと思ったことを思いきり楽しめるのがあなたの魅力。\n\n独自の世界観と遊び心を持ち、自分自身も楽しみながら、周囲の人まで楽しませることができるタイプです。',
     profile: { netsu:70, sousaku:40, koudou:70, shakou:30, asobi:50, iyashi:30, mystery:20, cool:90, pon:50 }
   },
   {
-    id: 'rako', name: '音ノ瀬らこ', type: '⚡ ムードメーカー',
+    id: 'rako', name: '音ノ瀬らこ', type: '⚡ ムードメーカー', image: 'rako.webp',
     desc: 'あなたは、その場の空気を明るくするパワーを持っている人です。\n\n楽しいことが大好きで、誰かと一緒に盛り上がることに大きな喜びを感じるのでは？\n\n思い立ったらすぐに動ける行動力と、人との距離を縮める社交性を持つあなた。あなたがいるだけで、いつの間にか場がにぎやかになっているかもしれません。',
     profile: { netsu:70, sousaku:40, koudou:60, shakou:80, asobi:90, iyashi:60, mystery:20, cool:70, pon:40 }
   },
   {
-    id: 'yura', name: 'ゆらぎゆら', type: '🫧 ヒーリングタイプ',
+    id: 'yura', name: 'ゆらぎゆら', type: '🫧 ヒーリングタイプ', image: 'yura.webp',
     desc: 'あなたは、周囲の人に安心感を与えられる人です。\n\n誰かの話を聞いたり、そっと寄り添ったりすることが得意なのでは？\n\n穏やかな優しさを持ち、自分のペースも大切にできるあなた。あなたの存在や言葉が、誰かにとっての「ちょっと休める場所」になることもありそうです。',
     profile: { netsu:60, sousaku:60, koudou:80, shakou:60, asobi:70, iyashi:100, mystery:20, cool:40, pon:80 }
   },
   {
-    id: 'koma', name: '小廻こま', type: '🎮 わくわくプレイヤー',
+    id: 'koma', name: '小廻こま', type: '🎮 わくわくプレイヤー', image: 'koma.webp',
     desc: 'あなたは、日常の中にある「楽しい！」を見つけるのが得意な人です。\n\n大きなイベントがなくても、ちょっとした遊びや面白いことを見つけて楽しめるのでは？\n\nリアクションも豊かで、周囲の人と一緒に楽しむことも大好き。あなたにとって、毎日はまだまだ遊び足りないゲームのようなものかもしれません。',
     profile: { netsu:60, sousaku:40, koudou:70, shakou:80, asobi:100, iyashi:50, mystery:30, cool:50, pon:20 }
   },
   {
-    id: 'rizu', name: '雨夜リズ', type: '🌂 ギャップ系ミステリアス',
+    id: 'rizu', name: '雨夜リズ', type: '🌂 ギャップ系ミステリアス', image: 'rizu.webp',
     desc: 'あなたは、独自の雰囲気と、予想できない魅力を持っている人です。\n\n一見すると落ち着いていて、何を考えているのか少し分からないと思われることもあるかもしれません。\n\nでも実際には、意外と天然だったり、ちょっとPONな一面があったり。そんな見た目と中身のギャップこそ、あなたの大きな魅力です。',
     profile: { netsu:60, sousaku:70, koudou:50, shakou:60, asobi:60, iyashi:50, mystery:100, cool:70, pon:100 }
   },
   {
-    id: 'tsukuri', name: '眠雲ツクリ', type: '🛠️ マルチクリエイター',
+    id: 'tsukuri', name: '眠雲ツクリ', type: '🛠️ マルチクリエイター', image: 'tukuri.webp',
     desc: 'あなたは、「やってみたい！」と思ったら、どんどん世界を広げていける人です。\n\n一つのことだけにとどまらず、いろいろなことに興味を持ち、「これもやってみたい！」と新しいことに挑戦することが多いのでは？\n\n好奇心と発想力があなたの強み。思いついたアイデアを実際に形にしていく、可能性いっぱいのタイプです。',
     profile: { netsu:80, sousaku:90, koudou:70, shakou:80, asobi:70, iyashi:60, mystery:20, cool:70, pon:20 }
   },
   {
-    id: 'nuh', name: '虹深°ぬふ', type: '🎨 カラフルアーティスト',
+    id: 'nuh', name: '虹深°ぬふ', type: '🎨 カラフルアーティスト', image: 'nuhu.webp',
     desc: 'あなたは、身の回りのものからたくさんの刺激を受け、自分らしく表現できる人です。\n\n「これ好き！」と思ったものを見つけると、じっくり楽しむだけでなく、自分なりの形にしてみたくなるのでは？\n\n豊かな感性と好奇心を持ち、あなたの中には人とは少し違う、色鮮やかな世界が広がっているかもしれません。',
     profile: { netsu:80, sousaku:100, koudou:90, shakou:70, asobi:80, iyashi:65, mystery:20, cool:40, pon:30 }
   },
   {
-    id: 'rei', name: '夕霧レイ', type: '🎯 クールロックオン',
+    id: 'rei', name: '夕霧レイ', type: '🎯 クールロックオン', image: 'rei.webp',
     desc: 'あなたは、自分の目標や興味のあるものに、静かに集中できる人です。\n\n周囲が盛り上がっていても自分のペースを失わず、狙いを定めたらじっくり取り組めるのでは？\n\n一見クールに見えても、実は自分だけのこだわりやユーモアを持っているあなた。ふとした瞬間に見せる意外な一面が、周囲を驚かせることもありそうです。',
     profile: { netsu:70, sousaku:40, koudou:70, shakou:80, asobi:80, iyashi:40, mystery:40, cool:100, pon:20 }
   },
   {
-    id: 'mili', name: 'ミリちゃん', type: '🌟 ミリちゃん',
+    id: 'mili', name: 'ミリちゃん', type: '🌟 ミリちゃん', image: 'millityan.jpg',
     desc: 'あなたは、いろいろな個性を楽しみ、誰かの「好き」を応援できる人です。\n\n自分が前に出るだけでなく、誰かの挑戦を見守ったり、好きなものを一緒に楽しんだりすることに喜びを感じるのでは？\n\n明るさ、優しさ、好奇心、遊び心。あなたの中には、たくさんの魅力がバランスよく詰まっています。\n\nあなたは、ミリプロを楽しむすべての人の心にいる「ミリちゃん」タイプかもしれません。 🌟',
     profile: { netsu:50, sousaku:50, koudou:50, shakou:50, asobi:50, iyashi:50, mystery:50, cool:50, pon:50 }
   }
@@ -194,7 +194,6 @@ var qNumber = document.getElementById('q-number');
 var qOptions = document.getElementById('q-options');
 var qProgressText = document.getElementById('q-progress-text');
 var qProgressFill = document.getElementById('q-progress-fill');
-var qParamHint = document.getElementById('q-param-hint');
 var resultHeader = document.getElementById('result-header');
 var resultDesc = document.getElementById('result-desc');
 var subResult = document.getElementById('sub-result');
@@ -276,21 +275,6 @@ function renderQuestion(step) {
   qProgressText.textContent = (step + 1) + ' / ' + QUESTIONS.length;
   qProgressFill.style.width = ((step + 1) / QUESTIONS.length * 100) + '%';
 
-  var paramSet = {};
-  q.options.forEach(function(opt) {
-    for (var k in opt.add) { paramSet[k] = true; }
-  });
-  var hintText = [];
-  for (var k in paramSet) {
-    for (var pi = 0; pi < PARAMS.length; pi++) {
-      if (PARAMS[pi].id === k) {
-        hintText.push(PARAMS[pi].icon + PARAMS[pi].name);
-        break;
-      }
-    }
-  }
-  qParamHint.textContent = '関連: ' + hintText.join(' ');
-
   var html = '';
   for (var i = 0; i < q.options.length; i++) {
     html += '<button class="option-btn" onclick="selectAnswer(' + i + ')">'
@@ -329,7 +313,10 @@ function showResult() {
     ? '<div style="font-size:12px;background:linear-gradient(135deg,var(--primary),#b388ff);color:#fff;display:inline-block;padding:2px 12px;border-radius:999px;margin-bottom:4px;">🌟 バランス型・特別診断</div>'
     : '';
 
+  var imgHtml = '<img class="result-img" src="../images/talents/' + primary.talent.image + '" alt="' + primary.talent.name + '">';
+
   resultHeader.innerHTML = specialBadge
+    + imgHtml
     + '<div class="result-label">あなたは</div>'
     + '<div class="result-type">' + primary.talent.type + '！</div>'
     + '<div class="result-member">' + primary.talent.name + '</div>'
