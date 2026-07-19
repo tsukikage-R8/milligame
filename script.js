@@ -11,8 +11,133 @@
 const SITE_TYPE = "demo";
 
 // ============================================
-// ゲームデータ
+// UA通知
 // ============================================
+(function () {
+  // スタンドアロン（ホーム画面追加済み/PWA起動）なら何もしない
+  if (window.navigator.standalone === true ||
+      window.matchMedia("(display-mode: standalone)").matches) {
+    return;
+  }
+
+  var ua = navigator.userAgent;
+  var isMobile = /Mobi|Android|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+  var isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  var isWide = window.innerWidth >= 1024;
+  var isPC = !isMobile && (!isTouch || isWide);
+
+  // アプリ内ブラウザ判定
+  var inApp = null;
+  if (/Twitter for (iPhone|Android)/i.test(ua)) {
+    inApp = "twitter";
+  } else if (/LINE\//i.test(ua)) {
+    inApp = "line";
+  } else if (/Instagram/i.test(ua)) {
+    inApp = "instagram";
+  }
+
+  var overlay = document.getElementById("ua-overlay");
+  var titleEl = document.getElementById("ua-title");
+  var bodyEl = document.getElementById("ua-body");
+  var closeBtn = document.getElementById("ua-close");
+
+  if (!overlay) return;
+
+  function show(title, html, blocking) {
+    titleEl.textContent = title;
+    bodyEl.innerHTML = html;
+    overlay.classList.remove("ua-hidden");
+    if (blocking) {
+      overlay.classList.add("ua-blocking");
+    } else {
+      overlay.classList.remove("ua-blocking");
+    }
+  }
+
+  function dismiss() {
+    overlay.classList.add("ua-hidden");
+    localStorage.setItem("milli_ua_notified", "1");
+  }
+
+  // 閉じる/背景クリック
+  closeBtn.addEventListener("click", dismiss);
+  overlay.addEventListener("click", function (e) {
+    if (e.target === overlay && !overlay.classList.contains("ua-blocking")) {
+      dismiss();
+    }
+  });
+
+  // アプリ内ブラウザ（閉じられない）
+  if (inApp) {
+    var msgs = {
+      twitter: {
+        title: "ブラウザで開いてください",
+        html: "Xアプリ内で閲覧しています。<br>" +
+              "画面下部中央の<span style=\"font-weight:700\">︙</span>から" +
+              "<strong>「ブラウザで開く」</strong>を選んでください。"
+      },
+      line: {
+        title: "ブラウザで開いてください",
+        html: "LINEアプリ内で閲覧しています。<br>" +
+              "右下の<span style=\"font-weight:700\">︙</span>から" +
+              "<strong>「ブラウザで開く」</strong>を選んでください。"
+      },
+      instagram: {
+        title: "ブラウザで開いてください",
+        html: "Instagramアプリ内で閲覧しています。<br>" +
+              "画面右上の<span style=\"font-weight:700\">⋯</span>から" +
+              "<strong>「外部ブラウザを選んでください」</strong>。"
+      }
+    };
+    var msg = msgs[inApp];
+    show(msg.title, msg.html, true);
+    return;
+  }
+
+  // 既に閉じたことがあるならスキップ
+  if (localStorage.getItem("milli_ua_notified")) return;
+
+  // PC
+  if (isPC) {
+    show(
+      "より快適にプレイするには",
+      "全画面表示（<strong>F11キー</strong>）をおすすめします。<br><br>" +
+      "Chromeをお使いの場合、アドレスバーのインストールボタンから" +
+      "<strong>アプリとして追加</strong>すると、より快適にご利用いただけます。",
+      false
+    );
+    return;
+  }
+
+  // スマホ 通常ブラウザ
+  var isSafari = /Safari/i.test(ua) && !/Chrome|Edg\//i.test(ua);
+  var isChrome = /Chrome/i.test(ua) && !/Edg\//i.test(ua);
+  var isEdge = /Edg\//i.test(ua);
+
+  var steps = "";
+  if (isSafari) {
+    steps =
+      '<span class="ua-step">1. 下部の<span style="font-weight:700">共有ボタン</span>をタップ</span>' +
+      '<span class="ua-step">2. <strong>「ホーム画面に追加」</strong>を選択</span>';
+  } else if (isChrome) {
+    steps =
+      '<span class="ua-step">1. 右上の<span style="font-weight:700">メニュー</span>（︙）をタップ</span>' +
+      '<span class="ua-step">2. <strong>「ホーム画面に追加」</strong>を選択</span>';
+  } else if (isEdge) {
+    steps =
+      '<span class="ua-step">1. 右下の<span style="font-weight:700">メニュー</span>をタップ</span>' +
+      '<span class="ua-step">2. <strong>「スマホにインストール」</strong>を選択</span>';
+  } else {
+    steps =
+      '<span class="ua-step">ブラウザのメニューから<strong>「ホーム画面に追加」</strong>をお試しください</span>';
+  }
+
+  show(
+    "ホーム画面に追加をおすすめします",
+    steps + "<br>ホーム画面に追加すると、アプリのようにすばやくアクセスできます。",
+    false
+  );
+})();
 const games = [
   {
     id: 8,

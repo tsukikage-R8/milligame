@@ -1177,3 +1177,110 @@ ul, ol { list-style: none; }
     flex: 0 0 42%;
   }
 }
+
+/* ===== UA通知オーバーレイ ===== */
+.ua-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: opacity 0.3s;
+}
+
+.ua-overlay.ua-hidden {
+  display: none;
+  opacity: 0;
+}
+
+.ua-card {
+  max-width: 360px;
+  width: 88%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 16px 48px rgba(45, 27, 78, 0.2);
+  overflow: hidden;
+  animation: uaFadeIn 0.35s ease;
+}
+
+@keyframes uaFadeIn {
+  0% { opacity: 0; transform: translateY(20px) scale(0.96); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.ua-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 0;
+}
+
+.ua-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #8582fb;
+  letter-spacing: 0.02em;
+}
+
+.ua-close {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(45, 27, 78, 0.06);
+  color: rgba(45, 27, 78, 0.3);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  line-height: 1;
+}
+
+.ua-close:hover {
+  background: rgba(45, 27, 78, 0.1);
+  color: rgba(45, 27, 78, 0.6);
+}
+
+.ua-body {
+  padding: 12px 20px 20px;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: rgba(45, 27, 78, 0.7);
+}
+
+.ua-body strong {
+  color: #2d1b4e;
+}
+
+.ua-body .ua-step {
+  display: block;
+  padding-left: 4px;
+  margin-bottom: 4px;
+}
+
+.ua-body .ua-step:last-child {
+  margin-bottom: 0;
+}
+
+.ua-blocking .ua-close {
+  display: none;
+}
+
+.ua-blocking .ua-card {
+  border-color: rgba(133, 130, 251, 0.3);
+}
+
+@media (max-width: 767px) {
+  .ua-card {
+    width: 92%;
+  }
+}
