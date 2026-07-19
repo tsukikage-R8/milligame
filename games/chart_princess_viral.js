@@ -448,6 +448,7 @@ CHARTS.princess_viral = (function () {
 
   return {
     videoId: "MF4Yw8IS6og",
+    title: "Princess Viral",
     bpm: BPM,
     offset: 0,
     duration: 109,

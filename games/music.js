@@ -1224,7 +1224,7 @@
       acc: acc,
       rankLabel: rankInfo.rank,
       rankColor: rankInfo.color,
-      chartTitle: chart ? chart.title || "" : "",
+      chartTitle: chart ? (chart.title || elResultSongTitle.textContent || "") : "",
       difficulty: config.difficulty.toUpperCase(),
       counts: {
         perfect: counts.perfect,
