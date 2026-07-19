@@ -19,6 +19,11 @@
         * {
             box-sizing: border-box;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            touch-action: manipulation;
         }
 
         body {
@@ -59,21 +64,68 @@
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
-                overflow-y: auto; /* スマホでは全体をスクロール可能に */
-                height: auto;
-                min-height: 100vh;
+                overflow: hidden;
+                height: 100vh;
             }
             #left-panel {
-                flex: none;
-                height: 50vh; /* 画面の上半分をクリックエリアに */
+                flex: 1;
+                height: auto;
+                min-height: 0;
                 border-right: none;
                 border-bottom: 2px solid var(--primary-color);
+                padding: 10px;
             }
             #right-panel {
                 flex: none;
                 max-width: 100%;
                 height: auto;
                 border-left: none;
+                max-height: 45vh;
+                display: flex;
+                flex-direction: column;
+            }
+            .upgrades-container {
+                display: none;
+            }
+            .shop-header {
+                display: none;
+            }
+            .stats-box {
+                margin-top: 30px;
+                margin-bottom: 10px;
+                padding: 10px;
+            }
+            .views-count {
+                font-size: 1.6rem;
+            }
+            .main-button {
+                width: 150px;
+                height: 150px;
+                font-size: 1.3rem;
+            }
+            .agency-name {
+                font-size: 1rem;
+                top: 10px;
+                padding: 3px 15px;
+            }
+            #mobile-upgrade-btn {
+                display: block;
+            }
+            #upgrade-modal {
+                display: none;
+            }
+            #upgrade-modal.active {
+                display: flex;
+            }
+            .goal-container {
+                padding: 10px 15px;
+            }
+            .goal-title {
+                font-size: 0.9rem;
+                margin-bottom: 5px;
+            }
+            .progress-bar-bg {
+                height: 18px;
             }
         }
 
@@ -316,6 +368,78 @@
             font-weight: bold;
         }
 
+        /* スマホ用アップグレードボタン（PCでは非表示） */
+        #mobile-upgrade-btn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            border: 4px solid rgba(255,255,255,0.5);
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(255,143,182,0.5);
+            cursor: pointer;
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        #mobile-upgrade-btn:active {
+            transform: scale(0.92);
+        }
+
+        /* スマホ用アップグレードモーダル */
+        #upgrade-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.6);
+            z-index: 200;
+            align-items: flex-end;
+            justify-content: center;
+        }
+        #upgrade-modal .modal-content {
+            background: #fff;
+            width: 100%;
+            max-height: 80vh;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            animation: slideUp 0.25s ease-out;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        #upgrade-modal .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+        #upgrade-modal .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            padding: 0 5px;
+        }
+        #upgrade-modal .modal-body {
+            flex: 1;
+            overflow-y: auto;
+        }
+
     </style>
 </head>
 <body>
@@ -344,6 +468,20 @@
 
         <div class="shop-header">アップグレード一覧</div>
         <div class="upgrades-container" id="upgrades-container"></div>
+    </div>
+
+    <!-- スマホ用アップグレードボタン -->
+    <button id="mobile-upgrade-btn">🛠️</button>
+
+    <!-- スマホ用アップグレードモーダル -->
+    <div id="upgrade-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>アップグレード一覧</span>
+                <button class="modal-close" id="modal-close-btn">✕</button>
+            </div>
+            <div class="modal-body" id="modal-upgrades-container"></div>
+        </div>
     </div>
 
     <div id="clear-modal">
@@ -461,9 +599,8 @@
             progressFill.style.width = `${progress}%`;
             progressText.innerText = `${progress.toFixed(2)}%`;
 
-            // 購入可能なボタンの判定
-            const btns = document.querySelectorAll('.upgrade-btn');
-            btns.forEach((btn, index) => {
+            // 購入可能なボタンの判定（各レンダリング関数内でも処理）
+            document.querySelectorAll('#upgrades-container .upgrade-btn').forEach((btn, index) => {
                 const cost = getUpgradeCost(index);
                 btn.disabled = views < cost;
             });
@@ -510,6 +647,50 @@
                 checkGoal();
             }
         }, 1000 / 30);
+
+        // スマホ用アップグレードモーダル
+        const mobileBtn = document.getElementById('mobile-upgrade-btn');
+        const upgradeModal = document.getElementById('upgrade-modal');
+        const modalClose = document.getElementById('modal-close-btn');
+        const modalBody = document.getElementById('modal-upgrades-container');
+
+        mobileBtn.addEventListener('click', () => {
+            renderModalUpgrades();
+            upgradeModal.classList.add('active');
+        });
+        modalClose.addEventListener('click', () => {
+            upgradeModal.classList.remove('active');
+        });
+        upgradeModal.addEventListener('click', (e) => {
+            if (e.target === upgradeModal) {
+                upgradeModal.classList.remove('active');
+            }
+        });
+
+        function renderModalUpgrades() {
+            modalBody.innerHTML = '';
+            upgrades.forEach((u, index) => {
+                const cost = getUpgradeCost(index);
+                const btn = document.createElement('button');
+                btn.className = 'upgrade-btn';
+                btn.disabled = views < cost;
+                btn.onclick = () => {
+                    buyUpgrade(index);
+                    renderModalUpgrades();
+                };
+
+                btn.innerHTML = `
+                    <div class="upgrade-icon">${u.icon}</div>
+                    <div class="upgrade-info">
+                        <h3>${u.name}</h3>
+                        <div class="upgrade-cost">${cost.toLocaleString()} 再生</div>
+                        <div class="upgrade-desc">${u.desc}</div>
+                    </div>
+                    <div class="upgrade-count">${u.count}</div>
+                `;
+                modalBody.appendChild(btn);
+            });
+        }
 
         // 初期化
         renderUpgrades();
