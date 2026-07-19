@@ -456,9 +456,33 @@ function drawRadar(norm) {
   });
 }
 
+var TYPE_COLORS = {
+  '\uD83D\uDD25 \u60C5\u71B1\u30AF\u30EA\u30A8\u30A4\u30BF\u30FC': ['#A8E6CF','#80CBC4'],
+  '\uD83C\uDFB6 \u30CF\u30C3\u30D4\u30FC\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8': ['#E8E0F0','#D1C4E9'],
+  '\uD83D\uDC51 \u500B\u6027\u6D3E\u30A8\u30F3\u30BF\u30FC\u30C6\u30A4\u30CA\u30FC': ['#EF5350','#C62828'],
+  '\u26A1 \u30E0\u30FC\u30C9\u30E1\u30FC\u30AB\u30FC': ['#FFD54F','#F9A825'],
+  '\uD83E\uDEE7 \u30D2\u30FC\u30EA\u30F3\u30B0\u30BF\u30A4\u30D7': ['#4FC3F7','#0288D1'],
+  '\uD83C\uDFAE \u308F\u304F\u308F\u304F\u30D7\u30EC\u30A4\u30E4\u30FC': ['#FF8A65','#E64A19'],
+  '\uD83D\uDEE0\uFE0F \u30DE\u30EB\u30C1\u30AF\u30EA\u30A8\u30A4\u30BF\u30FC': ['#90A4AE','#546E7A'],
+  '\uD83C\uDF02 \u30AE\u30E3\u30C3\u30D7\u7CFB\u30DF\u30B9\u30C6\u30EA\u30A2\u30B9': ['#5C6BC0','#1A237E'],
+  '\uD83C\uDFA8 \u30AB\u30E9\u30D5\u30EB\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8': ['#FF7043','#AB47BC'],
+  '\uD83C\uDFAF \u30AF\u30FC\u30EB\u30ED\u30C3\u30AF\u30AA\u30F3': ['#26C6DA','#00838F'],
+  '\uD83C\uDF1F \u30DF\u30EA\u3061\u3083\u3093': ['#CE93D8','#7B1FA2']
+};
+
 function getXText() {
   if (!lastResult) return '';
   return '\uD83C\uDF08 Milli Spectrum\n\n\u3042\u306A\u305F\u306E\u4E2D\u306B\u3042\u308B\u3001\u30DF\u30EA\u30D7\u30ED\u306E\u8272\u3092\u898B\u3064\u3051\u3088\u3046\u3002\n\n\u79C1\u306F\u300C' + lastResult.type + '\u300D\u3067\u3057\u305F\uFF01\n\n\u3042\u306A\u305F\u306F\u3069\u306E\u30BF\u30A4\u30D7\u306B\u306A\u308B\uFF1F\u2728\n\n#\u30DF\u30EA\u30D7\u30ED #MilliGames #MilliSpectrum';
+}
+
+function getShortDesc(desc) {
+  var p = desc.split('\n');
+  var lines = [];
+  for (var i = 0; i < p.length && lines.length < 3; i++) {
+    var t = p[i].trim();
+    if (t) lines.push(t);
+  }
+  return lines;
 }
 
 function generateShareImage() {
@@ -469,87 +493,131 @@ function generateShareImage() {
   var cvs = elShareCanvas;
   cvs.width = W * scale;
   cvs.height = H * scale;
-  var cx = cvs.getContext('2d');
-  cx.scale(scale, scale);
-
-  var grad = cx.createLinearGradient(0, 0, 0, H);
-  grad.addColorStop(0, '#1a0a2e');
-  grad.addColorStop(1, '#2d1b4e');
-  cx.fillStyle = grad;
-  cx.fillRect(0, 0, W, H);
-
-  cx.shadowColor = 'rgba(133,130,251,0.3)';
-  cx.shadowBlur = 20;
-  cx.strokeStyle = 'rgba(133,130,251,0.4)';
-  cx.lineWidth = 2;
-  cx.strokeRect(6, 6, W - 12, H - 12);
-  cx.shadowBlur = 0;
-
-  cx.fillStyle = '#dbbee1';
-  cx.font = 'bold 18px -apple-system, sans-serif';
-  cx.textAlign = 'center';
-  cx.fillText('Milli Spectrum', W / 2, 40);
-
-  cx.fillStyle = 'rgba(238,242,255,0.4)';
-  cx.font = '11px -apple-system, sans-serif';
-  cx.fillText('\u3042\u306A\u305F\u306E\u4E2D\u306B\u3042\u308B\u3001\u30DF\u30EA\u30D7\u30ED\u306E\u8272\u3002', W / 2, 58);
-  cx.textBaseline = 'top';
-
-  cx.fillStyle = '#fff';
-  cx.font = 'bold 22px -apple-system, sans-serif';
-  cx.textBaseline = 'top';
-  cx.fillText(r.type, W / 2, 78);
-
-  cx.fillStyle = 'rgba(238,242,255,0.6)';
-  cx.font = '14px -apple-system, sans-serif';
-  cx.fillText(r.name, W / 2, 108);
-
-  cx.fillStyle = '#8582fb';
-  cx.font = 'bold 16px -apple-system, sans-serif';
-  cx.fillText('\u4E00\u81F4\u5EA6 ' + r.matchPct + '%', W / 2, 130);
-
-  cx.strokeStyle = 'rgba(238,242,255,0.1)';
-  cx.lineWidth = 1;
-  cx.beginPath();
-  cx.moveTo(30, 148);
-  cx.lineTo(W - 30, 148);
-  cx.stroke();
-
-  var params = r.norm;
-  var names = ['\u60C5\u71B1','\u5275\u4F5C','\u884C\u52D5\u529B','\u793E\u4EA4\u6027','\u904A\u3073\u5FC3','\u7650\u3057','\u30DF\u30B9\u30C6\u30EA\u30A2\u30B9','\u30AF\u30FC\u30EB','PON\u5EA6'];
-  var icons = ['\uD83D\uDD25','\uD83C\uDFA8','\u26A1','\uD83E\uDD1D','\uD83C\uDFAE','\uD83E\uDEE7','\uD83C\uDF19','\uD83D\uDE0E','\uD83E\uDD2A'];
-  var keys = ['netsu','sousaku','koudou','shakou','asobi','iyashi','mystery','cool','pon'];
-  var y = 168;
-  cx.textBaseline = 'top';
-  for (var i = 0; i < keys.length; i++) {
-    cx.fillStyle = 'rgba(238,242,255,0.2)';
-    cx.textAlign = 'left';
-    cx.font = '11px -apple-system, sans-serif';
-    cx.fillText(icons[i] + ' ' + names[i], 35, y);
-    var val = params[keys[i]] || 0;
-    cx.fillStyle = '#8582fb';
-    cx.textAlign = 'right';
-    cx.font = 'bold 13px -apple-system, sans-serif';
-    cx.fillText(String(val), W - 35, y);
-    cx.fillStyle = 'rgba(238,242,255,0.08)';
-    cx.fillRect(35, y + 17, W - 70, 4);
-    cx.fillStyle = 'rgba(133,130,251,0.6)';
-    cx.fillRect(35, y + 17, (W - 70) * val / 100, 4);
-    y += 30;
-  }
-
-  cx.fillStyle = 'rgba(133,130,251,0.4)';
-  cx.font = '10px -apple-system, sans-serif';
-  cx.textAlign = 'center';
-  cx.textBaseline = 'bottom';
-  cx.fillText('#MilliSpectrum #MilliGames', W / 2, H - 20);
-
-  cx.fillStyle = 'rgba(133,130,251,0.25)';
-  cx.font = '9px -apple-system, sans-serif';
-  cx.fillText('milli-games.onrender.com', W / 2, H - 8);
+  var ctx = cvs.getContext('2d');
+  ctx.scale(scale, scale);
 
   return new Promise(function(resolve) {
-    cvs.toBlob(function(blob) { resolve(blob); }, 'image/png');
+    var img = new Image();
+    img.onload = drawImage;
+    img.onerror = drawImage;
+    img.src = '../images/talents/' + r.image;
+
+    function drawImage() {
+      var colors = TYPE_COLORS[r.type] || ['#1a0a2e', '#2d1b4e'];
+
+      var grad = ctx.createLinearGradient(0, 0, 0, H);
+      grad.addColorStop(0, colors[0]);
+      grad.addColorStop(1, colors[1]);
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+
+      // border glow
+      ctx.shadowColor = 'rgba(255,255,255,0.15)';
+      ctx.shadowBlur = 15;
+      ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(6, 6, W - 12, H - 12);
+      ctx.shadowBlur = 0;
+
+      // title
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 16px -apple-system, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText('\uD83C\uDF08 Milli Spectrum', W / 2, 16);
+
+      // talent image
+      var imgW = 120, imgH = 120;
+      var imgX = (W - imgW) / 2, imgY = 44;
+      if (img.width > 0 && img.height > 0) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(imgX + imgW / 2, imgY + imgH / 2, imgW / 2, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.clip();
+        ctx.drawImage(img, imgX, imgY, imgW, imgH);
+        ctx.restore();
+      }
+
+      // "あなたのタイプは"
+      ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      ctx.font = '12px -apple-system, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      var yPos = imgY + imgH + 10;
+      ctx.fillText('\u3042\u306A\u305F\u306E\u30BF\u30A4\u30D7\u306F', W / 2, yPos);
+
+      // type name (large)
+      yPos += 20;
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 20px -apple-system, sans-serif';
+      ctx.fillText(r.type, W / 2, yPos);
+
+      // description (2-3 lines)
+      var descLines = getShortDesc(r.talent.desc);
+      yPos += 30;
+      ctx.fillStyle = 'rgba(255,255,255,0.75)';
+      ctx.font = '11px -apple-system, sans-serif';
+      for (var di = 0; di < descLines.length; di++) {
+        ctx.fillText(descLines[di], W / 2, yPos);
+        yPos += 16;
+      }
+
+      // divider
+      yPos += 6;
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(40, yPos);
+      ctx.lineTo(W - 40, yPos);
+      ctx.stroke();
+
+      // "あなたのミリプロ成分"
+      yPos += 10;
+      ctx.fillStyle = 'rgba(255,255,255,0.6)';
+      ctx.font = '11px -apple-system, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('\u3042\u306A\u305F\u306E\u30DF\u30EA\u30D7\u30ED\u6210\u5206', W / 2, yPos);
+
+      // top 4 parameters
+      var paramEntries = [];
+      for (var pi = 0; pi < PARAMS.length; pi++) {
+        paramEntries.push({
+          icon: PARAMS[pi].icon,
+          name: PARAMS[pi].name,
+          val: r.norm[PARAMS[pi].id] || 0
+        });
+      }
+      paramEntries.sort(function(a, b) { return b.val - a.val; });
+      var top4 = paramEntries.slice(0, 4);
+
+      yPos += 20;
+      ctx.textBaseline = 'top';
+      for (var ti = 0; ti < top4.length; ti++) {
+        ctx.fillStyle = 'rgba(255,255,255,0.8)';
+        ctx.textAlign = 'left';
+        ctx.font = '13px -apple-system, sans-serif';
+        ctx.fillText(top4[ti].icon + ' ' + top4[ti].name, 50, yPos);
+        ctx.fillStyle = '#fff';
+        ctx.textAlign = 'right';
+        ctx.font = 'bold 13px -apple-system, sans-serif';
+        ctx.fillText(String(top4[ti].val), W - 50, yPos);
+        ctx.fillStyle = 'rgba(255,255,255,0.12)';
+        ctx.fillRect(50, yPos + 17, W - 100, 4);
+        ctx.fillStyle = 'rgba(255,255,255,0.6)';
+        ctx.fillRect(50, yPos + 17, (W - 100) * top4[ti].val / 100, 4);
+        yPos += 32;
+      }
+
+      // footer
+      ctx.fillStyle = 'rgba(255,255,255,0.3)';
+      ctx.font = '10px -apple-system, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText('Milli Games', W / 2, H - 10);
+
+      cvs.toBlob(function(blob) { resolve(blob); }, 'image/png');
+    }
   });
 }
 
