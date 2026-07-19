@@ -199,6 +199,11 @@ var resultDesc = document.getElementById('result-desc');
 var subResult = document.getElementById('sub-result');
 var paramsGrid = document.getElementById('params-grid');
 var radarCanvas = document.getElementById('radar-chart');
+var elShareCanvas = document.getElementById('share-canvas');
+var elBtnSave = document.getElementById('btn-save');
+var elBtnShare = document.getElementById('btn-share');
+var elBtnX = document.getElementById('btn-x');
+var lastResult = null;
 
 function showScreen(id) {
   for (var k in screens) {
@@ -355,6 +360,15 @@ function showResult() {
 
   drawRadar(norm);
 
+  lastResult = {
+    type: primary.talent.type,
+    name: primary.talent.name,
+    image: primary.talent.image,
+    matchPct: primaryPct,
+    talent: primary.talent,
+    norm: norm
+  };
+
   showScreen('result');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -442,6 +456,160 @@ function drawRadar(norm) {
   });
 }
 
+function getXText() {
+  if (!lastResult) return '';
+  return '\uD83C\uDF08 Milli Spectrum\n\n\u3042\u306A\u305F\u306E\u4E2D\u306B\u3042\u308B\u3001\u30DF\u30EA\u30D7\u30ED\u306E\u8272\u3092\u898B\u3064\u3051\u3088\u3046\u3002\n\n\u79C1\u306F\u300C' + lastResult.type + '\u300D\u3067\u3057\u305F\uFF01\n\n\u3042\u306A\u305F\u306F\u3069\u306E\u30BF\u30A4\u30D7\u306B\u306A\u308B\uFF1F\u2728\n\n#\u30DF\u30EA\u30D7\u30ED #MilliGames #MilliSpectrum';
+}
+
+function generateShareImage() {
+  if (!lastResult) return Promise.reject('no result');
+  var r = lastResult;
+  var W = 360, H = 520;
+  var scale = 2;
+  var cvs = elShareCanvas;
+  cvs.width = W * scale;
+  cvs.height = H * scale;
+  var cx = cvs.getContext('2d');
+  cx.scale(scale, scale);
+
+  var grad = cx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0, '#1a0a2e');
+  grad.addColorStop(1, '#2d1b4e');
+  cx.fillStyle = grad;
+  cx.fillRect(0, 0, W, H);
+
+  cx.shadowColor = 'rgba(133,130,251,0.3)';
+  cx.shadowBlur = 20;
+  cx.strokeStyle = 'rgba(133,130,251,0.4)';
+  cx.lineWidth = 2;
+  cx.strokeRect(6, 6, W - 12, H - 12);
+  cx.shadowBlur = 0;
+
+  cx.fillStyle = '#dbbee1';
+  cx.font = 'bold 18px -apple-system, sans-serif';
+  cx.textAlign = 'center';
+  cx.fillText('Milli Spectrum', W / 2, 40);
+
+  cx.fillStyle = 'rgba(238,242,255,0.4)';
+  cx.font = '11px -apple-system, sans-serif';
+  cx.fillText('\u3042\u306A\u305F\u306E\u4E2D\u306B\u3042\u308B\u3001\u30DF\u30EA\u30D7\u30ED\u306E\u8272\u3002', W / 2, 58);
+  cx.textBaseline = 'top';
+
+  cx.fillStyle = '#fff';
+  cx.font = 'bold 22px -apple-system, sans-serif';
+  cx.textBaseline = 'top';
+  cx.fillText(r.type, W / 2, 78);
+
+  cx.fillStyle = 'rgba(238,242,255,0.6)';
+  cx.font = '14px -apple-system, sans-serif';
+  cx.fillText(r.name, W / 2, 108);
+
+  cx.fillStyle = '#8582fb';
+  cx.font = 'bold 16px -apple-system, sans-serif';
+  cx.fillText('\u4E00\u81F4\u5EA6 ' + r.matchPct + '%', W / 2, 130);
+
+  cx.strokeStyle = 'rgba(238,242,255,0.1)';
+  cx.lineWidth = 1;
+  cx.beginPath();
+  cx.moveTo(30, 148);
+  cx.lineTo(W - 30, 148);
+  cx.stroke();
+
+  var params = r.norm;
+  var names = ['\u60C5\u71B1','\u5275\u4F5C','\u884C\u52D5\u529B','\u793E\u4EA4\u6027','\u904A\u3073\u5FC3','\u7650\u3057','\u30DF\u30B9\u30C6\u30EA\u30A2\u30B9','\u30AF\u30FC\u30EB','PON\u5EA6'];
+  var icons = ['\uD83D\uDD25','\uD83C\uDFA8','\u26A1','\uD83E\uDD1D','\uD83C\uDFAE','\uD83E\uDEE7','\uD83C\uDF19','\uD83D\uDE0E','\uD83E\uDD2A'];
+  var keys = ['netsu','sousaku','koudou','shakou','asobi','iyashi','mystery','cool','pon'];
+  var y = 168;
+  cx.textBaseline = 'top';
+  for (var i = 0; i < keys.length; i++) {
+    cx.fillStyle = 'rgba(238,242,255,0.2)';
+    cx.textAlign = 'left';
+    cx.font = '11px -apple-system, sans-serif';
+    cx.fillText(icons[i] + ' ' + names[i], 35, y);
+    var val = params[keys[i]] || 0;
+    cx.fillStyle = '#8582fb';
+    cx.textAlign = 'right';
+    cx.font = 'bold 13px -apple-system, sans-serif';
+    cx.fillText(String(val), W - 35, y);
+    cx.fillStyle = 'rgba(238,242,255,0.08)';
+    cx.fillRect(35, y + 17, W - 70, 4);
+    cx.fillStyle = 'rgba(133,130,251,0.6)';
+    cx.fillRect(35, y + 17, (W - 70) * val / 100, 4);
+    y += 30;
+  }
+
+  cx.fillStyle = 'rgba(133,130,251,0.4)';
+  cx.font = '10px -apple-system, sans-serif';
+  cx.textAlign = 'center';
+  cx.textBaseline = 'bottom';
+  cx.fillText('#MilliSpectrum #MilliGames', W / 2, H - 20);
+
+  cx.fillStyle = 'rgba(133,130,251,0.25)';
+  cx.font = '9px -apple-system, sans-serif';
+  cx.fillText('milli-games.onrender.com', W / 2, H - 8);
+
+  return new Promise(function(resolve) {
+    cvs.toBlob(function(blob) { resolve(blob); }, 'image/png');
+  });
+}
+
+function handleSave() {
+  generateShareImage().then(function(blob) {
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], 'result.png', { type: 'image/png' })] })) {
+      navigator.share({ files: [new File([blob], 'result.png', { type: 'image/png' })] });
+    } else {
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'millispectrum_result.png';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  });
+}
+
+function handleShare() {
+  generateShareImage().then(function(blob) {
+    var text = getXText();
+    var file = new File([blob], 'result.png', { type: 'image/png' });
+    if (navigator.share) {
+      var data = { title: 'Milli Spectrum', text: text };
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        data.files = [file];
+      }
+      navigator.share(data);
+    } else {
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'millispectrum_result.png';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      try { navigator.clipboard.writeText(text); } catch (e) {}
+    }
+  });
+}
+
+function handlePostX() {
+  generateShareImage().then(function(blob) {
+    var text = getXText();
+    var file = new File([blob], 'result.png', { type: 'image/png' });
+    if (navigator.share) {
+      var data = { text: text };
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        data.files = [file];
+      }
+      navigator.share(data);
+    } else {
+      window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text), '_blank');
+    }
+  });
+}
+
 function startDiagnosis() {
   state.step = 0;
   state.scores = initScores();
@@ -451,7 +619,11 @@ function startDiagnosis() {
 }
 
 function retryDiagnosis() {
-  showScreen('start');
+elBtnSave.addEventListener('click', handleSave);
+elBtnShare.addEventListener('click', handleShare);
+elBtnX.addEventListener('click', handlePostX);
+
+showScreen('start');
 }
 
 showScreen('start');

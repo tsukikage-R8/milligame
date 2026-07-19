@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ミリプロ診断 - Milli Games</title>
+  <title>Milli Spectrum - Milli Games</title>
   <link rel="icon" href="../images/icon/favicon.ico" sizes="any">
   <link rel="icon" href="../images/icon/192.png" sizes="192x192" type="image/png">
   <link rel="apple-touch-icon" href="../images/icon/192.png" sizes="192x192">
@@ -19,7 +19,7 @@
 
   <div id="top-bar">
     <a href="../index.html">&larr; Milli Games</a>
-    <span>ミリプロ診断</span>
+    <span>Milli Spectrum</span>
   </div>
 
   <div id="container">
@@ -28,13 +28,13 @@
     <div id="start-screen" class="screen active">
       <div class="card">
         <div class="logo-area">
-          <div class="logo-icon">🎯</div>
-          <h1>ミリプロ診断</h1>
-          <div class="subtitle">〜あなたにぴったりのメンバーは？〜</div>
+          <div class="logo-icon">🌈</div>
+          <h1>Milli Spectrum</h1>
+          <div class="subtitle">〜あなたの中にある、ミリプロの色。〜</div>
         </div>
         <div class="desc-text">
-          <span>10の質問に答えると、</span>
-          <span>あなたに一番近いミリプロメンバーがわかります！</span>
+          <span>9つのパラメータから、あなたに近い</span>
+          <span>ミリプロタイプを診断します。</span>
           <span style="margin-top:8px;color:var(--text-muted);font-size:13px;">正直な気持ちで答えてね 🎉</span>
         </div>
         <button class="btn-start" onclick="startDiagnosis()">診断を始める</button>
@@ -76,8 +76,16 @@
         <div style="font-size:14px;font-weight:600;margin-bottom:8px;text-align:center;">あなたのパラメーター</div>
         <div class="params-grid" id="params-grid"></div>
       </div>
+      <div class="card">
+        <div id="share-buttons">
+          <button id="btn-save" class="btn-share">画像を保存</button>
+          <button id="btn-share" class="btn-share">共有</button>
+          <button id="btn-x" class="btn-x">Xでポスト</button>
+        </div>
+      </div>
       <button class="btn-retry" onclick="retryDiagnosis()">もう一度診断する</button>
     </div>
+    <canvas id="share-canvas" style="display:none"></canvas>
 
   </div>
 
