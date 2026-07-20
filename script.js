@@ -242,6 +242,7 @@ const el = {
   popupTitle: document.getElementById("popup-title"),
   popupBody: document.getElementById("popup-body"),
   menuPopupBtns: document.querySelectorAll(".menu-popup-btn"),
+  profileBtn: document.getElementById("profile-btn"),
 };
 
 // ============================================
@@ -933,6 +934,34 @@ if (installBtn) {
         installBtn.style.opacity = "1";
       }, 2000);
     }
+  });
+}
+
+// プロフィール（プレイ履歴）
+if (el.profileBtn) {
+  el.profileBtn.addEventListener("click", function () {
+    var history = [];
+    try { history = JSON.parse(localStorage.getItem('milliGames_history') || '[]'); } catch (e) {}
+    var html = '';
+    if (history.length === 0) {
+      html = '<p style="text-align:center;color:var(--text-muted);padding:24px 0;">まだプレイ履歴がありません<br>診断をプレイするとここに表示されます</p>';
+    } else {
+      html = '<div class="history-list">';
+      for (var i = 0; i < history.length; i++) {
+        var h = history[i];
+        var d = new Date(h.date);
+        var dateStr = d.getFullYear() + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + String(d.getDate()).padStart(2,'0') + ' ' + String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+        html += '<div class="history-item">'
+          + '<div class="history-date">' + dateStr + '</div>'
+          + '<div class="history-game">' + h.game + '</div>'
+          + '<div class="history-type">' + h.type + '（' + h.name + '）</div>'
+          + '<div class="history-match">一致度 ' + h.matchPct + '%</div>'
+          + '</div>';
+      }
+      html += '</div>';
+    }
+    closeMenu();
+    setTimeout(function () { openPopup('プレイ履歴', html); }, 300);
   });
 }
 

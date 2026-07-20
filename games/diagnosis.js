@@ -472,8 +472,26 @@ function showResult() {
     dispNorm: dispNorm
   };
 
+  saveHistory(primary.talent.type, primary.talent.name, primaryPct, norm);
+
   showScreen('result');
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function saveHistory(type, name, matchPct, scores) {
+  try {
+    var history = JSON.parse(localStorage.getItem('milliGames_history') || '[]');
+    history.unshift({
+      game: 'Milli Spectrum',
+      date: new Date().toISOString(),
+      type: type,
+      name: name,
+      matchPct: matchPct,
+      scores: scores
+    });
+    if (history.length > 50) history = history.slice(0, 50);
+    localStorage.setItem('milliGames_history', JSON.stringify(history));
+  } catch (e) {}
 }
 
 function drawRadar(norm) {
