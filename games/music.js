@@ -1157,6 +1157,25 @@
     return { rank: "D", color: "#9ca3af" };
   }
 
+  function saveHistory(data) {
+    try {
+      var history = JSON.parse(localStorage.getItem('milliGames_history') || '[]');
+      history.unshift({
+        game: 'リズムゲーム',
+        date: new Date().toISOString(),
+        score: data.score,
+        accuracy: data.acc,
+        rank: data.rankLabel || data.rank,
+        maxCombo: data.maxCombo,
+        song: data.chartTitle,
+        difficulty: data.difficulty,
+        counts: data.counts
+      });
+      if (history.length > 50) history = history.slice(0, 50);
+      localStorage.setItem('milliGames_history', JSON.stringify(history));
+    } catch (e) {}
+  }
+
   function endGame() {
     running = false;
     if (animId) { cancelAnimationFrame(animId); animId = null; }
@@ -1213,6 +1232,8 @@
       },
       maxCombo: maxCombo
     };
+
+    saveHistory(lastResult);
 
     elQuitBtn.classList.remove("visible");
     document.getElementById("hud-row").style.display = "none";

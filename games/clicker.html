@@ -632,6 +632,17 @@
         function checkGoal() {
             if (views >= GOAL_VIEWS && !isCleared) {
                 isCleared = true;
+                try {
+                    var h = JSON.parse(localStorage.getItem('milliGames_history') || '[]');
+                    h.unshift({
+                        game: 'クリッカーヒーロー',
+                        date: new Date().toISOString(),
+                        score: views,
+                        cleared: true
+                    });
+                    if (h.length > 50) h = h.slice(0, 50);
+                    localStorage.setItem('milliGames_history', JSON.stringify(h));
+                } catch (e) {}
                 clearModal.style.display = 'flex';
             }
         }

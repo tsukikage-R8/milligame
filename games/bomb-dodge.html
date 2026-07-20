@@ -446,6 +446,17 @@
         SOUNDS.gameover();
       }
       finalScoreEl.textContent = game.score;
+      try {
+        var history = JSON.parse(localStorage.getItem('milliGames_history') || '[]');
+        history.unshift({
+          game: '爆弾回避マスター',
+          date: new Date().toISOString(),
+          score: game.score,
+          clear: isClear
+        });
+        if (history.length > 50) history = history.slice(0, 50);
+        localStorage.setItem('milliGames_history', JSON.stringify(history));
+      } catch (e) {}
       resultScreen.classList.remove("hidden");
     }
 
