@@ -204,8 +204,8 @@ const games = [
   },
   {
     id: 3,
-    title: "ミリプロ診断",
-    description: "10の質問に答えて、あなたにぴったりなミリプロメンバーを診断しよう！",
+    title: "Milli Spectrum",
+    description: "20の質問で、あなたの中にあるミリプロの色を見つけよう。",
     image: "https://picsum.photos/seed/diagnosis/400/250",
     points: 0,
     exp: "-",
@@ -942,28 +942,71 @@ if (el.profileBtn) {
   el.profileBtn.addEventListener("click", function () {
     var history = [];
     try { history = JSON.parse(localStorage.getItem('milliGames_history') || '[]'); } catch (e) {}
-    var html = '';
+
+    var html = '<div class="profile-header">'
+      + '<div class="profile-avatar"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg></div>'
+      + '<div class="profile-info"><div class="profile-name">ゲスト</div><div class="profile-status">ログイン機能は準備中です</div></div>'
+      + '</div>';
+
     if (history.length === 0) {
-      html = '<p style="text-align:center;color:var(--text-muted);padding:24px 0;">まだプレイ履歴がありません<br>診断をプレイするとここに表示されます</p>';
+      html += '<p style="text-align:center;color:var(--text-muted);padding:24px 0;">まだプレイ履歴がありません<br>各ゲームをプレイするとここに表示されます</p>';
     } else {
-      html = '<div class="history-list">';
+      var gameNames = [];
+      var gameMap = {};
       for (var i = 0; i < history.length; i++) {
-        var h = history[i];
-        var d = new Date(h.date);
-        var dateStr = d.getFullYear() + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + String(d.getDate()).padStart(2,'0') + ' ' + String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
-        html += '<div class="history-item">'
-          + '<div class="history-date">' + dateStr + '</div>'
-          + '<div class="history-game">' + h.game + '</div>'
-          + '<div class="history-type">' + h.type + '（' + h.name + '）</div>'
-          + '<div class="history-match">一致度 ' + h.matchPct + '%</div>'
-          + '</div>';
+        var g = history[i].game;
+        if (!gameMap[g]) { gameMap[g] = true; gameNames.push(g); }
       }
-      html += '</div>';
+      gameNames.sort();
+      gameNames.unshift('すべて');
+
+      var tabsHtml = '<div class="hist-tabs">';
+      var panesHtml = '';
+      for (var ti = 0; ti < gameNames.length; ti++) {
+        var gn = gameNames[ti];
+        var active = ti === 0 ? ' active' : '';
+        tabsHtml += '<button class="hist-tab' + active + '" data-tab="' + ti + '">' + gn + '</button>';
+
+        var entries = gn === 'すべて' ? history : history.filter(function(h) { return h.game === gn; });
+        var listHtml = '<div class="hist-pane' + active + '" data-pane="' + ti + '">';
+        for (var j = 0; j < entries.length; j++) {
+          var h = entries[j];
+          var d = new Date(h.date);
+          var dateStr = d.getFullYear() + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + String(d.getDate()).padStart(2,'0') + ' ' + String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+          listHtml += '<div class="history-item">'
+            + '<div class="history-date">' + dateStr + '</div>'
+            + '<div class="history-game">' + h.game + '</div>'
+            + (h.type ? '<div class="history-type">' + h.type + (h.name ? '（' + h.name + '）' : '') + '</div>' : '')
+            + (h.score !== undefined ? '<div class="history-score">スコア: ' + h.score.toLocaleString() + '</div>' : '')
+            + (h.matchPct !== undefined ? '<div class="history-match">一致度 ' + h.matchPct + '%</div>' : '')
+            + (h.accuracy !== undefined ? '<div class="history-match">精度 ' + h.accuracy + '%</div>' : '')
+            + (h.rank ? '<div class="history-rank">' + h.rank + '</div>' : '')
+            + (h.clear !== undefined ? '<div class="history-rank">' + (h.clear ? 'クリア' : 'ゲームオーバー') + '</div>' : '')
+            + '</div>';
+        }
+        listHtml += '</div>';
+        panesHtml += listHtml;
+      }
+      tabsHtml += '</div>';
+
+      html += '<div class="hist-container">' + tabsHtml + panesHtml + '</div>';
     }
     closeMenu();
     setTimeout(function () { openPopup('プレイ履歴', html); }, 300);
   });
 }
+
+// タブ切り替え（イベント委譲）
+document.addEventListener('click', function (e) {
+  var tab = e.target.closest('.hist-tab');
+  if (!tab) return;
+  var paneId = tab.getAttribute('data-tab');
+  document.querySelectorAll('.hist-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.hist-pane').forEach(function(p) { p.classList.remove('active'); });
+  tab.classList.add('active');
+  var pane = document.querySelector('.hist-pane[data-pane="' + paneId + '"]');
+  if (pane) pane.classList.add('active');
+});
 
 // ESCキーでメニュー・モーダルを閉じる
 document.addEventListener("keydown", function (e) {
