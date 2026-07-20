@@ -897,6 +897,21 @@ for (var i = 0; i < el.menuPopupBtns.length; i++) {
   })(el.menuPopupBtns[i]);
 }
 
+// クレジット
+var creditBtn = document.getElementById("credit-btn");
+if (creditBtn) {
+  creditBtn.addEventListener("click", function () {
+    var html = '<div class="credit-content">'
+      + '<div class="credit-item"><span class="credit-label">制作者</span><span class="credit-value"><a href="https://x.com/SunSunmachi" target="_blank" rel="noopener">すんすん</a></span></div>'
+      + '<div class="credit-item"><span class="credit-label">イラスト</span><span class="credit-value">すんすん</span></div>'
+      + '<p class="credit-note">このゲームは一部にYouTubeの埋め込み機能を使用しています。</p>'
+      + '<p class="credit-note">この作品はファンによる二次創作であり、著作権はMillion Productionに帰属します。</p>'
+      + '</div>';
+    closeMenu();
+    setTimeout(function () { openPopup("クレジット", html); }, 300);
+  });
+}
+
 // メニュー
 el.menuBtn.addEventListener("click", openMenu);
 el.closeMenuBtn.addEventListener("click", closeMenu);

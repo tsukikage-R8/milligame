@@ -668,9 +668,9 @@ ul, ol { list-style: none; }
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   z-index: 500;
   display: flex;
   align-items: center;
@@ -686,9 +686,9 @@ ul, ol { list-style: none; }
 }
 
 .modal {
-  background: rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   max-width: 92vw;
@@ -698,6 +698,7 @@ ul, ol { list-style: none; }
   padding: 24px;
   transform: scale(0.92);
   transition: transform var(--transition);
+  box-shadow: var(--shadow-lg);
 }
 
 .modal-overlay.open .modal {
@@ -738,6 +739,36 @@ ul, ol { list-style: none; }
 .modal-close:hover {
   background: var(--glass-hover);
   border-color: var(--glass-border-hover);
+}
+
+/* ===== クレジット ===== */
+.credit-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.credit-item {
+  display: flex;
+  gap: 8px;
+  font-size: 0.95rem;
+}
+.credit-label {
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--primary);
+  min-width: 5em;
+}
+.credit-value {
+  color: var(--text);
+}
+.credit-value a {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+.credit-note {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.5;
 }
 
 /* ===== ゲームテーブル ===== */

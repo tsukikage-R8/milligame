@@ -430,6 +430,9 @@ function showResult() {
   lines.forEach(function(line) {
     if (line.trim()) descHtml += '<p>' + line + '</p>';
   });
+  descHtml += '<p style="margin-top:14px;font-size:12px;color:var(--text-muted);opacity:0.7;line-height:1.5;">'
+    + '※本診断は限られた質問からの傾向分析であり、結果と実際の性格や各タレントのキャラクターとは異なる場合があります。'
+    + 'タレント設定は私の独断と偏見によるものです。あくまでお楽しみください。</p>';
   resultDesc.innerHTML = descHtml;
 
   var secondary = result.secondary;
