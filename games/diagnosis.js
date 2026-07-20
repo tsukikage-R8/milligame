@@ -457,17 +457,17 @@ function drawRadar(norm) {
 }
 
 var TYPE_COLORS = {
-  '\uD83D\uDD25 \u60C5\u71B1\u30AF\u30EA\u30A8\u30A4\u30BF\u30FC': ['#A8E6CF','#80CBC4'],
-  '\uD83C\uDFB6 \u30CF\u30C3\u30D4\u30FC\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8': ['#E8E0F0','#D1C4E9'],
-  '\uD83D\uDC51 \u500B\u6027\u6D3E\u30A8\u30F3\u30BF\u30FC\u30C6\u30A4\u30CA\u30FC': ['#EF5350','#C62828'],
-  '\u26A1 \u30E0\u30FC\u30C9\u30E1\u30FC\u30AB\u30FC': ['#FFD54F','#F9A825'],
-  '\uD83E\uDEE7 \u30D2\u30FC\u30EA\u30F3\u30B0\u30BF\u30A4\u30D7': ['#4FC3F7','#0288D1'],
-  '\uD83C\uDFAE \u308F\u304F\u308F\u304F\u30D7\u30EC\u30A4\u30E4\u30FC': ['#FF8A65','#E64A19'],
-  '\uD83D\uDEE0\uFE0F \u30DE\u30EB\u30C1\u30AF\u30EA\u30A8\u30A4\u30BF\u30FC': ['#90A4AE','#546E7A'],
-  '\uD83C\uDF02 \u30AE\u30E3\u30C3\u30D7\u7CFB\u30DF\u30B9\u30C6\u30EA\u30A2\u30B9': ['#5C6BC0','#1A237E'],
-  '\uD83C\uDFA8 \u30AB\u30E9\u30D5\u30EB\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8': ['#FF7043','#AB47BC'],
-  '\uD83C\uDFAF \u30AF\u30FC\u30EB\u30ED\u30C3\u30AF\u30AA\u30F3': ['#26C6DA','#00838F'],
-  '\uD83C\uDF1F \u30DF\u30EA\u3061\u3083\u3093': ['#CE93D8','#7B1FA2']
+  '🔥 情熱クリエイター':     ['#b0e2ef','#72909b'],
+  '🎶 ハッピーアーティスト':  ['#cdbfff','#857ca6'],
+  '👑 個性派エンターテイナー': ['#fa89a7','#a3596d'],
+  '⚡ ムードメーカー':       ['#ffea8f','#a6985d'],
+  '🫧 ヒーリングタイプ':    ['#b8ceff','#7886a6'],
+  '🎮 わくわくプレイヤー':   ['#ffc78f','#a6815d'],
+  '🛠️ マルチクリエイター':  ['#e7e5f4','#96959f'],
+  '🌂 ギャップ系ミステリアス':['#afd1d1','#728888'],
+  '🎨 カラフルアーティスト':  ['#ffcbce','#a68486'],
+  '🎯 クールロックオン':     ['#cde5ff','#8595a6'],
+  '🌟 ミリちゃん':          ['#f3dbf8','#9e8ea1']
 };
 
 function getXText() {
@@ -485,6 +485,33 @@ function getShortDesc(desc) {
   return lines;
 }
 
+function loadImage(src) {
+  return new Promise(function(resolve) {
+    var img = new Image();
+    img.onload = function() { resolve(img); };
+    img.onerror = function() { resolve(null); };
+    img.src = src;
+  });
+}
+
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+  var lines = [];
+  var line = '';
+  for (var i = 0; i < text.length; i++) {
+    var ch = text[i];
+    var test = line + ch;
+    if (ctx.measureText(test).width > maxWidth && line !== '') {
+      lines.push(line);
+      line = ch;
+    } else {
+      line = test;
+    }
+  }
+  if (line) lines.push(line);
+  lines.forEach(function(l) { ctx.fillText(l, x, y); y += lineHeight; });
+  return y;
+}
+
 function generateShareImage() {
   if (!lastResult) return Promise.reject('no result');
   var r = lastResult;
@@ -496,128 +523,134 @@ function generateShareImage() {
   var ctx = cvs.getContext('2d');
   ctx.scale(scale, scale);
 
-  return new Promise(function(resolve) {
-    var img = new Image();
-    img.onload = drawImage;
-    img.onerror = drawImage;
-    img.src = '../images/talents/' + r.image;
+  var TEXT_COLOR = '#2d1b4e';
+  var BG_MUTED = 'rgba(45,27,78,0.12)';
+  var BAR_FILL = 'rgba(45,27,78,0.4)';
 
-    function drawImage() {
-      var colors = TYPE_COLORS[r.type] || ['#1a0a2e', '#2d1b4e'];
+  return Promise.all([
+    loadImage('../images/talents/' + r.image),
+    loadImage('../images/rogo.png')
+  ]).then(function(images) {
+    var talentImg = images[0];
+    var rogoImg = images[1];
 
-      var grad = ctx.createLinearGradient(0, 0, 0, H);
-      grad.addColorStop(0, colors[0]);
-      grad.addColorStop(1, colors[1]);
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, W, H);
+    var colors = TYPE_COLORS[r.type] || ['#b0e2ef','#72909b'];
 
-      // border glow
-      ctx.shadowColor = 'rgba(255,255,255,0.15)';
-      ctx.shadowBlur = 15;
-      ctx.strokeStyle = 'rgba(255,255,255,0.2)';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(6, 6, W - 12, H - 12);
-      ctx.shadowBlur = 0;
+    var grad = ctx.createLinearGradient(0, 0, 0, H);
+    grad.addColorStop(0, colors[0]);
+    grad.addColorStop(1, colors[1]);
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
 
-      // title
-      ctx.fillStyle = '#fff';
-      ctx.font = 'bold 16px -apple-system, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('\uD83C\uDF08 Milli Spectrum', W / 2, 16);
+    ctx.shadowColor = 'rgba(255,255,255,0.15)';
+    ctx.shadowBlur = 15;
+    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(6, 6, W - 12, H - 12);
+    ctx.shadowBlur = 0;
 
-      // talent image
-      var imgW = 120, imgH = 120;
-      var imgX = (W - imgW) / 2, imgY = 44;
-      if (img.width > 0 && img.height > 0) {
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(imgX + imgW / 2, imgY + imgH / 2, imgW / 2, 0, Math.PI * 2);
-        ctx.closePath();
-        ctx.clip();
-        ctx.drawImage(img, imgX, imgY, imgW, imgH);
-        ctx.restore();
-      }
+    ctx.fillStyle = TEXT_COLOR;
+    ctx.font = 'bold 16px -apple-system, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText('🌈 Milli Spectrum', W / 2, 16);
 
-      // "あなたのタイプは"
-      ctx.fillStyle = 'rgba(255,255,255,0.7)';
-      ctx.font = '12px -apple-system, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      var yPos = imgY + imgH + 10;
-      ctx.fillText('\u3042\u306A\u305F\u306E\u30BF\u30A4\u30D7\u306F', W / 2, yPos);
-
-      // type name (large)
-      yPos += 20;
-      ctx.fillStyle = '#fff';
-      ctx.font = 'bold 20px -apple-system, sans-serif';
-      ctx.fillText(r.type, W / 2, yPos);
-
-      // description (2-3 lines)
-      var descLines = getShortDesc(r.talent.desc);
-      yPos += 30;
-      ctx.fillStyle = 'rgba(255,255,255,0.75)';
-      ctx.font = '11px -apple-system, sans-serif';
-      for (var di = 0; di < descLines.length; di++) {
-        ctx.fillText(descLines[di], W / 2, yPos);
-        yPos += 16;
-      }
-
-      // divider
-      yPos += 6;
-      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
-      ctx.lineWidth = 1;
+    var imgW = 120, imgH = 120;
+    var imgX = (W - imgW) / 2, imgY = 44;
+    if (talentImg && talentImg.width > 0 && talentImg.height > 0) {
+      ctx.save();
       ctx.beginPath();
-      ctx.moveTo(40, yPos);
-      ctx.lineTo(W - 40, yPos);
-      ctx.stroke();
-
-      // "あなたのミリプロ成分"
-      yPos += 10;
-      ctx.fillStyle = 'rgba(255,255,255,0.6)';
-      ctx.font = '11px -apple-system, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('\u3042\u306A\u305F\u306E\u30DF\u30EA\u30D7\u30ED\u6210\u5206', W / 2, yPos);
-
-      // top 4 parameters
-      var paramEntries = [];
-      for (var pi = 0; pi < PARAMS.length; pi++) {
-        paramEntries.push({
-          icon: PARAMS[pi].icon,
-          name: PARAMS[pi].name,
-          val: r.norm[PARAMS[pi].id] || 0
-        });
-      }
-      paramEntries.sort(function(a, b) { return b.val - a.val; });
-      var top4 = paramEntries.slice(0, 4);
-
-      yPos += 20;
-      ctx.textBaseline = 'top';
-      for (var ti = 0; ti < top4.length; ti++) {
-        ctx.fillStyle = 'rgba(255,255,255,0.8)';
-        ctx.textAlign = 'left';
-        ctx.font = '13px -apple-system, sans-serif';
-        ctx.fillText(top4[ti].icon + ' ' + top4[ti].name, 50, yPos);
-        ctx.fillStyle = '#fff';
-        ctx.textAlign = 'right';
-        ctx.font = 'bold 13px -apple-system, sans-serif';
-        ctx.fillText(String(top4[ti].val), W - 50, yPos);
-        ctx.fillStyle = 'rgba(255,255,255,0.12)';
-        ctx.fillRect(50, yPos + 17, W - 100, 4);
-        ctx.fillStyle = 'rgba(255,255,255,0.6)';
-        ctx.fillRect(50, yPos + 17, (W - 100) * top4[ti].val / 100, 4);
-        yPos += 32;
-      }
-
-      // footer
-      ctx.fillStyle = 'rgba(255,255,255,0.3)';
-      ctx.font = '10px -apple-system, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('Milli Games', W / 2, H - 10);
-
-      cvs.toBlob(function(blob) { resolve(blob); }, 'image/png');
+      ctx.arc(imgX + imgW / 2, imgY + imgH / 2, imgW / 2, 0, Math.PI * 2);
+      ctx.closePath();
+      ctx.clip();
+      ctx.drawImage(talentImg, imgX, imgY, imgW, imgH);
+      ctx.restore();
     }
+
+    ctx.fillStyle = TEXT_COLOR;
+    ctx.globalAlpha = 0.7;
+    ctx.font = '12px -apple-system, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    var yPos = imgY + imgH + 10;
+    ctx.fillText('あなたのタイプは', W / 2, yPos);
+    ctx.globalAlpha = 1;
+
+    yPos += 20;
+    ctx.fillStyle = TEXT_COLOR;
+    ctx.font = 'bold 20px -apple-system, sans-serif';
+    ctx.fillText(r.type, W / 2, yPos);
+
+    var descLines = getShortDesc(r.talent.desc);
+    yPos += 30;
+    ctx.fillStyle = TEXT_COLOR;
+    ctx.globalAlpha = 0.75;
+    ctx.font = '11px -apple-system, sans-serif';
+    ctx.textAlign = 'center';
+    for (var pi = 0; pi < descLines.length; pi++) {
+      yPos = wrapText(ctx, descLines[pi], W / 2, yPos, W - 80, 16);
+      yPos += 4;
+    }
+    ctx.globalAlpha = 1;
+
+    yPos += 6;
+    ctx.strokeStyle = BG_MUTED;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(40, yPos);
+    ctx.lineTo(W - 40, yPos);
+    ctx.stroke();
+
+    yPos += 10;
+    ctx.fillStyle = TEXT_COLOR;
+    ctx.globalAlpha = 0.6;
+    ctx.font = '11px -apple-system, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('あなたのミリプロ色', W / 2, yPos);
+    ctx.globalAlpha = 1;
+
+    var paramEntries = [];
+    for (var pi = 0; pi < PARAMS.length; pi++) {
+      paramEntries.push({
+        icon: PARAMS[pi].icon,
+        name: PARAMS[pi].name,
+        val: r.norm[PARAMS[pi].id] || 0
+      });
+    }
+    paramEntries.sort(function(a, b) { return b.val - a.val; });
+    var top4 = paramEntries.slice(0, 4);
+
+    yPos += 20;
+    ctx.textBaseline = 'top';
+    for (var ti = 0; ti < top4.length; ti++) {
+      ctx.fillStyle = TEXT_COLOR;
+      ctx.globalAlpha = 0.8;
+      ctx.textAlign = 'left';
+      ctx.font = '13px -apple-system, sans-serif';
+      ctx.fillText(top4[ti].icon + ' ' + top4[ti].name, 50, yPos);
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = TEXT_COLOR;
+      ctx.textAlign = 'right';
+      ctx.font = 'bold 13px -apple-system, sans-serif';
+      ctx.fillText(String(top4[ti].val), W - 50, yPos);
+      ctx.fillStyle = BG_MUTED;
+      ctx.fillRect(50, yPos + 17, W - 100, 4);
+      ctx.fillStyle = BAR_FILL;
+      ctx.fillRect(50, yPos + 17, (W - 100) * top4[ti].val / 100, 4);
+      yPos += 32;
+    }
+
+    if (rogoImg && rogoImg.width > 0 && rogoImg.height > 0) {
+      var rogoW = 90;
+      var rogoH = rogoW * rogoImg.height / rogoImg.width;
+      var rogoX = (W - rogoW) / 2;
+      var rogoY = H - rogoH - 8;
+      ctx.drawImage(rogoImg, rogoX, rogoY, rogoW, rogoH);
+    }
+
+    return new Promise(function(resolve) {
+      cvs.toBlob(function(blob) { resolve(blob); }, 'image/png');
+    });
   });
 }
 
