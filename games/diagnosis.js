@@ -161,6 +161,96 @@ var QUESTIONS = [
       { text: 'みんなで推しを盛り上げるオタク',           add: { shakou:10, asobi:10 } },
       { text: '距離感をわきまえて静かに推すオタク',       add: { cool:15, iyashi:5 } }
     ]
+  },
+  {
+    q: '推しの誕生日、あなたはどう過ごす？',
+    options: [
+      { text: '限定グッズを求めて朝から並ぶ',            add: { koudou:10, netsu:10 } },
+      { text: 'ファンアートやお祝い動画を制作する',        add: { sousaku:10, iyashi:10 } },
+      { text: 'ファン同士でオンラインパーティをする',      add: { shakou:10, asobi:10 } },
+      { text: 'その日を一人で静かに噛みしめる',            add: { mystery:10, cool:10 } }
+    ]
+  },
+  {
+    q: 'SNSで推しの話題が流れてきた時のあなたの行動は？',
+    options: [
+      { text: '即RT・いいね！拡散する',                   add: { shakou:5, netsu:10 } },
+      { text: 'スクショして自分の推しフォルダに保存',       add: { mystery:10, iyashi:5 } },
+      { text: '引用RTで自分の気持ちを語り出す',            add: { shakou:10, asobi:5 } },
+      { text: 'じっくり内容を確認してから反応する',         add: { cool:10, koudou:5 } }
+    ]
+  },
+  {
+    q: '推しの新グッズが大量に発表された！あなたの買い方は？',
+    options: [
+      { text: '推しが推してるものは全部欲しい',            add: { koudou:10, netsu:10 } },
+      { text: '買ったグッズで写真加工やコラ画像を作る',     add: { sousaku:10, asobi:5 } },
+      { text: '推し友と情報交換しつつ購入計画を立てる',     add: { shakou:10, asobi:5 } },
+      { text: '厳選して本当に必要なものだけ買う',           add: { cool:10, mystery:10 } }
+    ]
+  },
+  {
+    q: 'まさかの推し同士のコラボ配信！あなたの反応は？',
+    options: [
+      { text: 'リアルタイムでテンション爆上げ',            add: { netsu:10, asobi:10 } },
+      { text: '「この組み合わせ…深い」と考察を始める',     add: { mystery:10, sousaku:5 } },
+      { text: 'コメントで他のファンと一緒に盛り上がる',     add: { iyashi:5, shakou:10 } },
+      { text: '内心熱いが顔はクールを決め込む',            add: { cool:10, pon:5 } }
+    ]
+  },
+  {
+    q: '推しのファンイベントに当選！当日までのあなたの行動は？',
+    options: [
+      { text: '当日に向けて予習復習を欠かさない',           add: { shakou:5, koudou:10 } },
+      { text: '推しに渡すものを手作りし始める',             add: { sousaku:10, netsu:5 } },
+      { text: 'イベントに行く仲間を募って待ち合わせ',       add: { shakou:10, asobi:10 } },
+      { text: '前日はしっかり休んで万全の体調で挑む',        add: { iyashi:10, cool:5 } }
+    ]
+  },
+  {
+    q: '深夜に推しが急遽生配信！明日は早起きの予定が…',
+    options: [
+      { text: '明日のことは明日の自分が何とかする',         add: { netsu:10, koudou:5 } },
+      { text: 'アーカイブで後から見ようと冷静に寝る',       add: { cool:10, iyashi:5 } },
+      { text: '眠くなるまで見て途中で切り上げる',           add: { iyashi:5, mystery:10 } },
+      { text: '寝る直前まで見てしまい翌朝後悔する',          add: { asobi:10, pon:5 } }
+    ]
+  },
+  {
+    q: 'あなたの推し活スタイルを一言で表すなら？',
+    options: [
+      { text: '「好きを形に」創作系',                      add: { sousaku:10, netsu:10 } },
+      { text: '「楽しいは正義」行動系',                    add: { koudou:10, asobi:5 } },
+      { text: '「推し事は人繋ぐ」交流系',                  add: { shakou:10, iyashi:5 } },
+      { text: '「静かに深く」観測系',                      add: { cool:10, mystery:10 } }
+    ]
+  },
+  {
+    q: '推しが新曲や新企画を発表！あなたの最初の行動は？',
+    options: [
+      { text: 'すぐに予約・登録・いいね！を押す',           add: { koudou:10, netsu:5 } },
+      { text: 'リリースを妄想して一人で盛り上がる',         add: { sousaku:10, mystery:5 } },
+      { text: 'ファンと予想合戦を始める',                   add: { shakou:10, asobi:10 } },
+      { text: 'まずは公式情報をじっくり読む',               add: { iyashi:5, cool:10 } }
+    ]
+  },
+  {
+    q: '推しのイメージカラーを巡ってファンの間で意見が割れたら？',
+    options: [
+      { text: '自分の解釈を熱く語りたくなる',               add: { netsu:10, sousaku:5 } },
+      { text: 'いろんな意見を聞くのが楽しい',               add: { iyashi:5, shakou:10 } },
+      { text: '「色より推しが好き」と受け流す',            add: { mystery:5, cool:10 } },
+      { text: 'むしろ違うから面白いと楽しむ',               add: { asobi:10, pon:10 } }
+    ]
+  },
+  {
+    q: 'あなたにとって「推し」とは？',
+    options: [
+      { text: '創作の源泉。推しがいるから作品が生まれる',    add: { netsu:10, sousaku:10 } },
+      { text: '日常のスパイス。明日への活力',               add: { asobi:10, koudou:5 } },
+      { text: '癒しと繋がりの存在',                         add: { shakou:10, iyashi:10 } },
+      { text: '人生を豊かにする趣味のひとつ',               add: { pon:5, cool:5, iyashi:5 } }
+    ]
   }
 ];
 
@@ -224,6 +314,14 @@ function normalizeScores(raw) {
     norm[id] = maxVal > 0 ? Math.round(raw[id] / maxVal * 100) : 0;
   });
   return norm;
+}
+
+function calcDisplayNorm(norm) {
+  var disp = {};
+  PARAM_IDS.forEach(function(id) {
+    disp[id] = Math.round(100 * Math.pow((norm[id] || 0) / 100, 0.5));
+  });
+  return disp;
 }
 
 function cosineSimilarity(a, b) {
@@ -345,10 +443,11 @@ function showResult() {
   }
 
   var norm = result.norm;
+  var dispNorm = calcDisplayNorm(norm);
   var gridHtml = '';
   for (var pi = 0; pi < PARAMS.length; pi++) {
     var p = PARAMS[pi];
-    var val = norm[p.id];
+    var val = dispNorm[p.id];
     gridHtml += '<div class="param-item">'
       + '<div class="param-icon">' + p.icon + '</div>'
       + '<div class="param-name">' + p.name + '</div>'
@@ -358,7 +457,7 @@ function showResult() {
   }
   paramsGrid.innerHTML = gridHtml;
 
-  drawRadar(norm);
+  drawRadar(dispNorm);
 
   lastResult = {
     type: primary.talent.type,
@@ -366,7 +465,8 @@ function showResult() {
     image: primary.talent.image,
     matchPct: primaryPct,
     talent: primary.talent,
-    norm: norm
+    norm: norm,
+    dispNorm: dispNorm
   };
 
   showScreen('result');
@@ -615,7 +715,7 @@ function generateShareImage() {
       paramEntries.push({
         icon: PARAMS[pi].icon,
         name: PARAMS[pi].name,
-        val: r.norm[PARAMS[pi].id] || 0
+        val: (r.dispNorm || r.norm)[PARAMS[pi].id] || 0
       });
     }
     paramEntries.sort(function(a, b) { return b.val - a.val; });
