@@ -534,12 +534,8 @@ function generateShareImage() {
     var talentImg = images[0];
     var rogoImg = images[1];
 
-    var colors = TYPE_COLORS[r.type] || ['#b0e2ef','#72909b'];
-
-    var grad = ctx.createLinearGradient(0, 0, 0, H);
-    grad.addColorStop(0, colors[0]);
-    grad.addColorStop(1, colors[1]);
-    ctx.fillStyle = grad;
+    var bgColor = (TYPE_COLORS[r.type] || ['#b0e2ef'])[0];
+    ctx.fillStyle = bgColor;
     ctx.fillRect(0, 0, W, H);
 
     ctx.shadowColor = 'rgba(255,255,255,0.15)';
@@ -558,12 +554,17 @@ function generateShareImage() {
     var imgW = 120, imgH = 120;
     var imgX = (W - imgW) / 2, imgY = 44;
     if (talentImg && talentImg.width > 0 && talentImg.height > 0) {
+      var scale = Math.max(imgW / talentImg.width, imgH / talentImg.height);
+      var dw = talentImg.width * scale;
+      var dh = talentImg.height * scale;
+      var dx = imgX + (imgW - dw) / 2;
+      var dy = imgY;
       ctx.save();
       ctx.beginPath();
       ctx.arc(imgX + imgW / 2, imgY + imgH / 2, imgW / 2, 0, Math.PI * 2);
       ctx.closePath();
       ctx.clip();
-      ctx.drawImage(talentImg, imgX, imgY, imgW, imgH);
+      ctx.drawImage(talentImg, dx, dy, dw, dh);
       ctx.restore();
     }
 
