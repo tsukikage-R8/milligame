@@ -29,15 +29,15 @@ body {
 }
 
 #back-link {
-  color: #8582fb;
   text-decoration: none;
-  font-size: 0.85rem;
-  font-weight: 600;
-  transition: color 0.2s;
+  font-size: 0;
+  display: flex;
+  align-items: center;
 }
 
-#back-link:hover {
-  color: #716ed5;
+.header-logo {
+  height: 22px;
+  vertical-align: middle;
 }
 
 #song-title {

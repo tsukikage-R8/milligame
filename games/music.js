@@ -1,5 +1,5 @@
 /* ============================================
-   リズムゲーム メインエンジン
+   Milli Pulse メインエンジン
    YouTube連携 + 譜面再生 + tap/hold/flick判定
    ============================================ */
 (function () {
@@ -1284,29 +1284,33 @@
     var cx = cvs.getContext("2d");
     cx.scale(scale, scale);
 
-    // background
+    // background (brighter)
     var grad = cx.createLinearGradient(0, 0, 0, H);
-    grad.addColorStop(0, "#1a0a2e");
-    grad.addColorStop(1, "#2d1b4e");
+    grad.addColorStop(0, "#f5e6ff");
+    grad.addColorStop(1, "#e8d4f0");
     cx.fillStyle = grad;
     cx.fillRect(0, 0, W, H);
 
-    // border glow
-    cx.shadowColor = "rgba(133,130,251,0.3)";
+    // gold border
+    cx.shadowColor = "rgba(212,175,55,0.4)";
     cx.shadowBlur = 20;
-    cx.strokeStyle = "rgba(133,130,251,0.4)";
-    cx.lineWidth = 2;
+    cx.strokeStyle = "#d4af37";
+    cx.lineWidth = 3;
     cx.strokeRect(6, 6, W - 12, H - 12);
     cx.shadowBlur = 0;
+    // inner gold line
+    cx.strokeStyle = "rgba(212,175,55,0.25)";
+    cx.lineWidth = 1;
+    cx.strokeRect(11, 11, W - 22, H - 22);
 
     // title
-    cx.fillStyle = "#dbbee1";
+    cx.fillStyle = "#4a2860";
     cx.font = "bold 20px -apple-system, sans-serif";
     cx.textAlign = "center";
     cx.fillText(r.title, W / 2, 50);
 
     // difficulty
-    cx.fillStyle = "rgba(238,242,255,0.4)";
+    cx.fillStyle = "rgba(45,27,78,0.35)";
     cx.font = "11px -apple-system, sans-serif";
     cx.fillText(r.difficulty, W / 2, 70);
 
@@ -1334,17 +1338,17 @@
     cx.font = "bold 28px -apple-system, sans-serif";
     cx.fillText(r.score.toLocaleString(), W / 2, 175);
 
-    cx.fillStyle = "rgba(238,242,255,0.3)";
+    cx.fillStyle = "rgba(45,27,78,0.3)";
     cx.font = "12px -apple-system, sans-serif";
     cx.fillText("SCORE", W / 2, 207);
 
     // accuracy
-    cx.fillStyle = "#dbbee1";
+    cx.fillStyle = "#6b3f7a";
     cx.font = "20px -apple-system, sans-serif";
     cx.fillText("ACCURACY " + r.acc + "%", W / 2, 238);
 
     // divider line
-    cx.strokeStyle = "rgba(238,242,255,0.1)";
+    cx.strokeStyle = "rgba(45,27,78,0.1)";
     cx.lineWidth = 1;
     cx.beginPath();
     cx.moveTo(40, 268);
@@ -1359,10 +1363,10 @@
       { label: "PERFECT", color: "#8582fb", val: r.perfect },
       { label: "GREAT", color: "#dbbee1", val: r.great },
       { label: "GOOD", color: "#b794d4", val: r.good },
-      { label: "MISS", color: "rgba(238,242,255,0.3)", val: r.miss }
+      { label: "MISS", color: "rgba(45,27,78,0.3)", val: r.miss }
     ];
     for (var i = 0; i < items.length; i++) {
-      cx.fillStyle = "rgba(238,242,255,0.25)";
+      cx.fillStyle = "rgba(45,27,78,0.25)";
       cx.fillText(items[i].label, 55, y);
       cx.fillStyle = items[i].color;
       cx.textAlign = "right";
@@ -1372,11 +1376,11 @@
     }
 
     // max combo
-    cx.fillStyle = "rgba(238,242,255,0.25)";
+    cx.fillStyle = "rgba(45,27,78,0.25)";
     cx.textAlign = "center";
     cx.font = "14px -apple-system, sans-serif";
     cx.fillText("MAX COMBO", W / 2, y + 8);
-    cx.fillStyle = "#fff";
+    cx.fillStyle = "#2d1b4e";
     cx.font = "bold 18px -apple-system, sans-serif";
     cx.fillText(String(r.maxCombo), W / 2, y + 32);
 
@@ -1387,15 +1391,15 @@
       cx.font = "bold 16px -apple-system, sans-serif";
       cx.fillText("NEW BEST!", W / 2, y);
     } else {
-      cx.fillStyle = "rgba(238,242,255,0.3)";
+      cx.fillStyle = "rgba(45,27,78,0.3)";
       cx.font = "13px -apple-system, sans-serif";
       cx.fillText("BEST " + r.bestScore.toLocaleString(), W / 2, y);
     }
 
     // brand
-    cx.fillStyle = "rgba(133,130,251,0.4)";
+    cx.fillStyle = "rgba(90,87,212,0.4)";
     cx.font = "11px -apple-system, sans-serif";
-    cx.fillText("Milli Games", W / 2, H - 20);
+    cx.fillText("Milli Pulse", W / 2, H - 20);
 
     return new Promise(function (resolve) {
       cvs.toBlob(function (blob) {
@@ -1411,7 +1415,7 @@
       "\u30B9\u30B3\u30A2: " + r.score.toLocaleString() + "\n" +
       "ACCURACY: " + r.acc + "%\n" +
       "\u30E9\u30F3\u30AF: " + r.rank + "\n" +
-      "#MilliGames #\u30DF\u30EA\u30D7\u30ED\n" +
+      "#MilliPulse #\u30DF\u30EA\u30D7\u30ED\n" +
       "https://milli-games.onrender.com/games/music.html";
   }
 
@@ -1437,7 +1441,7 @@
       var text = getXText();
       var file = new File([blob], "result.png", { type: "image/png" });
       if (navigator.share) {
-        var data = { title: "Milli Games", text: text };
+        var data = { title: "Milli Pulse", text: text };
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
           data.files = [file];
         }

@@ -54,7 +54,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   font-size: 14px;
 }
 #top-bar a { color: var(--primary); font-weight: 600; }
+#top-bar a { font-size: 0; }
 #top-bar span { color: var(--text-secondary); }
+.header-logo {
+  height: 22px;
+  vertical-align: middle;
+}
 #bg-blur {
   position: fixed; inset: 0; z-index: -1; overflow: hidden;
 }

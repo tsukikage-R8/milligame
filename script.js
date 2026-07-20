@@ -174,8 +174,8 @@ window.addEventListener("beforeinstallprompt", function (e) {
 const games = [
   {
     id: 8,
-    title: "リズムゲーム",
-    description: "落ちてくるノーツにタイミングを合わせてタップする音ゲー。4段階判定でハイスコアを目指せ！",
+    title: "Milli Pulse",
+    description: "ミリプロの音楽を、リズムに乗せて楽しもう。\n\nお気に入りの楽曲をプレイして、最高スコアを目指そう。\n刻んだリズムと積み重ねたスコアが、あなたの「推し活」の記録になる。\n\n音楽を聴く。\nリズムを刻む。\n推しへの想いを、Pulseに。",
     image: "https://picsum.photos/seed/rhythm/400/250",
     points: 150,
     exp: "x1.3",
