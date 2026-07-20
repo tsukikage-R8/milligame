@@ -651,10 +651,14 @@
             clearModal.style.display = 'none';
         }
 
-        // 自動再生のループ
+        // 自動再生のループ（経過時間ベース）
+        var lastTickTime = Date.now();
         setInterval(() => {
-            if (vps > 0) {
-                views += vps / 30;
+            var now = Date.now();
+            var dt = (now - lastTickTime) / 1000;
+            lastTickTime = now;
+            if (vps > 0 && dt > 0) {
+                views += vps * dt;
                 updateUI();
                 checkGoal();
             }
