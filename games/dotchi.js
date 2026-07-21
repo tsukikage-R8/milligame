@@ -122,7 +122,11 @@
     rI: $("r-intermediate"),
     rA: $("r-advanced"),
     shareCanvas: $("share-canvas"),
-    questionCard: $("question-card")
+    questionCard: $("question-card"),
+    beatOverlay: $("beat-overlay"),
+    beatCircle: $("beat-circle"),
+    beatNumber: $("beat-number"),
+    beatLabel: $("beat-label")
   };
 
   // ============================================
@@ -225,6 +229,8 @@
   }
 
   function showQ(q) {
+    hideBeat();
+    stopInterlude();
     qActive = true;
     qDone = false;
 
@@ -267,12 +273,23 @@
     var q = questions[idx];
     var t = slotTime({ bar: q.bar, beat: q.beat });
 
+    // Check if gap from previous question end is long enough for interlude
+    var gapLong = false;
+    if (idx > 0) {
+      var prev = questions[idx - 1];
+      var prevEnd = slotTime({ bar: prev.bar, beat: prev.beat }) + (prev.beatsToAnswer * BEAT_MS / 1000);
+      gapLong = (t - prevEnd) > (4 * BEAT_MS / 1000);
+    }
+    if (gapLong) { startInterlude(); }
+
     function poll() {
       if (!isPlaying) return;
       if (getAudioTime() >= t) {
+        stopInterlude();
         cursor = idx;
         showQ(q);
       } else {
+        if (interludeActive) { updateInterlude(getAudioTime()); }
         setTimeout(poll, 50);
       }
     }
@@ -395,6 +412,92 @@
   // ============================================
   // ゲーム制御
   // ============================================
+  // ============================================
+  // ビートアニメーション
+  // ============================================
+  var beatTimerId = null;
+
+  function triggerBeat(num, label) {
+    var circle = el.beatCircle;
+    circle.classList.remove("animate");
+    void circle.offsetWidth;
+    circle.classList.add("animate");
+
+    if (num) {
+      el.beatNumber.textContent = num;
+      el.beatNumber.style.display = "";
+    } else {
+      el.beatNumber.style.display = "none";
+    }
+
+    el.beatLabel.textContent = label || "";
+    el.beatOverlay.classList.remove("beat-hidden");
+  }
+
+  function hideBeat() {
+    el.beatOverlay.classList.add("beat-hidden");
+    if (beatTimerId) { clearTimeout(beatTimerId); beatTimerId = null; }
+  }
+
+  // ============================================
+  // カウントイン
+  // ============================================
+  function doCountIn(callback) {
+    var beats = [1, 2, 3, 4, 1, 2];
+    var idx = 0;
+
+    function nextBeat() {
+      if (idx >= beats.length) {
+        triggerBeat(null, "\u66F2\uFF5E");
+        setTimeout(callback, 500);
+        return;
+      }
+      triggerBeat(beats[idx], "");
+      idx++;
+      beatTimerId = setTimeout(nextBeat, BEAT_MS);
+    }
+    nextBeat();
+  }
+
+  // ============================================
+  // 間奏アニメーション
+  // ============================================
+  var interludeActive = false;
+  var lastInterludeBeat = -1;
+
+  function startInterlude() {
+    interludeActive = true;
+    lastInterludeBeat = -1;
+    el.beatLabel.textContent = "\u5C0F\u4F11\u61A9\uFF01";
+    el.beatNumber.textContent = "";
+    el.beatOverlay.classList.remove("beat-hidden");
+  }
+
+  function stopInterlude() {
+    interludeActive = false;
+    el.beatOverlay.classList.add("beat-hidden");
+  }
+
+  function updateInterlude(currentTime) {
+    if (!interludeActive) return;
+    var absBeat = currentTime * 1000 / BEAT_MS + START_OFFSET_BEATS;
+    var currentBeat = Math.floor(absBeat);
+    if (currentBeat !== lastInterludeBeat) {
+      lastInterludeBeat = currentBeat;
+      var beatNum = (currentBeat % 4) + 1;
+      var circle = el.beatCircle;
+      circle.classList.remove("animate");
+      void circle.offsetWidth;
+      circle.classList.add("animate");
+      el.beatNumber.textContent = beatNum;
+      el.beatNumber.style.display = "";
+      el.beatLabel.textContent = "\u5C0F\u4F11\u61A9\uFF01";
+    }
+  }
+
+  // ============================================
+  // ゲーム制御
+  // ============================================
   function startGame() {
     buildQuiz();
     cursor = -1;
@@ -416,16 +519,22 @@
     el.questionCard.style.transition = "none";
     el.startOverlay.classList.remove("active");
 
+    hideBeat();
+
     if (!audio) initAudio();
     audio.currentTime = 0;
-    audio.play().then(function () {
-      isPlaying = true;
-      waitForQ(0);
-      if (animId) cancelAnimationFrame(animId);
-      loop();
-    }).catch(function () {
-      alert("\u97F3\u58F0\u30D5\u30A1\u30A4\u30EB\u306E\u8AAD\u307F\u8FBC\u307F\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002\n" + AUDIO_SRC + " \u304C\u914D\u7F6E\u3055\u308C\u3066\u3044\u308B\u304B\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002");
-      el.startOverlay.classList.add("active");
+
+    doCountIn(function () {
+      hideBeat();
+      audio.play().then(function () {
+        isPlaying = true;
+        waitForQ(0);
+        if (animId) cancelAnimationFrame(animId);
+        loop();
+      }).catch(function () {
+        alert("\u97F3\u58F0\u30D5\u30A1\u30A4\u30EB\u306E\u8AAD\u307F\u8FBC\u307F\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002\n" + AUDIO_SRC + " \u304C\u914D\u7F6E\u3055\u308C\u3066\u3044\u308B\u304B\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002");
+        el.startOverlay.classList.add("active");
+      });
     });
   }
 
@@ -442,6 +551,9 @@
     isPlaying = false;
     if (animId) { cancelAnimationFrame(animId); animId = null; }
     qActive = false;
+    hideBeat();
+    stopInterlude();
+    if (beatTimerId) { clearTimeout(beatTimerId); beatTimerId = null; }
     try { audio.pause(); } catch (e) {}
     showResult();
   }

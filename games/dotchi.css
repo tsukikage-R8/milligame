@@ -159,6 +159,59 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   overflow: hidden;
 }
 
+/* ===== Beat Overlay (count-in / interlude) ===== */
+#beat-overlay {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 5;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+#beat-overlay.beat-hidden { opacity: 0; }
+#beat-overlay:not(.beat-hidden) { opacity: 1; }
+
+#beat-circle {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 0; height: 0;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(133,130,251,0.2) 0%, rgba(133,130,251,0) 70%);
+  pointer-events: none;
+}
+#beat-circle.animate {
+  animation: beatExpand 0.4s ease-out forwards;
+}
+@keyframes beatExpand {
+  0% { width: 0; height: 0; opacity: 0.6; }
+  100% { width: 320px; height: 320px; opacity: 0; }
+}
+
+#beat-number {
+  font-size: 4rem;
+  font-weight: 900;
+  color: var(--primary);
+  text-shadow: 0 0 30px rgba(133,130,251,0.4);
+  z-index: 1;
+  line-height: 1;
+  animation: beatPop 0.3s ease-out;
+}
+@keyframes beatPop {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+#beat-label {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  z-index: 1;
+  margin-top: 8px;
+  animation: beatPop 0.3s ease-out;
+}
+
 /* ===== Timer Bar ===== */
 #timer-bar-track {
   width: 100%; max-width: 360px;
