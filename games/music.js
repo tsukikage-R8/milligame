@@ -415,9 +415,9 @@
 
   function shouldInclude(note) {
     var level = note.lvl || 0;
-    if (config.difficulty === "easy") return level <= 0;
-    if (config.difficulty === "normal") return level <= 1;
-    return true;
+    if (config.difficulty === "easy") return level === 0;
+    if (config.difficulty === "normal") return level === 1;
+    return level === 2;
   }
 
   // ============================================
@@ -1272,6 +1272,15 @@
     };
   }
 
+  function loadImage(src) {
+    return new Promise(function(resolve) {
+      var img = new Image();
+      img.onload = function() { resolve(img); };
+      img.onerror = function() { resolve(null); };
+      img.src = src;
+    });
+  }
+
   function generateShareImage() {
     var r = getResultForShare();
     if (!r) return Promise.reject("no result");
@@ -1281,130 +1290,152 @@
     var cvs = elShareCanvas;
     cvs.width = W * scale;
     cvs.height = H * scale;
-    var cx = cvs.getContext("2d");
-    cx.scale(scale, scale);
+    var ctx = cvs.getContext("2d");
+    ctx.scale(scale, scale);
 
-    // background (brighter)
-    var grad = cx.createLinearGradient(0, 0, 0, H);
-    grad.addColorStop(0, "#f5e6ff");
-    grad.addColorStop(1, "#e8d4f0");
-    cx.fillStyle = grad;
-    cx.fillRect(0, 0, W, H);
+    return loadImage("../images/rogo.png").then(function(rogoImg) {
+      // background
+      var grad = ctx.createLinearGradient(0, 0, 0, H);
+      grad.addColorStop(0, "#f5e6ff");
+      grad.addColorStop(1, "#e8d4f0");
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
 
-    // gold border
-    cx.shadowColor = "rgba(212,175,55,0.4)";
-    cx.shadowBlur = 20;
-    cx.strokeStyle = "#d4af37";
-    cx.lineWidth = 3;
-    cx.strokeRect(6, 6, W - 12, H - 12);
-    cx.shadowBlur = 0;
-    // inner gold line
-    cx.strokeStyle = "rgba(212,175,55,0.25)";
-    cx.lineWidth = 1;
-    cx.strokeRect(11, 11, W - 22, H - 22);
+      // gold border
+      ctx.shadowColor = "rgba(212,175,55,0.4)";
+      ctx.shadowBlur = 20;
+      ctx.strokeStyle = "#d4af37";
+      ctx.lineWidth = 3;
+      ctx.strokeRect(6, 6, W - 12, H - 12);
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = "rgba(212,175,55,0.25)";
+      ctx.lineWidth = 1;
+      ctx.strokeRect(11, 11, W - 22, H - 22);
 
-    // title
-    cx.fillStyle = "#4a2860";
-    cx.font = "bold 20px -apple-system, sans-serif";
-    cx.textAlign = "center";
-    cx.fillText(r.title, W / 2, 50);
+      // title
+      ctx.fillStyle = "#4a2860";
+      ctx.font = "bold 20px -apple-system, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      ctx.fillText(r.title, W / 2, 16);
 
-    // difficulty
-    cx.fillStyle = "rgba(45,27,78,0.35)";
-    cx.font = "11px -apple-system, sans-serif";
-    cx.fillText(r.difficulty, W / 2, 70);
+      // difficulty
+      ctx.fillStyle = "rgba(45,27,78,0.35)";
+      ctx.font = "11px -apple-system, sans-serif";
+      ctx.fillText(r.difficulty, W / 2, 42);
 
-    // rank badge
-    var rankSize = 64;
-    cx.shadowColor = r.rankColor;
-    cx.shadowBlur = 28;
-    cx.beginPath();
-    cx.arc(W / 2, 130, rankSize / 2, 0, Math.PI * 2);
-    cx.fillStyle = r.rankColor + "18";
-    cx.fill();
-    cx.strokeStyle = r.rankColor;
-    cx.lineWidth = 2.5;
-    cx.stroke();
-    cx.shadowBlur = 0;
-    cx.fillStyle = r.rankColor;
-    cx.font = "bold 32px -apple-system, sans-serif";
-    cx.textAlign = "center";
-    cx.textBaseline = "middle";
-    cx.fillText(r.rank, W / 2, 130);
+      // rank badge (like char image in diagnosis)
+      var rs = 72;
+      var rankCY = 76;
+      ctx.shadowColor = r.rankColor;
+      ctx.shadowBlur = 28;
+      ctx.beginPath();
+      ctx.arc(W / 2, rankCY + rs / 2, rs / 2, 0, Math.PI * 2);
+      ctx.fillStyle = r.rankColor + "18";
+      ctx.fill();
+      ctx.strokeStyle = r.rankColor;
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = r.rankColor;
+      ctx.font = "bold 36px -apple-system, sans-serif";
+      ctx.textBaseline = "middle";
+      ctx.fillText(r.rank, W / 2, rankCY + rs / 2);
 
-    // score
-    cx.textBaseline = "top";
-    cx.fillStyle = "#8582fb";
-    cx.font = "bold 28px -apple-system, sans-serif";
-    cx.fillText(r.score.toLocaleString(), W / 2, 175);
+      // score
+      var yPos = rankCY + rs + 12;
+      ctx.textBaseline = "top";
+      ctx.fillStyle = "#8582fb";
+      ctx.font = "bold 28px -apple-system, sans-serif";
+      ctx.fillText(r.score.toLocaleString(), W / 2, yPos);
+      ctx.fillStyle = "rgba(45,27,78,0.3)";
+      ctx.font = "12px -apple-system, sans-serif";
+      ctx.fillText("SCORE", W / 2, yPos + 32);
 
-    cx.fillStyle = "rgba(45,27,78,0.3)";
-    cx.font = "12px -apple-system, sans-serif";
-    cx.fillText("SCORE", W / 2, 207);
+      // bars
+      yPos += 56;
+      var barItems = [
+        { label: "ACCURACY", val: r.acc, suffix: "%", color: "#8582fb" },
+        { label: "MAX COMBO", val: r.maxCombo, suffix: "", color: "#dbbee1" }
+      ];
+      for (var bi = 0; bi < barItems.length; bi++) {
+        ctx.fillStyle = "rgba(45,27,78,0.7)";
+        ctx.textAlign = "left";
+        ctx.font = "13px -apple-system, sans-serif";
+        ctx.fillText(barItems[bi].label, 50, yPos);
+        ctx.textAlign = "right";
+        ctx.font = "bold 13px -apple-system, sans-serif";
+        ctx.fillText(String(barItems[bi].val) + barItems[bi].suffix, W - 50, yPos);
+        ctx.fillStyle = "rgba(45,27,78,0.12)";
+        ctx.fillRect(50, yPos + 17, W - 100, 4);
+        ctx.fillStyle = barItems[bi].color;
+        var bv = typeof barItems[bi].val === "number" ? barItems[bi].val : 0;
+        ctx.fillRect(50, yPos + 17, (W - 100) * Math.min(bv / 100, 1), 4);
+        yPos += 40;
+      }
 
-    // accuracy
-    cx.fillStyle = "#6b3f7a";
-    cx.font = "20px -apple-system, sans-serif";
-    cx.fillText("ACCURACY " + r.acc + "%", W / 2, 238);
+      // divider
+      ctx.strokeStyle = "rgba(45,27,78,0.1)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(40, yPos);
+      ctx.lineTo(W - 40, yPos);
+      ctx.stroke();
+      yPos += 10;
 
-    // divider line
-    cx.strokeStyle = "rgba(45,27,78,0.1)";
-    cx.lineWidth = 1;
-    cx.beginPath();
-    cx.moveTo(40, 268);
-    cx.lineTo(W - 40, 268);
-    cx.stroke();
+      // judge counts header
+      ctx.textBaseline = "top";
+      ctx.fillStyle = "rgba(45,27,78,0.6)";
+      ctx.font = "11px -apple-system, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("DETAILS", W / 2, yPos);
+      yPos += 18;
 
-    // judge counts
-    var y = 285;
-    cx.textAlign = "left";
-    cx.font = "14px -apple-system, sans-serif";
-    var items = [
-      { label: "PERFECT", color: "#8582fb", val: r.perfect },
-      { label: "GREAT", color: "#dbbee1", val: r.great },
-      { label: "GOOD", color: "#b794d4", val: r.good },
-      { label: "MISS", color: "rgba(45,27,78,0.3)", val: r.miss }
-    ];
-    for (var i = 0; i < items.length; i++) {
-      cx.fillStyle = "rgba(45,27,78,0.25)";
-      cx.fillText(items[i].label, 55, y);
-      cx.fillStyle = items[i].color;
-      cx.textAlign = "right";
-      cx.fillText(String(items[i].val), W - 55, y);
-      cx.textAlign = "left";
-      y += 26;
-    }
+      var items = [
+        { label: "PERFECT", color: "#8582fb", val: r.perfect },
+        { label: "GREAT", color: "#dbbee1", val: r.great },
+        { label: "GOOD", color: "#b794d4", val: r.good },
+        { label: "MISS", color: "rgba(45,27,78,0.3)", val: r.miss }
+      ];
+      for (var i = 0; i < items.length; i++) {
+        ctx.fillStyle = "rgba(45,27,78,0.25)";
+        ctx.textAlign = "left";
+        ctx.font = "14px -apple-system, sans-serif";
+        ctx.fillText(items[i].label, 55, yPos);
+        ctx.fillStyle = items[i].color;
+        ctx.textAlign = "right";
+        ctx.fillText(String(items[i].val), W - 55, yPos);
+        yPos += 24;
+      }
 
-    // max combo
-    cx.fillStyle = "rgba(45,27,78,0.25)";
-    cx.textAlign = "center";
-    cx.font = "14px -apple-system, sans-serif";
-    cx.fillText("MAX COMBO", W / 2, y + 8);
-    cx.fillStyle = "#2d1b4e";
-    cx.font = "bold 18px -apple-system, sans-serif";
-    cx.fillText(String(r.maxCombo), W / 2, y + 32);
+      // best
+      yPos += 4;
+      if (r.isNewBest) {
+        ctx.fillStyle = "#fbbf24";
+        ctx.font = "bold 14px -apple-system, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("NEW BEST!", W / 2, yPos);
+      } else {
+        ctx.fillStyle = "rgba(45,27,78,0.3)";
+        ctx.font = "12px -apple-system, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("BEST " + r.bestScore.toLocaleString(), W / 2, yPos);
+      }
 
-    // best
-    y = y + 60;
-    if (r.isNewBest) {
-      cx.fillStyle = "#fbbf24";
-      cx.font = "bold 16px -apple-system, sans-serif";
-      cx.fillText("NEW BEST!", W / 2, y);
-    } else {
-      cx.fillStyle = "rgba(45,27,78,0.3)";
-      cx.font = "13px -apple-system, sans-serif";
-      cx.fillText("BEST " + r.bestScore.toLocaleString(), W / 2, y);
-    }
+      // logo at bottom
+      if (rogoImg && rogoImg.width > 0 && rogoImg.height > 0) {
+        var rogoW = 90;
+        var rogoH = rogoW * rogoImg.height / rogoImg.width;
+        var rogoX = (W - rogoW) / 2;
+        var rogoY = H - rogoH - 8;
+        ctx.drawImage(rogoImg, rogoX, rogoY, rogoW, rogoH);
+      }
 
-    // brand
-    cx.fillStyle = "rgba(90,87,212,0.4)";
-    cx.font = "11px -apple-system, sans-serif";
-    cx.fillText("Milli Pulse", W / 2, H - 20);
-
-    return new Promise(function (resolve) {
-      cvs.toBlob(function (blob) {
-        resolve(blob);
-      }, "image/png");
+      return new Promise(function (resolve) {
+        cvs.toBlob(function (blob) {
+          resolve(blob);
+        }, "image/png");
+      });
     });
   }
 

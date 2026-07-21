@@ -385,26 +385,31 @@ CHARTS.princess_viral = (function () {
   // ========================================
   // HARDモード追加ノーツ（lvl: 2）
   // ========================================
-  // Chorus A 密度追加
+  // Chorus A 密度追加（16分・32分混在）
   push(bar(19) + beat(0.75), 1, "tap", 0, 2);
   push(bar(19) + beat(1.25), 3, "tap", 0, 2);
   push(bar(19) + beat(2.5), 0, "tap", 0, 2);
   push(bar(20) + beat(0.75), 2, "tap", 0, 2);
   push(bar(20) + beat(2.5), 1, "tap", 0, 2);
-  push(bar(21) + beat(1.25), 0, "tap", 0, 2);
-  push(bar(21) + beat(2.5), 3, "tap", 0, 2);
+  push(bar(21) + beat(0.125), 0, "tap", 0, 2);
+  push(bar(21) + beat(0.375), 0, "tap", 0, 2);
+  push(bar(21) + beat(1.25), 3, "tap", 0, 2);
+  push(bar(21) + beat(2.5), 0, "tap", 0, 2);
   push(bar(22) + beat(0.75), 1, "tap", 0, 2);
   push(bar(22) + beat(2.5), 0, "tap", 0, 2);
   push(bar(23) + beat(1.25), 3, "tap", 0, 2);
-  // Chorus B 密度追加
+  push(bar(23) + beat(2.75), 1, "tap", 0, 2);
+  // Chorus B 密度追加（3連符調・32分）
   push(bar(30) + beat(0.75), 1, "tap", 0, 2);
   push(bar(30) + beat(2.5), 0, "tap", 0, 2);
-  push(bar(31) + beat(0.75), 2, "tap", 0, 2);
+  push(bar(31) + beat(0.333), 2, "tap", 0, 2);
+  push(bar(31) + beat(0.667), 2, "tap", 0, 2);
   push(bar(31) + beat(2.5), 3, "tap", 0, 2);
   push(bar(34) + beat(0.75), 1, "tap", 0, 2);
   push(bar(34) + beat(2.5), 0, "tap", 0, 2);
   push(bar(35) + beat(1.25), 2, "tap", 0, 2);
   push(bar(35) + beat(2.5), 1, "tap", 0, 2);
+  push(bar(35) + beat(2.875), 3, "tap", 0, 2);
   // Chorus C 密度追加
   push(bar(40) + beat(0.75), 1, "tap", 0, 2);
   push(bar(40) + beat(2.5), 0, "tap", 0, 2);
@@ -412,11 +417,17 @@ CHARTS.princess_viral = (function () {
   push(bar(44) + beat(2.5), 1, "tap", 0, 2);
   push(bar(45) + beat(1.25), 0, "tap", 0, 2);
   push(bar(45) + beat(2.5), 3, "tap", 0, 2);
-  // Final Chorus 密度追加
+  // Final Chorus 密度追加（32分ラッシュ）
   push(bar(52) + beat(0.75), 1, "tap", 0, 2);
   push(bar(52) + beat(2.5), 0, "tap", 0, 2);
+  push(bar(53) + beat(0.125), 3, "tap", 0, 2);
+  push(bar(53) + beat(0.375), 3, "tap", 0, 2);
+  push(bar(53) + beat(2.5), 2, "tap", 0, 2);
   push(bar(56) + beat(0.75), 2, "tap", 0, 2);
   push(bar(56) + beat(2.5), 1, "tap", 0, 2);
+  push(bar(57) + beat(0.125), 0, "tap", 0, 2);
+  push(bar(57) + beat(0.375), 0, "tap", 0, 2);
+  push(bar(57) + beat(2.5), 3, "tap", 0, 2);
 
   // ========================================
   // ENDING (bar 60-61) フィニッシュ
@@ -460,9 +471,8 @@ CHARTS.princess_viral = (function () {
 
     【基本のルール】
       push(時間, レーン, 種類, 長さ, 難易度)
-      例）10小節目の2拍目、レーン1、通常ノーツ、Easy〜Hard全て
-        push(bar(10) + beat(2), 1, "tap");
-        ※第4引数以降は省略可能
+      例）10小節目の2拍目、レーン1、通常ノーツ、Easyのみ
+        push(bar(10) + beat(2), 1, "tap", 0, 0);
 
       例）10小節目の2拍目、レーン1、通常ノーツ、Hardのみ
         push(bar(10) + beat(2), 1, "tap", 0, 2);
@@ -470,28 +480,31 @@ CHARTS.princess_viral = (function () {
     【時間の書き方】
       bar(小節番号) + beat(拍)
       beat(0)〜beat(3) = 4拍子の各拍
-      beat(1.5) = 裏拍（8分音符）
-      beat(0.75) = 16分音符
+      beat(0.5) = 8分音符（裏拍）
+      beat(0.25) = 16分音符
+      beat(0.125) = 32分音符
+      beat(1/3) = 3連符（好きな小数が使えます）
 
     【ノーツの種類】
       "tap"   : 通常（シングルタップ）
       "hold"  : 長押し（第4引数に長さを秒で指定）
-      "tap" : フリック（矢印付き）
 
-    【難易度レベル（第5引数）】
-      省略       → 自動で強拍=lvl0 / 弱拍=lvl1 に振り分け
-      0          → Easy / Normal / Hard すべてに出る（強制）
-      1          → Normal / Hard のみ（強制）
+    【難易度レベル（第5引数 lvl）】
+      省略       → 自動で強拍=lvl0(Easy) / 弱拍=lvl1(Normal) に振り分け
+      0          → Easy のみ
+      1          → Normal のみ
       2          → Hard のみ
 
     【タイミング調整】
       ノーツが曲より早い → 時間の値を大きく（+0.05ずつ）
       ノーツが曲より遅い → 時間の値を小さく（-0.05ずつ）
 
-    【lvlを手動で固定したい場合】
-      自動振り分けをさせず、特定の難易度だけに出すには第5引数を明示:
-        push(bar(5) + beat(0), 0, "tap", 0, 0);  // 強制的に全難易度
-        push(bar(5) + beat(1), 1, "tap", 0, 1);  // Normal〜Hardのみ
-        push(bar(5) + beat(1), 1, "tap", 0, 2);  // Hardのみ
+    【拍のバリエーション】
+      beat(0)     = 表拍
+      beat(0.5)   = 8分裏拍
+      beat(0.25)  = 16分
+      beat(0.125) = 32分
+      beat(0.75)  = 16分（3拍目の裏）
+      好きな小数を使ってリズムを表現できます。
   */
 })();

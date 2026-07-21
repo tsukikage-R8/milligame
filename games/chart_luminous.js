@@ -9,15 +9,23 @@
      push(t, l, type, dur, lvl)
      t  = タイムスタンプ（秒）。曲開始からの経過秒
      l  = レーン番号（0=左端, 1, 2, 3=右端）
-     type = "tap"(通常) / "hold"(長押し) / "tap"(フリック)
-     dur = holdの場合の長さ（秒）。tap/flickは0
-     lvl = 難易度レベル（0:全難易度 / 1:Normal〜Hard / 2:Hardのみ）
+     type = "tap"(通常) / "hold"(長押し)
+     dur = holdの場合の長さ（秒）。tapは0
+     lvl = 難易度レベル（0:Easyのみ / 1:Normalのみ / 2:Hardのみ）
 
    時間の計算方法:
      1小節 = 4拍, BPM 170 → 1拍 = 60/170 ≈ 0.353秒
      beat(n) = n拍目の秒数
      bar(n)  = n小節目の先頭の秒数
      例: 8小節目の2拍目 = bar(8) + beat(2)
+
+   拍のバリエーション:
+     beat(0)     = 表拍
+     beat(0.5)   = 8分裏拍
+     beat(0.25)  = 16分
+     beat(0.125) = 32分
+     beat(0.75)  = 16分（3拍目の裏）
+     好きな小数を使ってリズムを表現できます。
 
    ノーツ追加の流れ:
      1. 曲を聴きながら、譜面を追加したいタイミングの秒数を計測
@@ -162,7 +170,7 @@ CHARTS.luminous = (function () {
   push(bar(19) + beat(2), 1, "hold", beat(1), 1);
   push(bar(19) + beat(3), 3, "tap", 0, 0);
 
-  // HD: 16分パターン
+  // HD: 16分・32分パターン
   push(bar(16) + beat(0.5), 1, "tap", 0, 2);
   push(bar(16) + beat(1.5), 3, "tap", 0, 2);
   push(bar(17) + beat(0.5), 2, "tap", 0, 2);
@@ -199,7 +207,7 @@ CHARTS.luminous = (function () {
   push(bar(23) + beat(2), 0, "tap", 0, 0);
   push(bar(23) + beat(3), 2, "tap", 0, 1);
 
-  // HD: 密度追加 bar 20-23
+  // HD: 密度追加 bar 20-23（16分・32分混在）
   push(bar(20) + beat(0.75), 0, "tap", 0, 2);
   push(bar(20) + beat(2.5), 1, "tap", 0, 2);
   push(bar(21) + beat(0.75), 2, "tap", 0, 2);
@@ -209,6 +217,9 @@ CHARTS.luminous = (function () {
   push(bar(23) + beat(0.5), 2, "tap", 0, 2);
   push(bar(23) + beat(1.5), 1, "tap", 0, 2);
   push(bar(23) + beat(2.5), 3, "tap", 0, 2);
+  // 32分追加
+  push(bar(21) + beat(0.125), 0, "tap", 0, 2);
+  push(bar(21) + beat(0.375), 0, "tap", 0, 2);
 
   // bar 24 (repeat pattern)
   push(bar(24) + beat(0), 0, "tap", 0, 0);
@@ -236,7 +247,7 @@ CHARTS.luminous = (function () {
   push(bar(27) + beat(2), 2, "tap", 0, 0);
   push(bar(27) + beat(3), 0, "tap", 0, 1);
 
-  // HD: 16分追加 bar 24-27
+  // HD: 16分・32分追加 bar 24-27
   push(bar(24) + beat(0.75), 1, "tap", 0, 2);
   push(bar(24) + beat(2.5), 3, "tap", 0, 2);
   push(bar(25) + beat(0.75), 2, "tap", 0, 2);
@@ -324,16 +335,20 @@ CHARTS.luminous = (function () {
   push(bar(39) + beat(1), 3, "tap", 0, 1);
   push(bar(39) + beat(2), 2, "tap", 0, 1);
 
-  // HD: 16分ラッシュ bar 32-39
+  // HD: 16分・32分ラッシュ bar 32-39（3連符調も追加）
   push(bar(32) + beat(0.75), 0, "tap", 0, 2);
   push(bar(32) + beat(2.5), 1, "tap", 0, 2);
   push(bar(33) + beat(0.75), 2, "tap", 0, 2);
   push(bar(33) + beat(2.5), 3, "tap", 0, 2);
+  push(bar(33) + beat(0.125), 1, "tap", 0, 2);
+  push(bar(33) + beat(0.375), 1, "tap", 0, 2);
   push(bar(34) + beat(0.75), 1, "tap", 0, 2);
   push(bar(34) + beat(2.5), 2, "tap", 0, 2);
   push(bar(35) + beat(0.5), 0, "tap", 0, 2);
   push(bar(35) + beat(1.5), 1, "tap", 0, 2);
   push(bar(35) + beat(2.5), 3, "tap", 0, 2);
+  push(bar(36) + beat(0.125), 0, "tap", 0, 2);
+  push(bar(36) + beat(0.375), 0, "tap", 0, 2);
   push(bar(36) + beat(2.5), 0, "tap", 0, 2);
   push(bar(37) + beat(2.5), 1, "tap", 0, 2);
   push(bar(38) + beat(0.5), 2, "tap", 0, 2);
@@ -393,41 +408,4 @@ CHARTS.luminous = (function () {
     duration: 93,
     notes: notes
   };
-
-  /*
-    ===== 自分でノーツを編集する方法 =====
-
-    【基本のルール】
-      push(時間, レーン, 種類, 長さ, 難易度)
-      例）10小節目の2拍目、レーン1、通常ノーツ
-        push(bar(10) + beat(2), 1, "tap");
-        ※ 第5引数を省略すると lvl=0（全難易度）
-
-      例）10小節目の2拍目、レーン1、通常ノーツ、Hardのみ
-        push(bar(10) + beat(2), 1, "tap", 0, 2);
-
-    【時間の書き方】
-      bar(小節番号) + beat(拍)
-      beat(0)〜beat(3) = 4拍子の各拍
-      beat(1.5) = 裏拍（8分音符）
-
-    【ノーツの種類】
-      "tap"   : 通常（シングルタップ）
-      "hold"  : 長押し（第4引数に長さを秒で指定）
-      "tap" : フリック（矢印付き）
-
-    【難易度レベル（第5引数 lvl）】
-      0 = Easy / Normal / Hard すべてに出る
-      1 = Normal / Hard のみ
-      2 = Hard のみ
-
-    【タイミング調整】
-      ノーツが曲より早い → t を大きく（+0.05ずつ試す）
-      ノーツが曲より遅い → t を小さく（-0.05ずつ試す）
-
-    【譜面の構造】
-      bar(n) = n小節目の先頭
-      beat(n) = 小節内のn拍目（0始まり, 0〜3）
-      beat(1.5) で裏拍にも配置可能
-  */
 })();
