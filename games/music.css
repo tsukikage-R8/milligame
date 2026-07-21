@@ -516,6 +516,19 @@ body {
   border-color: #8582fb;
 }
 
+.game-logo {
+  height: 20px;
+  width: auto;
+  vertical-align: middle;
+}
+.game-logo-banner {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  margin: 0 auto 10px;
+  display: block;
+}
+
 /* ===== 曲選択 ===== */
 #song-list {
   display: flex;

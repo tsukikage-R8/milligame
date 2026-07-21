@@ -176,7 +176,7 @@ const games = [
     id: 8,
     title: "Milli Pulse",
     description: "ミリプロの音楽を、リズムに乗せて楽しもう。\n\nお気に入りの楽曲をプレイして、最高スコアを目指そう。\n刻んだリズムと積み重ねたスコアが、あなたの「推し活」の記録になる。\n\n音楽を聴く。\nリズムを刻む。\n推しへの想いを、Pulseに。",
-    image: "https://picsum.photos/seed/rhythm/400/250",
+    image: "images/games/Milli Pulse.PNG",
     points: 150,
     exp: "x1.3",
     tags: ["おすすめ", "新着"],
@@ -206,11 +206,21 @@ const games = [
     id: 3,
     title: "Milli Spectrum",
     description: "20の質問で、あなたの中にあるミリプロの色を見つけよう。",
-    image: "https://picsum.photos/seed/diagnosis/400/250",
+    image: "images/games/Milli Spectrum.PNG",
     points: 0,
     exp: "-",
     tags: ["診断", "新着"],
     link: "games/diagnosis.html"
+  },
+  {
+    id: 4,
+    title: "どっちクイズ",
+    description: "音ノ乃ののの曲に合わせて二択クイズに即答せよ！\n\n曲のリズムに乗せて表示されるミリプロクイズ。\n制限時間内に正解してコンボを繋げ！\n\n速さと正確さ、どちらも求められる新感覚クイズゲーム。",
+    image: "https://picsum.photos/seed/dotchi/400/250",
+    points: 100,
+    exp: "x1.2",
+    tags: ["おすすめ", "新着"],
+    link: "games/dotchi.html"
   }
 ];
 
