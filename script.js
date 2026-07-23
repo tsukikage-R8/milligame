@@ -183,6 +183,16 @@ const games = [
     link: "games/music.html"
   },
   {
+    id: 5,
+    title: "2048",
+    description: "数字を合わせて2048を目指すパズルゲーム。\n\nスワイプして同じ数字を重ね、タイルをどんどん大きくしよう。\n2048に到達したらあなたの勝ち！\n\nシンプルだけど奥深い、定番パズル。",
+    image: "https://picsum.photos/seed/2048game/400/250",
+    points: 100,
+    exp: "x1.2",
+    tags: ["おすすめ", "新着"],
+    link: "games/2048.html"
+  },
+  {
     id: 1,
     title: "爆弾回避マスター",
     description: "落下してくる爆弾を避けながらコインを集めるアクションゲーム。時間とともに難易度が上昇！",
