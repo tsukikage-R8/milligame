@@ -145,6 +145,8 @@
   var ytPlayer = null;
   var ytReady = false;
   var ytPlaying = false;
+  var pendingPlay = false;
+  var pendingSeekTo = 0;
   var questions = [];
   var cursor = -1;
   var score = 0;
@@ -231,10 +233,19 @@
         showinfo: 0,
         iv_load_policy: 3,
         fs: 0,
-        playsinline: 1
+        playsinline: 1,
+        mute: 1
       },
       events: {
-        onReady: function () { ytReady = true; },
+        onReady: function () {
+          ytReady = true;
+          // If startGame already queued a play, execute it now
+          if (pendingPlay) {
+            ytPlayer.seekTo(pendingSeekTo, true);
+            ytPlayer.playVideo();
+            pendingPlay = false;
+          }
+        },
         onStateChange: function (e) {
           if (e.data === YT.PlayerState.PLAYING) { ytPlaying = true; }
           if (e.data === YT.PlayerState.ENDED) { endGame(); }
@@ -570,13 +581,18 @@
     var countInBeats = 6;
     var countInSec = countInBeats * BEAT_MS / 1000;
 
-    if (!ytPlayer) { initYTPlayer(); }
-    else { ytPlayer.loadVideoById(selectedVideoId, 0); }
+    if (!ytPlayer) {
+      pendingSeekTo = countInSec;
+      pendingPlay = true;
+      initYTPlayer();
+    } else {
+      ytPlayer.loadVideoById(selectedVideoId, 0);
+      ytPlayer.seekTo(countInSec, true);
+      ytPlayer.playVideo();
+    }
 
     doCountIn(function () {
       hideBeat();
-      ytPlayer.seekTo(countInSec, true);
-      ytPlayer.playVideo();
       isPlaying = true;
       waitForQ(0);
       if (animId) cancelAnimationFrame(animId);
