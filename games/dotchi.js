@@ -16,7 +16,17 @@
   POINTS[D.I] = 200;
   POINTS[D.A] = 300;
 
-  var AUDIO_SRC = "audio/\u3069\u3063\u3061\uff01\uff1f_inst.wav";
+  var YT_VIDEOS = {
+    nono: "VfZaDBPnzqs",
+    rako: "fHaRxiDVCjE",
+    koma: "NAoBxWcJAG0"
+  };
+  var YT_VIDEO_NAMES = {
+    VfZaDBPnzqs: "\u97F3\u30CE\u4E43\u306E\u306E",
+    fHaRxiDVCjE: "\u97F3\u30CE\u702C\u3089\u3053",
+    NAoBxWcJAG0: "\u5C0F\u5EC1\u3053\u307E"
+  };
+  var selectedVideoId = "VfZaDBPnzqs";
 
   // ============================================
   // 9つの出題スロット
@@ -132,7 +142,9 @@
   // ============================================
   // 状態
   // ============================================
-  var audio = null;
+  var ytPlayer = null;
+  var ytReady = false;
+  var ytPlaying = false;
   var questions = [];
   var cursor = -1;
   var score = 0;
@@ -199,15 +211,44 @@
   }
 
   // ============================================
-  // オーディオ
+  // YouTube Player
   // ============================================
-  function initAudio() {
-    audio = new Audio(AUDIO_SRC);
-    audio.preload = "auto";
+  function initYTPlayer() {
+    if (typeof YT === "undefined" || !YT.Player) {
+      setTimeout(initYTPlayer, 200);
+      return;
+    }
+    if (ytPlayer) { ytPlayer.destroy(); }
+    ytPlayer = new YT.Player("yt-player", {
+      videoId: selectedVideoId,
+      width: 640,
+      height: 360,
+      playerVars: {
+        autoplay: 0,
+        controls: 0,
+        modestbranding: 1,
+        rel: 0,
+        showinfo: 0,
+        iv_load_policy: 3,
+        fs: 0,
+        playsinline: 1
+      },
+      events: {
+        onReady: function () { ytReady = true; },
+        onStateChange: function (e) {
+          if (e.data === YT.PlayerState.PLAYING) { ytPlaying = true; }
+          if (e.data === YT.PlayerState.ENDED) { endGame(); }
+        }
+      }
+    });
   }
 
   function getAudioTime() {
-    try { return audio ? audio.currentTime : 0; } catch (e) { return 0; }
+    try { return ytPlayer && ytPlaying ? ytPlayer.getCurrentTime() : 0; } catch (e) { return 0; }
+  }
+
+  function getDuration() {
+    try { return ytPlayer ? ytPlayer.getDuration() : 0; } catch (e) { return 0; }
   }
 
   // ============================================
@@ -508,6 +549,7 @@
     diffResult[D.I] = { total: 0, correct: 0 };
     diffResult[D.A] = { total: 0, correct: 0 };
     isPlaying = false; qActive = false; qDone = false;
+    ytPlaying = false;
 
     el.scoreDisplay.textContent = "0";
     el.comboDisplay.textContent = "0";
@@ -521,28 +563,27 @@
 
     hideBeat();
 
-    if (!audio) initAudio();
-    audio.currentTime = 0;
+    // Get selected singer
+    var checked = document.querySelector('input[name="singer"]:checked');
+    if (checked) { selectedVideoId = checked.value; }
+
+    if (!ytPlayer) { initYTPlayer(); }
+    else { ytPlayer.loadVideoById(selectedVideoId, 0); }
 
     doCountIn(function () {
       hideBeat();
-      audio.play().then(function () {
-        isPlaying = true;
-        waitForQ(0);
-        if (animId) cancelAnimationFrame(animId);
-        loop();
-      }).catch(function () {
-        alert("\u97F3\u58F0\u30D5\u30A1\u30A4\u30EB\u306E\u8AAD\u307F\u8FBC\u307F\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002\n" + AUDIO_SRC + " \u304C\u914D\u7F6E\u3055\u308C\u3066\u3044\u308B\u304B\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002");
-        el.startOverlay.classList.add("active");
-      });
+      ytPlayer.playVideo();
+      isPlaying = true;
+      waitForQ(0);
+      if (animId) cancelAnimationFrame(animId);
+      loop();
     });
   }
 
   function checkEnd() {
     if (!isPlaying) return;
     var t = getAudioTime();
-    var dur = 0;
-    try { dur = audio.duration; } catch (e) {}
+    var dur = getDuration();
     if (dur > 0 && t >= dur - 0.3) { endGame(); }
     else { setTimeout(checkEnd, 100); }
   }
@@ -554,7 +595,7 @@
     hideBeat();
     stopInterlude();
     if (beatTimerId) { clearTimeout(beatTimerId); beatTimerId = null; }
-    try { audio.pause(); } catch (e) {}
+    try { if (ytPlayer) { ytPlayer.pauseVideo(); } } catch (e) {}
     showResult();
   }
 
@@ -621,7 +662,7 @@
   function retry() {
     el.resultOverlay.classList.remove("active");
     el.startOverlay.classList.add("active");
-    if (audio) { try { audio.pause(); } catch (e) {} audio.currentTime = 0; }
+    if (ytPlayer) { try { ytPlayer.pauseVideo(); } catch (e) {} }
   }
 
   // ============================================

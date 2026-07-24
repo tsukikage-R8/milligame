@@ -33,6 +33,23 @@
           <span>🎮 A / ← で左の選択肢</span>
           <span>🎮 D / → で右の選択肢</span>
         </div>
+        <div class="singer-select">
+          <span class="singer-label">歌唱バージョン</span>
+          <div class="singer-options">
+            <label class="singer-option" data-video="VfZaDBPnzqs">
+              <input type="radio" name="singer" value="VfZaDBPnzqs" checked>
+              <span class="singer-name">音ノ乃のの</span>
+            </label>
+            <label class="singer-option" data-video="fHaRxiDVCjE">
+              <input type="radio" name="singer" value="fHaRxiDVCjE">
+              <span class="singer-name">音ノ瀬らこ</span>
+            </label>
+            <label class="singer-option" data-video="NAoBxWcJAG0">
+              <input type="radio" name="singer" value="NAoBxWcJAG0">
+              <span class="singer-name">小廻こま</span>
+            </label>
+          </div>
+        </div>
         <button id="btn-start" class="btn-start">スタート</button>
       </div>
     </div>
@@ -46,6 +63,9 @@
       </div>
 
       <div id="play-area">
+        <div id="yt-player-wrap">
+          <div id="yt-player"></div>
+        </div>
         <div id="timer-bar-track">
           <div id="timer-bar-fill"></div>
         </div>
@@ -111,5 +131,6 @@
   <canvas id="share-canvas" style="display:none"></canvas>
 
   <script src="dotchi.js"></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
