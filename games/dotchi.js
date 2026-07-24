@@ -7,7 +7,7 @@
   var BPM = 148;
   var BEAT_MS = 60000 / BPM;
   var BEATS_PER_BAR = 4;
-  var START_OFFSET_BEATS = 2;
+  var START_OFFSET_BEATS = -2;
 
   var D = { B: "beginner", I: "intermediate", A: "advanced" };
 
