@@ -163,6 +163,8 @@
   var timerStart = 0;
   var timerDur = 0;
   var lastResult = null;
+  var pendingSeekTo = 0;
+  var pendingPlay = false;
 
   // ============================================
   // ユーティリティ
