@@ -241,13 +241,15 @@
       height: 360,
       playerVars: {
         autoplay: 0,
-        controls: 0,
+        controls: 1,
         modestbranding: 1,
         rel: 0,
         showinfo: 0,
         iv_load_policy: 3,
         fs: 0,
-        playsinline: 1
+        playsinline: 1,
+        enablejsapi: 1,
+        origin: window.location.origin
       },
       events: {
         onReady: function () {
@@ -592,26 +594,23 @@
 
     var countInSec = 0;
 
-    if (!ytPlayer) {
-      pendingSeekTo = countInSec;
-      pendingPlay = false;
-      initYTPlayer();
-    } else {
+    if (ytPlayer) {
       ytPlayer.cueVideoById(selectedVideoId);
+    }
+
+    // Start video immediately within user gesture (required for mobile)
+    if (ytPlayer && ytReady) {
+      ytPlayer.seekTo(countInSec, true);
+      ytPlayer.playVideo();
+    } else {
+      pendingSeekTo = countInSec;
+      pendingPlay = true;
+      if (!ytPlayer) { initYTPlayer(); }
     }
 
     doCountIn(function () {
       hideBeat();
       isPlaying = true;
-
-      if (ytPlayer && ytReady) {
-        ytPlayer.seekTo(countInSec, true);
-        ytPlayer.playVideo();
-      } else {
-        pendingSeekTo = countInSec;
-        pendingPlay = true;
-      }
-
       waitForQ(0);
       if (animId) cancelAnimationFrame(animId);
       loop();
@@ -892,6 +891,9 @@
   el.btnRetry.addEventListener("click", retry);
   el.btnSave.addEventListener("click", handleSave);
   el.btnX.addEventListener("click", handlePostX);
+
+  // Pre-init player so it's ready when user clicks start (required for mobile)
+  setTimeout(function () { initYTPlayer(); }, 0);
 
   el.questionCard.style.opacity = "0";
   el.questionCard.style.transform = "scale(0.9)";

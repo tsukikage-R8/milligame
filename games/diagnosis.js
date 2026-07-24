@@ -650,10 +650,10 @@ function generateShareImage() {
 
   return Promise.all([
     loadImage('../images/talents/' + r.image),
-    loadImage('../images/rogo.png')
+    loadImage('../images/games/icon/Milli Spectrum-icon.png')
   ]).then(function(images) {
     var talentImg = images[0];
-    var rogoImg = images[1];
+    var iconImg = images[1];
 
     var bgColor = (TYPE_COLORS[r.type] || ['#b0e2ef'])[0];
     ctx.fillStyle = bgColor;
@@ -762,12 +762,12 @@ function generateShareImage() {
       yPos += 32;
     }
 
-    if (rogoImg && rogoImg.width > 0 && rogoImg.height > 0) {
-      var rogoW = 90;
-      var rogoH = rogoW * rogoImg.height / rogoImg.width;
-      var rogoX = (W - rogoW) / 2;
-      var rogoY = H - rogoH - 8;
-      ctx.drawImage(rogoImg, rogoX, rogoY, rogoW, rogoH);
+    if (iconImg && iconImg.width > 0 && iconImg.height > 0) {
+      var iconW = 90;
+      var iconH = iconW * iconImg.height / iconImg.width;
+      var iconX = (W - iconW) / 2;
+      var iconY = H - iconH - 8;
+      ctx.drawImage(iconImg, iconX, iconY, iconW, iconH);
     }
 
     return new Promise(function(resolve) {

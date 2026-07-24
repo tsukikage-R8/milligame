@@ -1293,7 +1293,7 @@
     var ctx = cvs.getContext("2d");
     ctx.scale(scale, scale);
 
-    return loadImage("../images/rogo.png").then(function(rogoImg) {
+    return loadImage("../images/games/icon/Milli Pulse -icon.png").then(function(iconImg) {
       // background
       var grad = ctx.createLinearGradient(0, 0, 0, H);
       grad.addColorStop(0, "#f5e6ff");
@@ -1422,13 +1422,13 @@
         ctx.fillText("BEST " + r.bestScore.toLocaleString(), W / 2, yPos);
       }
 
-      // logo at bottom
-      if (rogoImg && rogoImg.width > 0 && rogoImg.height > 0) {
-        var rogoW = 90;
-        var rogoH = rogoW * rogoImg.height / rogoImg.width;
-        var rogoX = (W - rogoW) / 2;
-        var rogoY = H - rogoH - 8;
-        ctx.drawImage(rogoImg, rogoX, rogoY, rogoW, rogoH);
+      // icon at bottom
+      if (iconImg && iconImg.width > 0 && iconImg.height > 0) {
+        var iconW = 90;
+        var iconH = iconW * iconImg.height / iconImg.width;
+        var iconX = (W - iconW) / 2;
+        var iconY = H - iconH - 8;
+        ctx.drawImage(iconImg, iconX, iconY, iconW, iconH);
       }
 
       return new Promise(function (resolve) {
