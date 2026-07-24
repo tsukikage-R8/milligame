@@ -224,9 +224,9 @@ const games = [
   },
   {
     id: 4,
-    title: "どっちクイズ",
+    title: "Milli Choice",
     description: "音ノ乃ののの曲に合わせて二択クイズに即答せよ！\n\n曲のリズムに乗せて表示されるミリプロクイズ。\n制限時間内に正解してコンボを繋げ！\n\n速さと正確さ、どちらも求められる新感覚クイズゲーム。",
-    image: "https://picsum.photos/seed/dotchi/400/250",
+    image: "images/games/icon/Milli Choice-icon.png",
     points: 100,
     exp: "x1.2",
     tags: ["おすすめ", "新着"],

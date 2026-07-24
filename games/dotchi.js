@@ -658,7 +658,7 @@
     try {
       var h = JSON.parse(localStorage.getItem("milliGames_history") || "[]");
       h.unshift({
-        game: "\u3069\u3063\u3061\u30AF\u30A4\u30BA",
+        game: "Milli Choice",
         date: new Date().toISOString(),
         score: data.score, accuracy: data.accuracy,
         rank: data.rank, maxCombo: data.maxCombo
@@ -682,12 +682,12 @@
   // ============================================
   function getXText() {
     if (!lastResult) return "";
-    return "\uD83E\uDD14 \u3069\u3063\u3061\u30AF\u30A4\u30BA \u3092\u30D7\u30EC\u30A4\uFF01\n" +
+    return "\uD83E\uDD14 Milli Choice \u3092\u30D7\u30EC\u30A4\uFF01\n" +
       "\u30B9\u30B3\u30A2: " + lastResult.score + "\n" +
       "\u6B63\u89E3\u7387: " + lastResult.accuracy + "%\n" +
       "\u30E9\u30F3\u30AF: " + lastResult.rank + "\n" +
       "\u6700\u5927\u30B3\u30F3\u30DC: " + lastResult.maxCombo + "\n" +
-      "#\u3069\u3063\u3061\u30AF\u30A4\u30BA #\u30DF\u30EA\u30D7\u30ED #MilliGames\n" +
+      "#MilliChoice #\u30DF\u30EA\u30D7\u30ED #MilliGames\n" +
       "https://milli-games.onrender.com/games/dotchi.html";
   }
 
@@ -709,7 +709,7 @@
     var ctx = c.getContext("2d");
     ctx.scale(s, s);
 
-    return loadImage("../images/rogo.png").then(function (rogoImg) {
+    return loadImage("../images/games/rogo/Milli Choice-rogo.png").then(function (rogoImg) {
       // background
       var g = ctx.createLinearGradient(0, 0, 0, H);
       g.addColorStop(0, "#f5e6ff"); g.addColorStop(1, "#e8d4f0");
@@ -758,7 +758,7 @@
       ctx.textAlign = "center"; ctx.textBaseline = "top";
       ctx.fillStyle = "#4a2860";
       ctx.font = "bold 18px -apple-system, sans-serif";
-      ctx.fillText("\u3069\u3063\u3061\u30AF\u30A4\u30BA", cx + rightW / 2, 20);
+      ctx.fillText("Milli Choice", cx + rightW / 2, 20);
 
       // rank
       var rs = 64, rCY = 48;
@@ -847,7 +847,7 @@
     generateShareImage().then(function (blob) {
       var url = URL.createObjectURL(blob);
       var a = document.createElement("a");
-      a.href = url; a.download = "dotchi_result.png";
+      a.href = url; a.download = "milli_choice_result.png";
       document.body.appendChild(a); a.click();
       document.body.removeChild(a); URL.revokeObjectURL(url);
     });
