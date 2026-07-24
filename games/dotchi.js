@@ -567,11 +567,15 @@
     var checked = document.querySelector('input[name="singer"]:checked');
     if (checked) { selectedVideoId = checked.value; }
 
+    var countInBeats = 6;
+    var countInSec = countInBeats * BEAT_MS / 1000;
+
     if (!ytPlayer) { initYTPlayer(); }
     else { ytPlayer.loadVideoById(selectedVideoId, 0); }
 
     doCountIn(function () {
       hideBeat();
+      ytPlayer.seekTo(countInSec, true);
       ytPlayer.playVideo();
       isPlaying = true;
       waitForQ(0);
