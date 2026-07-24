@@ -52,47 +52,61 @@
   // 問題プール（36問）
   // ============================================
   var POOL = [
-    // ===== 初級 =====
-    { id: "b1", diff: D.B, q: "音ノ乃のののイメージカラーは？", left: "紫", right: "赤", correct: 0 },
-    { id: "b2", diff: D.B, q: "甘狼このみの診断タイプは？", left: "情熱クリエイター", right: "カラフルアーティスト", correct: 0 },
-    { id: "b3", diff: D.B, q: "音ノ瀬らこの診断タイプは？", left: "ムードメーカー", right: "ギャップ系ミステリアス", correct: 0 },
-    { id: "b4", diff: D.B, q: "ゆらぎゆらの診断タイプは？", left: "ヒーリングタイプ", right: "クールロックオン", correct: 0 },
-    { id: "b5", diff: D.B, q: "小廻こまの診断タイプは？", left: "わくわくプレイヤー", right: "マルチクリエイター", correct: 0 },
-    { id: "b6", diff: D.B, q: "雨夜リズの診断タイプは？", left: "ギャップ系ミステリアス", right: "ムードメーカー", correct: 0 },
-    { id: "b7", diff: D.B, q: "眠雲ツクリの診断タイプは？", left: "マルチクリエイター", right: "情熱クリエイター", correct: 0 },
-    { id: "b8", diff: D.B, q: "虹深°ぬふの診断タイプは？", left: "カラフルアーティスト", right: "ヒーリングタイプ", correct: 0 },
-    { id: "b9", diff: D.B, q: "夕霧レイの診断タイプは？", left: "クールロックオン", right: "個性派エンターテイナー", correct: 0 },
-    { id: "b10", diff: D.B, q: "あくび・でもんすぺーどの診断タイプは？", left: "個性派エンターテイナー", right: "わくわくプレイヤー", correct: 0 },
-    { id: "b11", diff: D.B, q: "ミリちゃんの診断タイプは？", left: "ミリちゃん", right: "ハッピーアーティスト", correct: 0 },
-    { id: "b12", diff: D.B, q: "音ノ乃ののの診断タイプは？", left: "ハッピーアーティスト", right: "情熱クリエイター", correct: 0 },
+    // ===== 基本 =====
+    { id: "b1", diff: D.B, q: "甘狼このみのモチーフ動物は？", left: "狼", right: "狐", correct: 0 },
+    { id: "b2", diff: D.B, q: "ゆらぎゆらのモチーフ動物は？", left: "魚", right: "クラゲ", correct: 1 },
+    { id: "b3", diff: D.B, q: "甘狼このみのテーマカラーは？", left: "赤", right: "ミントグリーン", correct: 1 },
+    { id: "b4", diff: D.B, q: "甘狼このみはどっち？", left: "イラストレーター", right: "体操選手", correct: 0 },
+    { id: "b5", diff: D.B, q: "ミリプロの正式名称は？", left: "Million Production", right: "Military Production", correct: 0 },
+    { id: "b6", diff: D.B, q: "ミリプロのマスコット的キャラクターは？", left: "ミリちゃん", right: "ビリちゃん", correct: 0 },
+    { id: "b7", diff: D.B, q: "音ノ瀬らこのモチーフ動物は？", left: "ラッコ", right: "カワウソ", correct: 0 },
+    { id: "b8", diff: D.B, q: "あくびでもんすぺーどの名前に含まれるトランプのマークは？", left: "スペード", right: "ダイヤ", correct: 0 },
+    { id: "b9", diff: D.B, q: "音ノ乃のののテーマカラーは？", left: "赤", right: "水色", correct: 1 },
+    { id: "b10", diff: D.B, q: "音ノ瀬らこのテーマカラーは？", left: "黄色", right: "緑", correct: 0 },
+    { id: "b11", diff: D.B, q: "ゆらぎゆらのテーマカラーは？", left: "黒", right: "青", correct: 1 },
+    { id: "b12", diff: D.B, q: "小廻こまのテーマカラーは？", left: "白", right: "オレンジ", correct: 1 },
+    { id: "b13", diff: D.B, q: "雨夜リズのテーマカラーは？", left: "黄色", right: "緑", correct: 1 },
+    { id: "b14", diff: D.B, q: "あくび・でもんすぺーどのテーマカラーは？", left: "赤", right: "白", correct: 0 },
+    { id: "b15", diff: D.B, q: "眠雲ツクリのテーマカラーは？", left: "ピンク", right: "白", correct: 1 },
+    { id: "b16", diff: D.B, q: "虹深°ぬふのテーマカラーは？", left: "水色", right: "ピンク", correct: 1 },
+    { id: "b17", diff: D.B, q: "夕霧レイのテーマカラーは？", left: "虹色", right: "水色", correct: 1 },
+    { id: "b18", diff: D.B, q: "甘狼このみのファンネームは？", left: "このっ子", right: "このみんちょす", correct: 0 },
+    { id: "b19", diff: D.B, q: "音ノ乃のののファンネームは？", left: "のの好き", right: "ののの隊", correct: 1 },
+    { id: "b20", diff: D.B, q: "あくび・でもんすぺーどのファンネームは？", left: "びぃの一族", right: "すぺーどの騎士団", correct: 0 },
+    { id: "b21", diff: D.B, q: "音ノ瀬らこのファンネームは？", left: "らっ好", right: "らっ子", correct: 1 },
+    { id: "b22", diff: D.B, q: "小廻こまのファンネームは？", left: "こまの駒", right: "こまめいと", correct: 1 },
+    { id: "b23", diff: D.B, q: "ゆらぎゆらのファンネームは？", left: "ゆらゆら", right: "ゆらふぃら", correct: 1 },
+    { id: "b24", diff: D.B, q: "雨夜リズのファンネームは？", left: "リズナイト", right: "リズむ", correct: 0 },
+    { id: "b25", diff: D.B, q: "眠雲ツクリのファンネームは？", left: "つくらうど", right: "ツクられた者", correct: 0 },
+    { id: "b26", diff: D.B, q: "虹深°ぬふのファンネームは？", left: "ぷかファミリー", right: "ぷかぬファミリー", correct: 1 },
+    { id: "b27", diff: D.B, q: "夕霧レイのファンネームは？", left: "オペレーター", right: "的", correct: 0 },
+    { id: "b28", diff: D.B, q: "ミリプロのファンネームは？", left: "ミリリス", right: "ミリ隊", correct: 0 },
 
-    // ===== 中級 =====
-    { id: "i1", diff: D.I, q: "甘狼このみのイメージカラーは？", left: "赤", right: "青", correct: 0 },
-    { id: "i2", diff: D.I, q: "音ノ瀬らこのイメージカラーは？", left: "黄", right: "緑", correct: 0 },
-    { id: "i3", diff: D.I, q: "音ノ乃のののファンネームは？", left: "ののふぁむ", right: "このみん", correct: 0 },
-    { id: "i4", diff: D.I, q: "「Princess Viral」のアーティストは？", left: "音ノ乃のの", right: "甘狼このみ", correct: 0 },
-    { id: "i5", diff: D.I, q: "「ルミナス」のアーティストは？", left: "音ノ瀬らこ", right: "音ノ乃のの", correct: 0 },
-    { id: "i6", diff: D.I, q: "小廻こまのイメージカラーは？", left: "オレンジ", right: "紫", correct: 0 },
-    { id: "i7", diff: D.I, q: "ゆらぎゆらのイメージカラーは？", left: "青", right: "黄", correct: 0 },
-    { id: "i8", diff: D.I, q: "夕霧レイのイメージカラーは？", left: "白", right: "黒", correct: 0 },
-    { id: "i9", diff: D.I, q: "雨夜リズのイメージカラーは？", left: "水色", right: "桃色", correct: 0 },
-    { id: "i10", diff: D.I, q: "あくび・でもんすぺーどのイメージカラーは？", left: "赤紫", right: "金色", correct: 0 },
-    { id: "i11", diff: D.I, q: "眠雲ツクリのイメージカラーは？", left: "水色", right: "灰色", correct: 0 },
-    { id: "i12", diff: D.I, q: "虹深°ぬふのイメージカラーは？", left: "虹色", right: "黒", correct: 0 },
+    // ===== ふつう =====
+    { id: "i1", diff: D.I, q: "甘狼このみの誕生日は？", left: "08/28", right: "02/14", correct: 1 },
+    { id: "i2", diff: D.I, q: "音ノ乃ののの誕生日は？", left: "05/04", right: "04/11", correct: 0 },
+    { id: "i3", diff: D.I, q: "あくび・でもんすぺーどの誕生日は？", left: "07/31", right: "10/31", correct: 1 },
+    { id: "i4", diff: D.I, q: "音ノ瀬らこの誕生日は？", left: "05/05", right: "04/08", correct: 1 },
+    { id: "i5", diff: D.I, q: "ゆらぎゆらの誕生日は？", left: "10/21", right: "11/03", correct: 1 },
+    { id: "i6", diff: D.I, q: "小廻こまの誕生日は？", left: "08/01", right: "07/26", correct: 0 },
+    { id: "i7", diff: D.I, q: "雨夜リズの誕生日は？", left: "03/19", right: "09/11", correct: 0 },
+    { id: "i8", diff: D.I, q: "眠雲ツクリの誕生日は？", left: "09/03", right: "05/03", correct: 0 },
+    { id: "i9", diff: D.I, q: "虹深°ぬふの誕生日は？", left: "06/29", right: "11/30", correct: 1 },
+    { id: "i10", diff: D.I, q: "夕霧レイの誕生日は？", left: "01/30", right: "11/08", correct: 0 },
+    { id: "i11", diff: D.I, q: "ミリプロの誕生日は？", left: "04/01", right: "12/07", correct: 0 },
+    { id: "i12", diff: D.I, q: "ミリプロに所属するタレントの主な配信プラットフォームは？", left: "YouTube", right: "Twitch", correct: 0 },
 
-    // ===== 上級 =====
-    { id: "a1", diff: D.A, q: "甘狼このみの診断で最も高いパラメータ2つは？", left: "情熱と創作", right: "行動力と社交性", correct: 0 },
-    { id: "a2", diff: D.A, q: "雨夜リズの診断で最も高いパラメータは？", left: "ミステリアスとPON度", right: "癒しとクール", correct: 0 },
-    { id: "a3", diff: D.A, q: "ゆらぎゆらの診断で100のパラメータは？", left: "癒し", right: "遊び心", correct: 0 },
-    { id: "a4", diff: D.A, q: "小廻こまの診断で最も高いパラメータは？", left: "遊び心 (100)", right: "社交性 (80)", correct: 0 },
-    { id: "a5", diff: D.A, q: "夕霧レイの診断で最も高いパラメータは？", left: "クール (100)", right: "行動力 (70)", correct: 0 },
-    { id: "a6", diff: D.A, q: "虹深°ぬふの診断で最も高いパラメータは？", left: "創作 (100)", right: "情熱 (80)", correct: 0 },
-    { id: "a7", diff: D.A, q: "ミリプロ内で「PON度」が最も高いタレントは？", left: "雨夜リズ (100)", right: "音ノ乃のの (50)", correct: 0 },
-    { id: "a8", diff: D.A, q: "「Milli Spectrum」の質問数は？", left: "20問", right: "10問", correct: 0 },
-    { id: "a9", diff: D.A, q: "眠雲ツクリの診断で最も高いパラメータは？", left: "創作 (90)", right: "行動力 (70)", correct: 0 },
-    { id: "a10", diff: D.A, q: "音ノ瀬らこの診断で最も高いパラメータは？", left: "遊び心 (90)", right: "癒し (60)", correct: 0 },
-    { id: "a11", diff: D.A, q: "あくび・でもんすぺーどの診断で最も高いパラメータは？", left: "クール (90)", right: "行動力 (70)", correct: 0 },
-    { id: "a12", diff: D.A, q: "音ノ乃ののに最も近い診断タイプのタレントは？", left: "甘狼このみ", right: "夕霧レイ", correct: 0 }
+    // ===== 難問 =====
+    { id: "a1", diff: D.A, q: "甘狼このみの初配信はいつ？", left: "2022/12/23", right: "2026/10/28", correct: 0 },
+    { id: "a2", diff: D.A, q: "音ノ乃ののの初配信はいつ？", left: "2023/06/03", right: "2026/11/09", correct: 0 },
+    { id: "a3", diff: D.A, q: "あくび・でもんすぺーどの初配信はいつ？", left: "2026/06/16", right: "2024/01/09", correct: 1 },
+    { id: "a4", diff: D.A, q: "音ノ瀬らこの初投稿はいつ？", left: "2023/12/17", right: "2026/12/08", correct: 0 },
+    { id: "a5", diff: D.A, q: "ゆらぎゆらの活動開始はいつ？", left: "2026/02/15", right: "2023/12/23", correct: 1 },
+    { id: "a6", diff: D.A, q: "小廻こまの初配信はいつ？", left: "2026/08/17", right: "2025/03/22", correct: 1 },
+    { id: "a7", diff: D.A, q: "雨夜リズの初配信はいつ？", left: "2026/08/19", right: "2025/05/18", correct: 1 },
+    { id: "a8", diff: D.A, q: "眠雲ツクリの初配信はいつ？", left: "2025/05/17", right: "2026/08/12", correct: 0 },
+    { id: "a9", diff: D.A, q: "虹深°ぬふの初配信はいつ？", left: "2026/07/22", right: "2025/08/08", correct: 1 },
+    { id: "a10", diff: D.A, q: "夕霧レイの初配信はいつ？", left: "2026/07/07", right: "2026/07/11", correct: 1 }
   ];
 
   // ============================================
@@ -287,9 +301,9 @@
 
     el.qNumber.textContent = "Q" + (q.slot + 1);
     var dL = "", dC = "";
-    if (q.diff === D.B) { dL = "\u521D\u7D1A"; dC = "diff-beginner"; }
-    else if (q.diff === D.I) { dL = "\u4E2D\u7D1A"; dC = "diff-intermediate"; }
-    else { dL = "\u4E0A\u7D1A"; dC = "diff-advanced"; }
+    if (q.diff === D.B) { dL = "\u57FA\u672C"; dC = "diff-beginner"; }
+    else if (q.diff === D.I) { dL = "\u3075\u3064\u3046"; dC = "diff-intermediate"; }
+    else { dL = "\u96E3\u554F"; dC = "diff-advanced"; }
     el.qDiff.textContent = dL;
     el.qDiff.className = "diff-badge " + dC;
 
