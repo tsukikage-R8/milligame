@@ -578,13 +578,14 @@
     if (checked) { selectedVideoId = checked.value; }
 
     var countInBeats = 6;
+    var countInSec = countInBeats * BEAT_MS / 1000;
 
     if (!ytPlayer) {
-      pendingSeekTo = 0;
+      pendingSeekTo = countInSec;
       pendingPlay = false;
       initYTPlayer();
     } else {
-      ytPlayer.cueVideoById(selectedVideoId, 0);
+      ytPlayer.cueVideoById(selectedVideoId);
     }
 
     doCountIn(function () {
@@ -592,10 +593,10 @@
       isPlaying = true;
 
       if (ytPlayer && ytReady) {
-        ytPlayer.seekTo(0, true);
+        ytPlayer.seekTo(countInSec, true);
         ytPlayer.playVideo();
       } else {
-        pendingSeekTo = 0;
+        pendingSeekTo = countInSec;
         pendingPlay = true;
       }
 
