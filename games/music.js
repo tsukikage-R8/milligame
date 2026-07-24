@@ -1293,7 +1293,7 @@
     var ctx = cvs.getContext("2d");
     ctx.scale(scale, scale);
 
-    return loadImage("../images/games/icon/Milli Pulse -icon.png").then(function(iconImg) {
+    return loadImage("../images/games/rogo/Milli Pulse-rogo.png").then(function(rogoImg) {
       // background
       var grad = ctx.createLinearGradient(0, 0, 0, H);
       grad.addColorStop(0, "#f5e6ff");
@@ -1312,21 +1312,26 @@
       ctx.lineWidth = 1;
       ctx.strokeRect(11, 11, W - 22, H - 22);
 
-      // title
-      ctx.fillStyle = "#4a2860";
-      ctx.font = "bold 20px -apple-system, sans-serif";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "top";
-      ctx.fillText(r.title, W / 2, 16);
+      // rogo at top
+      var yBase = 12;
+      if (rogoImg && rogoImg.width > 0 && rogoImg.height > 0) {
+        var rogoW = 160;
+        var rogoH = rogoW * rogoImg.height / rogoImg.width;
+        ctx.drawImage(rogoImg, (W - rogoW) / 2, yBase, rogoW, rogoH);
+        yBase = yBase + rogoH + 6;
+      }
 
       // difficulty
       ctx.fillStyle = "rgba(45,27,78,0.35)";
       ctx.font = "11px -apple-system, sans-serif";
-      ctx.fillText(r.difficulty, W / 2, 42);
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      var yPos = yBase + 2;
+      ctx.fillText(r.difficulty, W / 2, yPos);
 
-      // rank badge (like char image in diagnosis)
+      // rank badge
       var rs = 72;
-      var rankCY = 76;
+      var rankCY = yPos + 28;
       ctx.shadowColor = r.rankColor;
       ctx.shadowBlur = 28;
       ctx.beginPath();
@@ -1343,7 +1348,7 @@
       ctx.fillText(r.rank, W / 2, rankCY + rs / 2);
 
       // score
-      var yPos = rankCY + rs + 12;
+      yPos = rankCY + rs + 12;
       ctx.textBaseline = "top";
       ctx.fillStyle = "#8582fb";
       ctx.font = "bold 28px -apple-system, sans-serif";
@@ -1420,15 +1425,6 @@
         ctx.font = "12px -apple-system, sans-serif";
         ctx.textAlign = "center";
         ctx.fillText("BEST " + r.bestScore.toLocaleString(), W / 2, yPos);
-      }
-
-      // icon at bottom
-      if (iconImg && iconImg.width > 0 && iconImg.height > 0) {
-        var iconW = 90;
-        var iconH = iconW * iconImg.height / iconImg.width;
-        var iconX = (W - iconW) / 2;
-        var iconY = H - iconH - 8;
-        ctx.drawImage(iconImg, iconX, iconY, iconW, iconH);
       }
 
       return new Promise(function (resolve) {

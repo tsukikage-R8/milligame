@@ -650,10 +650,10 @@ function generateShareImage() {
 
   return Promise.all([
     loadImage('../images/talents/' + r.image),
-    loadImage('../images/games/icon/Milli Spectrum-icon.png')
+    loadImage('../images/games/rogo/Milli Spectrum-rogo.png')
   ]).then(function(images) {
     var talentImg = images[0];
-    var iconImg = images[1];
+    var rogoImg = images[1];
 
     var bgColor = (TYPE_COLORS[r.type] || ['#b0e2ef'])[0];
     ctx.fillStyle = bgColor;
@@ -666,14 +666,17 @@ function generateShareImage() {
     ctx.strokeRect(6, 6, W - 12, H - 12);
     ctx.shadowBlur = 0;
 
-    ctx.fillStyle = TEXT_COLOR;
-    ctx.font = 'bold 16px -apple-system, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'top';
-    ctx.fillText('🌈 Milli Spectrum', W / 2, 16);
+    // rogo at top
+    var yBase = 12;
+    if (rogoImg && rogoImg.width > 0 && rogoImg.height > 0) {
+      var rogoW = 160;
+      var rogoH = rogoW * rogoImg.height / rogoImg.width;
+      ctx.drawImage(rogoImg, (W - rogoW) / 2, yBase, rogoW, rogoH);
+      yBase = yBase + rogoH + 8;
+    }
 
     var imgW = 120, imgH = 120;
-    var imgX = (W - imgW) / 2, imgY = 44;
+    var imgX = (W - imgW) / 2, imgY = yBase;
     if (talentImg && talentImg.width > 0 && talentImg.height > 0) {
       var scale = Math.max(imgW / talentImg.width, imgH / talentImg.height);
       var dw = talentImg.width * scale;
@@ -760,14 +763,6 @@ function generateShareImage() {
       ctx.fillStyle = BAR_FILL;
       ctx.fillRect(50, yPos + 17, (W - 100) * top4[ti].val / 100, 4);
       yPos += 32;
-    }
-
-    if (iconImg && iconImg.width > 0 && iconImg.height > 0) {
-      var iconW = 90;
-      var iconH = iconW * iconImg.height / iconImg.width;
-      var iconX = (W - iconW) / 2;
-      var iconY = H - iconH - 8;
-      ctx.drawImage(iconImg, iconX, iconY, iconW, iconH);
     }
 
     return new Promise(function(resolve) {

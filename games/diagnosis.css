@@ -93,15 +93,15 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 #start-screen { flex: 1; justify-content: center; align-items: center; text-align: center; }
 #start-screen .card { max-width: 440px; width: 100%; }
 .game-logo {
-  height: 20px;
+  height: 36px;
   width: auto;
   vertical-align: middle;
 }
 .game-logo-banner {
-  width: 120px;
-  height: 120px;
+  width: 220px;
+  height: auto;
   object-fit: contain;
-  margin: 0 auto 10px;
+  margin: 0 auto 16px;
   display: block;
 }
 .logo-area { margin-bottom: 20px; }
