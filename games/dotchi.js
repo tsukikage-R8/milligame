@@ -506,25 +506,6 @@
   }
 
   // ============================================
-  // カウントイン
-  // ============================================
-  function doCountIn(callback) {
-    var beats = [1, 2, 3, 4, 1, 2];
-    var idx = 0;
-
-    function nextBeat() {
-      if (idx >= beats.length) {
-        callback();
-        return;
-      }
-      triggerBeat(beats[idx], "");
-      idx++;
-      beatTimerId = setTimeout(nextBeat, BEAT_MS);
-    }
-    nextBeat();
-  }
-
-  // ============================================
   // 間奏アニメーション
   // ============================================
   var interludeActive = false;
@@ -597,17 +578,18 @@
     }
 
     el.startOverlay.classList.remove("active");
+    hideBeat();
 
     // Start video immediately within user gesture (required for mobile)
     ytPlayer.loadVideoById(selectedVideoId, countInSec);
 
-    doCountIn(function () {
-      hideBeat();
-      isPlaying = true;
-      waitForQ(0);
-      if (animId) cancelAnimationFrame(animId);
-      loop();
-    });
+    isPlaying = true;
+
+    // First question appears from 3rd beat onward
+    setTimeout(function () { waitForQ(0); }, 3 * BEAT_MS);
+
+    if (animId) cancelAnimationFrame(animId);
+    loop();
   }
 
   function checkEnd() {
