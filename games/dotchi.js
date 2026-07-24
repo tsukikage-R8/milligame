@@ -578,7 +578,7 @@
     if (checked) { selectedVideoId = checked.value; }
 
     var countInBeats = 6;
-    var countInSec = countInBeats * BEAT_MS / 1000;
+    var countInSec = (countInBeats + 1) * BEAT_MS / 1000;
 
     if (!ytPlayer) {
       pendingSeekTo = countInSec;
