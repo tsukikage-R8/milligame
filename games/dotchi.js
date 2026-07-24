@@ -7,7 +7,7 @@
   var BPM = 148;
   var BEAT_MS = 60000 / BPM;
   var BEATS_PER_BAR = 4;
-  var START_OFFSET_BEATS = -4;
+  var START_OFFSET_BEATS = 2;
 
   var D = { B: "beginner", I: "intermediate", A: "advanced" };
 
@@ -499,8 +499,7 @@
 
     function nextBeat() {
       if (idx >= beats.length) {
-        triggerBeat(null, "\u66F2\uFF5E");
-        setTimeout(callback, 500);
+        callback();
         return;
       }
       triggerBeat(beats[idx], "");
@@ -577,8 +576,7 @@
     var checked = document.querySelector('input[name="singer"]:checked');
     if (checked) { selectedVideoId = checked.value; }
 
-    var countInBeats = 6;
-    var countInSec = (countInBeats + 1) * BEAT_MS / 1000;
+    var countInSec = 0;
 
     if (!ytPlayer) {
       pendingSeekTo = countInSec;
