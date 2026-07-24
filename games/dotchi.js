@@ -229,14 +229,14 @@
   // ============================================
   // YouTube Player
   // ============================================
-  function initYTPlayer() {
-    if (typeof YT === "undefined" || !YT.Player) {
-      setTimeout(initYTPlayer, 200);
-      return;
-    }
-    if (ytPlayer) { ytPlayer.destroy(); }
+  window.onYouTubeIframeAPIReady = function () {
+    if (!ytPlayer) { createPlayer(selectedVideoId); }
+  };
+
+  function createPlayer(vid) {
+    if (ytPlayer) { try { ytPlayer.destroy(); } catch (e) {} }
     ytPlayer = new YT.Player("yt-player", {
-      videoId: selectedVideoId,
+      videoId: vid,
       width: 640,
       height: 360,
       playerVars: {
@@ -254,7 +254,6 @@
       events: {
         onReady: function () {
           ytReady = true;
-          // If startGame already queued a play, execute it now
           if (pendingPlay) {
             ytPlayer.seekTo(pendingSeekTo, true);
             ytPlayer.playVideo();
@@ -584,7 +583,6 @@
     el.questionCard.style.opacity = "0";
     el.questionCard.style.transform = "scale(0.9)";
     el.questionCard.style.transition = "none";
-    el.startOverlay.classList.remove("active");
 
     hideBeat();
 
@@ -594,19 +592,14 @@
 
     var countInSec = 0;
 
-    if (ytPlayer) {
-      ytPlayer.cueVideoById(selectedVideoId);
+    if (!ytPlayer || !ytReady) {
+      return; // Player not ready yet - click start again
     }
 
+    el.startOverlay.classList.remove("active");
+
     // Start video immediately within user gesture (required for mobile)
-    if (ytPlayer && ytReady) {
-      ytPlayer.seekTo(countInSec, true);
-      ytPlayer.playVideo();
-    } else {
-      pendingSeekTo = countInSec;
-      pendingPlay = true;
-      if (!ytPlayer) { initYTPlayer(); }
-    }
+    ytPlayer.loadVideoById(selectedVideoId, countInSec);
 
     doCountIn(function () {
       hideBeat();
@@ -891,9 +884,6 @@
   el.btnRetry.addEventListener("click", retry);
   el.btnSave.addEventListener("click", handleSave);
   el.btnX.addEventListener("click", handlePostX);
-
-  // Pre-init player so it's ready when user clicks start (required for mobile)
-  setTimeout(function () { initYTPlayer(); }, 0);
 
   el.questionCard.style.opacity = "0";
   el.questionCard.style.transform = "scale(0.9)";
