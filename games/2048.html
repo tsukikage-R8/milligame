@@ -192,8 +192,8 @@
             border-color: transparent;
         }
         .btn-new-game {
-            width: 100%;
-            max-width: min(82vw, 440px);
+            width: auto;
+            padding: 8px 24px;
             flex-shrink: 0;
         }
 
@@ -260,11 +260,10 @@
             .tile { border-radius: 5px; }
             .controls { gap: 6px; }
             .btn { padding: 8px; font-size: 0.8rem; border-radius: 8px; }
-            .btn-new-game { max-width: min(88vw, 360px); }
+            .btn-new-game { width: auto; padding: 6px 18px; }
         }
         @media (min-width: 600px) {
             .grid-wrapper { max-width: min(70vw, 440px); }
-            .btn-new-game { max-width: min(70vw, 440px); }
         }
     </style>
 </head>
