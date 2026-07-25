@@ -621,19 +621,17 @@
 
       var diff = n.t - chartTime;
       var ny = judgeY - (diff / SCROLL_AHEAD) * judgeY;
-      if (ny < -noteH * 3 || ny > ch + noteH * 2) continue;
 
       var nx = n.l * lw + lw / 2;
       var color = LANE_COLORS[n.l];
 
-      // アプローチ拡大（判定線に近づくほど大きく）
       var approachRatio = Math.max(0.2, Math.min(1, (diff / SCROLL_AHEAD) + 0.2));
       var scale = 0.7 + (1 - approachRatio) * 0.65;
       var sW = noteW * scale;
       var sH = noteH * scale;
       var sR = noteR * scale;
 
-      // ホールドノーツのテール（3D柱風）
+      // ホールドテール — 頭が画面外でも描画
       if (n.type === "hold") {
         var tailEnd = judgeY - ((n.t + n.d) - chartTime) / SCROLL_AHEAD * judgeY;
         var tailTop = Math.min(ny - sH / 2, tailEnd - sH / 2);
@@ -643,7 +641,6 @@
           var tx = nx - tw / 2;
           var tt = Math.max(0, tailTop);
           var tb = Math.min(ch, tailBottom);
-          // 本体面（明るい）
           var tGrad = ctx.createLinearGradient(tx, 0, tx + tw, 0);
           if (n.hit) {
             tGrad.addColorStop(0, "rgba(133,130,251,0.5)");
@@ -656,11 +653,12 @@
           }
           ctx.fillStyle = tGrad;
           ctx.fillRect(tx, tt, tw, tb - tt);
-          // 右側の影（立体感）
           ctx.fillStyle = n.hit ? "rgba(26,10,46,0.3)" : "rgba(0,0,0,0.15)";
           ctx.fillRect(tx + tw, tt, 3, tb - tt);
         }
       }
+
+      if (ny < -noteH * 3 || ny > ch + noteH * 2) continue;
 
       // 背景の影（ドロップシャドウ）
       ctx.save();

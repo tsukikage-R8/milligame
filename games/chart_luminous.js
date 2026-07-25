@@ -87,7 +87,7 @@ CHARTS.luminous = (function () {
  // EASY
  push(bar(3) + beat(0), 0, "tap", 0, 0);
  push(bar(3) + beat(1), 0, "tap", 0, 0);
- push(bar(3) + beat(2), 1, "hold", 4, 0);
+ push(bar(3) + beat(2), 1, "hold", beat(4), 0);
  // NORMAL
  push(bar(3) + beat(0), 0, "tap", 0, 1);
  push(bar(3) + beat(1), 0, "tap", 0, 1);
@@ -235,7 +235,7 @@ CHARTS.luminous = (function () {
  // EASY
  push(bar(11) + beat(0), 2, "tap", 0, 0);
  push(bar(11) + beat(1), 2, "tap", 0, 0);
- push(bar(11) + beat(2), 0, "hold", 2, 0);
+ push(bar(11) + beat(2), 0, "hold", beat(2), 0);
  // NORMAL
  push(bar(11) + beat(0), 0, "tap", 0, 1);
  push(bar(11) + beat(1), 0, "tap", 0, 1);
@@ -252,8 +252,8 @@ CHARTS.luminous = (function () {
  // bar 12
  // ========================================
  // EASY
- push(bar(12) + beat(0), 0, "hold", 2, 0);
- push(bar(12) + beat(2), 3, "hold", 2, 0);
+ push(bar(12) + beat(0), 0, "hold", beat(2), 0);
+ push(bar(12) + beat(2), 3, "hold", beat(2), 0);
  // NORMAL
  push(bar(12) + beat(0), 0, "tap", 0, 1);
  push(bar(12) + beat(1), 0, "tap", 0, 1);
@@ -270,8 +270,8 @@ CHARTS.luminous = (function () {
  // bar 13
  // ========================================
  // EASY
- push(bar(13) + beat(0), 3, "hold", 2, 0);
- push(bar(13) + beat(2), 1, "hold", 2, 0);
+ push(bar(13) + beat(0), 3, "hold", beat(2), 0);
+ push(bar(13) + beat(2), 1, "hold", beat(2), 0);
  // NORMAL
  push(bar(13) + beat(0), 0, "tap", 0, 1);
  push(bar(13) + beat(1), 0, "tap", 0, 1);
@@ -288,8 +288,8 @@ CHARTS.luminous = (function () {
  // bar 14
  // ========================================
  // EASY
- push(bar(14) + beat(0), 1, "hold", 2, 0);
- push(bar(14) + beat(2), 2, "hold", 2, 0);
+ push(bar(14) + beat(0), 1, "hold", beat(2), 0);
+ push(bar(14) + beat(2), 2, "hold", beat(2), 0);
  // NORMAL
  push(bar(14) + beat(0), 0, "tap", 0, 1);
  push(bar(14) + beat(1), 0, "tap", 0, 1);
@@ -306,7 +306,7 @@ CHARTS.luminous = (function () {
  // bar 15
  // ========================================
  // EASY
- push(bar(15) + beat(0), 2, "hold", 2, 0);
+ push(bar(15) + beat(0), 2, "hold", beat(2), 0);
  push(bar(15) + beat(2), 0, "tap", 0, 0);
  push(bar(15) + beat(3), 0, "tap", 0, 0);
  // NORMAL
@@ -423,7 +423,7 @@ CHARTS.luminous = (function () {
  // EASY
  push(bar(21) + beat(0), 3, "tap", 0, 0);
  push(bar(21) + beat(1), 3, "tap", 0, 0);
- push(bar(21) + beat(2), 2, "hold", 4, 0);
+ push(bar(21) + beat(2), 2, "hold", beat(4), 0);
  // NORMAL
  push(bar(21) + beat(0), 0, "tap", 0, 1);
  push(bar(21) + beat(1), 0, "tap", 0, 1);
@@ -459,7 +459,7 @@ CHARTS.luminous = (function () {
  // ========================================
  // EASY
  push(bar(23) + beat(0), 1, "tap", 0, 0);
- push(bar(23) + beat(2), 3, "hold", 4, 0);
+ push(bar(23) + beat(2), 3, "hold", beat(4), 0);
  push(bar(23) + beat(2), 0, "tap", 0, 0);
  push(bar(23) + beat(3), 0, "tap", 0, 0);
  // NORMAL
@@ -479,7 +479,7 @@ CHARTS.luminous = (function () {
  // ========================================
  // EASY
  push(bar(24) + beat(0), 0, "tap", 0, 0);
- push(bar(24) + beat(2), 0, "hold", 4, 0);
+ push(bar(24) + beat(2), 0, "hold", beat(4), 0);
  push(bar(24) + beat(2), 3, "tap", 0, 0);
  push(bar(24) + beat(3), 3, "tap", 0, 0);
  // NORMAL
@@ -499,7 +499,7 @@ CHARTS.luminous = (function () {
  // ========================================
  // EASY
  push(bar(25) + beat(0), 3, "tap", 0, 0);
- push(bar(25) + beat(2), 2, "hold", 4, 0);
+ push(bar(25) + beat(2), 2, "hold", beat(4), 0);
  push(bar(25) + beat(2), 1, "tap", 0, 0);
  push(bar(25) + beat(3), 1, "tap", 0, 0);
  // NORMAL
@@ -519,7 +519,7 @@ CHARTS.luminous = (function () {
  // ========================================
  // EASY
  push(bar(26) + beat(0), 1, "tap", 0, 0);
- push(bar(26) + beat(2), 1, "hold", 4, 0);
+ push(bar(26) + beat(2), 1, "hold", beat(4), 0);
  push(bar(26) + beat(2), 2, "tap", 0, 0);
  push(bar(26) + beat(3), 2, "tap", 0, 0);
  // NORMAL
@@ -575,7 +575,7 @@ CHARTS.luminous = (function () {
  // ========================================
  // EASY
  push(bar(29) + beat(0), 2, "tap", 0, 0);
- push(bar(29) + beat(2), 0, "hold", 2, 0);
+ push(bar(29) + beat(2), 0, "hold", beat(2), 0);
  // NORMAL
  push(bar(29) + beat(0), 0, "tap", 0, 1);
  push(bar(29) + beat(1), 0, "tap", 0, 1);
@@ -592,8 +592,8 @@ CHARTS.luminous = (function () {
  // bar 30
  // ========================================
  // EASY
- push(bar(30) + beat(0), 3, "hold", 2, 0);
- push(bar(30) + beat(2), 0, "hold", 4, 0);
+ push(bar(30) + beat(0), 3, "hold", beat(2), 0);
+ push(bar(30) + beat(2), 0, "hold", beat(4), 0);
  // NORMAL
  push(bar(30) + beat(0), 0, "tap", 0, 1);
  push(bar(30) + beat(1), 0, "tap", 0, 1);
@@ -629,7 +629,7 @@ CHARTS.luminous = (function () {
  // EASY
  push(bar(32) + beat(0), 0, "tap", 0, 0);
  push(bar(32) + beat(1), 0, "tap", 0, 0);
- push(bar(32) + beat(2), 1, "hold", 2, 0);
+ push(bar(32) + beat(2), 1, "hold", beat(2), 0);
  // NORMAL
  push(bar(32) + beat(0), 0, "tap", 0, 1);
  push(bar(32) + beat(1), 0, "tap", 0, 1);
