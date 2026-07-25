@@ -225,6 +225,7 @@
   function loadConfig() {
     var savedDiff = localStorage.getItem("rhythmDifficulty");
     if (savedDiff) {
+      if (savedDiff === "hard") savedDiff = "normal";
       config.difficulty = savedDiff;
       diffBtns.forEach(function (b) {
         b.classList.toggle("active", b.getAttribute("data-diff") === savedDiff);
@@ -1507,9 +1508,19 @@
   for (var i = 0; i < diffBtns.length; i++) {
     (function (btn) {
       btn.addEventListener("click", function () {
+        var diff = btn.getAttribute("data-diff");
+        if (diff === "hard") {
+          var wrapper = btn.parentElement;
+          if (wrapper.classList.contains("touch-hover")) {
+            wrapper.classList.remove("touch-hover");
+          } else {
+            wrapper.classList.add("touch-hover");
+          }
+          return;
+        }
         diffBtns.forEach(function (b) { b.classList.remove("active"); });
         btn.classList.add("active");
-        config.difficulty = btn.getAttribute("data-diff");
+        config.difficulty = diff;
         updateJudgment();
         localStorage.setItem("rhythmDifficulty", config.difficulty);
         loadBest();
