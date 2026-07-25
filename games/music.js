@@ -1441,7 +1441,7 @@
       "\u30B9\u30B3\u30A2: " + r.score.toLocaleString() + "\n" +
       "ACCURACY: " + r.acc + "%\n" +
       "\u30E9\u30F3\u30AF: " + r.rank + "\n" +
-      "#MilliPulse #\u30DF\u30EA\u30D7\u30ED\n" +
+      "#MilliPulse #\u30DF\u30EA\u30D7\u30ED #MilliGames\n" +
       "https://milli-games.onrender.com/games/music.html";
   }
 
