@@ -9,6 +9,7 @@
 //   "complete": ポイント/EXPを全て表示（完全版）
 // ============================================
 const SITE_TYPE = "demo";
+const VERSION = "Ver.1.0";
 
 // ============================================
 // UA通知
@@ -897,6 +898,7 @@ if (creditBtn) {
       + '<div class="credit-item"><span class="credit-label">イラスト</span><span class="credit-value">すんすん</span></div>'
       + '<p class="credit-note">このゲームは一部にYouTubeの埋め込み機能を使用しています。</p>'
       + '<p class="credit-note">この作品はファンによる二次創作であり、著作権はMillion Productionに帰属します。</p>'
+      + '<p class="credit-note disclaimer">本サイトの診断結果はあくまで娯楽目的であり、医学的・科学的根拠に基づくものではありません。</p>'
       + '</div>';
     closeMenu();
     setTimeout(function () { openPopup("クレジット", html); }, 300);

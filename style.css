@@ -787,6 +787,12 @@ ul, ol { list-style: none; }
   color: var(--text-muted);
   line-height: 1.5;
 }
+.credit-note.disclaimer {
+  border-top: 1px solid var(--glass-border);
+  padding-top: 10px;
+  font-weight: 600;
+  color: var(--accent);
+}
 
 /* ===== プレイ履歴 ===== */
 .profile-header {
@@ -1139,6 +1145,18 @@ ul, ol { list-style: none; }
 #side-menu-header h2 {
   font-size: 1.2rem;
   font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.version-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 15%, transparent);
+  padding: 2px 8px;
+  border-radius: 10px;
+  letter-spacing: 0.5px;
 }
 
 #side-menu-body {
