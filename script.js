@@ -898,7 +898,7 @@ if (creditBtn) {
       + '<div class="credit-item"><span class="credit-label">イラスト</span><span class="credit-value">すんすん</span></div>'
       + '<p class="credit-note">このゲームは一部にYouTubeの埋め込み機能を使用しています。</p>'
       + '<p class="credit-note">この作品はファンによる二次創作であり、著作権はMillion Productionに帰属します。</p>'
-      + '<p class="credit-note disclaimer">本サイトの診断結果はあくまで娯楽目的であり、医学的・科学的根拠に基づくものではありません。</p>'
+      + '<p class="credit-note disclaimer">Milli Gamesは今後もアップデートを予定しています！<br>ゲーム内の表現や診断結果などは、ミリプロのメンバー様や関係者の方々の実際の性格などを正確に表したものではありません。<br>あくまでファンによる創作としてお楽しみください。</p>'
       + '</div>';
     closeMenu();
     setTimeout(function () { openPopup("クレジット", html); }, 300);
