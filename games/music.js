@@ -1546,13 +1546,8 @@
 
   // リトライ
   elBtnRetry.addEventListener("click", function () {
-    running = false; started = false;
-    if (animId) { cancelAnimationFrame(animId); animId = null; }
-    try { player.pauseVideo(); } catch (e) {}
-    elResultOverlay.classList.remove("active");
-    elStartOverlay.classList.add("active");
-    document.getElementById("hud-row").style.display = "none";
-    setVideoVisible(true);
+    if (selectedSongId) sessionStorage.setItem("retrySongId", selectedSongId);
+    location.reload();
   });
 
   // 共有
@@ -1594,6 +1589,31 @@
   loadBest();
   loadConfig();
   initCanvas();
+
+  // リトライ（ページ再読込後、同じ曲の設定画面へ）
+  var retrySongId = sessionStorage.getItem("retrySongId");
+  if (retrySongId && CHARTS[retrySongId]) {
+    sessionStorage.removeItem("retrySongId");
+    selectedSongId = retrySongId;
+    var song = null;
+    for (var i = 0; i < SONGS.length; i++) {
+      if (SONGS[i].id === retrySongId) { song = SONGS[i]; break; }
+    }
+    if (song) {
+      elSongTitle.textContent = song.title + " / " + song.artist;
+      elSettingsSongTitle.textContent = song.title;
+      elSettingsSongArtist.textContent = song.artist;
+      loadBest();
+    }
+    var rt = setInterval(function () {
+      if (playerReady) {
+        clearInterval(rt);
+        elSongSelectOverlay.classList.remove("active");
+        elStartOverlay.classList.add("active");
+        setVideoVisible(true);
+      }
+    }, 100);
+  }
 
   // 初期描画
   (function () {
