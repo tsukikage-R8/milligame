@@ -1545,7 +1545,15 @@
   elBtnStart.addEventListener("click", startGame);
 
   // リトライ
-  elBtnRetry.addEventListener("click", startGame);
+  elBtnRetry.addEventListener("click", function () {
+    running = false; started = false;
+    if (animId) { cancelAnimationFrame(animId); animId = null; }
+    try { player.pauseVideo(); } catch (e) {}
+    elResultOverlay.classList.remove("active");
+    elStartOverlay.classList.add("active");
+    document.getElementById("hud-row").style.display = "none";
+    setVideoVisible(true);
+  });
 
   // 共有
   elBtnSave.addEventListener("click", handleSave);
