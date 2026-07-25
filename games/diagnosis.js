@@ -824,6 +824,18 @@ function handlePostX() {
   });
 }
 
+function goBack() {
+  if (state.step <= 0) return;
+  state.step--;
+  var idx = state.answers.pop();
+  var prevQ = QUESTIONS[state.step];
+  var prevOpt = prevQ.options[idx];
+  for (var k in prevOpt.add) {
+    state.scores[k] -= prevOpt.add[k];
+  }
+  renderQuestion(state.step);
+}
+
 function startDiagnosis() {
   state.step = 0;
   state.scores = initScores();

@@ -845,18 +845,32 @@
 
   function handleSave() {
     generateShareImage().then(function (blob) {
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement("a");
-      a.href = url; a.download = "milli_choice_result.png";
-      document.body.appendChild(a); a.click();
-      document.body.removeChild(a); URL.revokeObjectURL(url);
+      if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], "result.png", { type: "image/png" })] })) {
+        navigator.share({ files: [new File([blob], "result.png", { type: "image/png" })] });
+      } else {
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url; a.download = "milli_choice_result.png";
+        document.body.appendChild(a); a.click();
+        document.body.removeChild(a); URL.revokeObjectURL(url);
+      }
     });
   }
 
   function handlePostX() {
-    var text = getXText();
-    if (navigator.share) { navigator.share({ text: text }); }
-    else { window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(text), "_blank"); }
+    generateShareImage().then(function (blob) {
+      var text = getXText();
+      var file = new File([blob], "result.png", { type: "image/png" });
+      if (navigator.share) {
+        var data = { text: text };
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          data.files = [file];
+        }
+        navigator.share(data);
+      } else {
+        window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(text), "_blank");
+      }
+    });
   }
 
   // ============================================
