@@ -28,14 +28,22 @@ CHARTS.princess_viral = (function () {
   // push(時間, レーン, 種類, 長さ, 難易度)
   // ========================================
   // bar0
-   push(bar(0) + beat(), 1, "tap", 0, 0);
-   push(bar(0) + beat(), 1, "tap", 0, 0);
-   push(bar(0) + beat(), 1, "tap", 0, 0);
-   push(bar(0) + beat(), 1, "tap", 0, 0);
-   push(bar(0) + beat(), 1, "tap", 0, 0);
-   push(bar(0) + beat(), 1, "tap", 0, 0);
-   push(bar(0) + beat(), 1, "tap", 0, 0);
-   push(bar(0) + beat(), 1, "tap", 0, 0);
+   push(bar(0) + beat(1), 1, "tap", 0, 0);
+   push(bar(0) + beat(2), 1, "tap", 0, 0);
+   push(bar(0) + beat(3), 1, "tap", 0, 0);
+   push(bar(0) + beat(4), 1, "tap", 0, 0);
+   push(bar(1) + beat(1), 4, "tap", 0, 0);
+   push(bar(1) + beat(2), 4, "tap", 0, 0);
+   push(bar(1) + beat(3), 4, "tap", 0, 0);
+   push(bar(1) + beat(4), 4, "tap", 0, 0);
+   push(bar(2) + beat(1), 2, "tap", 0, 0);
+   push(bar(2) + beat(2), 2, "tap", 0, 0);
+   push(bar(2) + beat(3), 2, "tap", 0, 0);
+   push(bar(2) + beat(4), 2, "tap", 0, 0);
+   push(bar(3) + beat(1), 3, "tap", 0, 0);
+   push(bar(3) + beat(2), 3, "tap", 0, 0);
+   push(bar(3) + beat(3), 3, "tap", 0, 0);
+   push(bar(3) + beat(4), 3, "tap", 0, 0);
    push(bar(0) + beat(), 1, "tap", 0, 0);
    push(bar(0) + beat(), 1, "tap", 0, 0);
    push(bar(0) + beat(), 1, "tap", 0, 0);
