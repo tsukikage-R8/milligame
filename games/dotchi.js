@@ -745,6 +745,7 @@
       ctx.fillStyle = r.rankColor;
       ctx.font = "bold 36px -apple-system, sans-serif";
       ctx.textBaseline = "middle";
+      ctx.textAlign = "center";
       ctx.fillText(r.rank, W / 2, rankCY + rs / 2);
 
       // score
