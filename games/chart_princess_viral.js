@@ -1,18 +1,18 @@
 /* ============================================
    Princess Viral / 音ノ乃のの 譜面データ
-   BPM: 133
+   BPM: 134
    小節数: 54 (bar 0-53)
-   レーンは全て1(左端), 全て通常ノーツ
-   beat(0)=1拍目, beat(1)=2拍目, beat(2)=3拍目, beat(3)=4拍目
-   ============================================ */
+    レーンは全て1(左端), 全て通常ノーツ
+    beat(0)=1拍目, beat(1)=2拍目, beat(2)=3拍目, beat(3)=4拍目
+    ============================================ */
 var CHARTS = CHARTS || {};
 
 CHARTS.princess_viral = (function () {
   "use strict";
 
-  var BPM = 133;
-  var BEAT = 60 / BPM; // 0.45113s
-  var b4 = BEAT * 4; // 1.80451s
+  var BPM = 134;
+  var BEAT = 60 / BPM; // 0.44776s
+  var b4 = BEAT * 4; // 1.79104s
 
   var notes = [];
 
