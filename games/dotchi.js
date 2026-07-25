@@ -135,7 +135,6 @@
     hudProgress: $("hud-progress"),
     comboDisplay: $("combo-display"),
     accDisplay: $("accuracy-display"),
-    scoreDisplay: $("score-display"),
     finalScore: $("final-score"),
     resultCorrect: $("result-correct"),
     resultTotal: $("result-total"),
@@ -291,7 +290,6 @@
     el.hudProgress.textContent = "Q" + (cursor + 1) + " / " + questions.length;
     el.comboDisplay.textContent = combo;
     el.accDisplay.textContent = answerCount > 0 ? Math.round(correctCount / answerCount * 100) + "%" : "--";
-    el.scoreDisplay.textContent = score;
   }
 
   function showQ(q) {
@@ -556,7 +554,6 @@
     isPlaying = false; qActive = false; qDone = false;
     ytPlaying = false;
 
-    el.scoreDisplay.textContent = "0";
     el.comboDisplay.textContent = "0";
     el.accDisplay.textContent = "--";
     el.timerFill.style.width = "100%";
@@ -703,7 +700,7 @@
   function generateShareImage() {
     if (!lastResult) return Promise.reject();
     var r = lastResult;
-    var W = 420, H = 520, s = 2;
+    var W = 360, H = 520, s = 2;
     var c = el.shareCanvas;
     c.width = W * s; c.height = H * s;
     var ctx = c.getContext("2d");
@@ -723,109 +720,102 @@
       ctx.strokeStyle = "rgba(212,175,55,0.25)"; ctx.lineWidth = 1;
       ctx.strokeRect(11, 11, W - 22, H - 22);
 
-      // ===== LEFT: logo panel =====
-      var logoX = 20, logoY = 60, logoSize = 130;
-      // light square background
-      ctx.fillStyle = "rgba(255,255,255,0.3)";
-      ctx.beginPath();
-      roundRect(ctx, logoX, logoY, logoSize, logoSize, 16);
-      ctx.fill();
-
-      if (rogoImg && rogoImg.width > 0) {
-        var rw = logoSize - 16;
-        var rh = rw * rogoImg.height / rogoImg.width;
-        var rx = logoX + (logoSize - rw) / 2;
-        var ry = logoY + (logoSize - rh) / 2;
-        // clip to rounded rect
-        ctx.save();
-        ctx.beginPath();
-        roundRect(ctx, logoX + 8, logoY + 8, logoSize - 16, logoSize - 16, 12);
-        ctx.clip();
-        ctx.drawImage(rogoImg, rx, ry, rw, rh);
-        ctx.restore();
+      // rogo at top
+      var yBase = 12;
+      if (rogoImg && rogoImg.width > 0 && rogoImg.height > 0) {
+        var rogoW = 160;
+        var rogoH = rogoW * rogoImg.height / rogoImg.width;
+        ctx.drawImage(rogoImg, (W - rogoW) / 2, yBase, rogoW, rogoH);
+        yBase = yBase + rogoH + 6;
       }
 
-      // label below logo
-      ctx.fillStyle = "rgba(45,27,78,0.45)";
-      ctx.font = "11px -apple-system, sans-serif";
-      ctx.textAlign = "center"; ctx.textBaseline = "top";
-      ctx.fillText("Milli Games", logoX + logoSize / 2, logoY + logoSize + 8);
-
-      // ===== RIGHT: result content =====
-      var cx = logoX + logoSize + 16;
-      var rightW = W - cx - 16;
-
-      ctx.textAlign = "center"; ctx.textBaseline = "top";
-      ctx.fillStyle = "#4a2860";
-      ctx.font = "bold 18px -apple-system, sans-serif";
-      ctx.fillText("Milli Choice", cx + rightW / 2, 20);
-
-      // rank
-      var rs = 64, rCY = 48;
-      ctx.shadowColor = r.rankColor; ctx.shadowBlur = 24;
-      ctx.beginPath(); ctx.arc(cx + rightW / 2, rCY + rs / 2, rs / 2, 0, Math.PI * 2);
-      ctx.fillStyle = r.rankColor + "18"; ctx.fill();
-      ctx.strokeStyle = r.rankColor; ctx.lineWidth = 2.5; ctx.stroke();
+      // rank badge
+      var rs = 72;
+      var rankCY = yBase + 28;
+      ctx.shadowColor = r.rankColor;
+      ctx.shadowBlur = 28;
+      ctx.beginPath();
+      ctx.arc(W / 2, rankCY + rs / 2, rs / 2, 0, Math.PI * 2);
+      ctx.fillStyle = r.rankColor + "18";
+      ctx.fill();
+      ctx.strokeStyle = r.rankColor;
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
       ctx.shadowBlur = 0;
       ctx.fillStyle = r.rankColor;
-      ctx.font = "bold 32px -apple-system, sans-serif";
+      ctx.font = "bold 36px -apple-system, sans-serif";
       ctx.textBaseline = "middle";
-      ctx.fillText(r.rank, cx + rightW / 2, rCY + rs / 2);
+      ctx.fillText(r.rank, W / 2, rankCY + rs / 2);
 
       // score
-      var y = rCY + rs + 6;
+      var yPos = rankCY + rs + 12;
       ctx.textBaseline = "top";
-      ctx.fillStyle = "#8582fb"; ctx.font = "bold 24px -apple-system, sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText(r.score.toLocaleString(), cx + rightW / 2, y);
-      ctx.fillStyle = "rgba(45,27,78,0.3)"; ctx.font = "11px -apple-system, sans-serif";
-      ctx.fillText("SCORE", cx + rightW / 2, y + 28);
+      ctx.fillStyle = "#8582fb";
+      ctx.font = "bold 28px -apple-system, sans-serif";
+      ctx.fillText(r.score.toLocaleString(), W / 2, yPos);
+      ctx.fillStyle = "rgba(45,27,78,0.3)";
+      ctx.font = "12px -apple-system, sans-serif";
+      ctx.fillText("SCORE", W / 2, yPos + 32);
 
       // bars
-      y += 46;
-      var bars = [
-        { label: "ACCURACY", val: r.accuracy, suf: "%", color: "#8582fb" },
-        { label: "MAX COMBO", val: r.maxCombo, suf: "", color: "#dbbee1" }
+      yPos += 56;
+      var barItems = [
+        { label: "ACCURACY", val: r.accuracy, suffix: "%", color: "#8582fb" },
+        { label: "MAX COMBO", val: r.maxCombo, suffix: "", color: "#dbbee1" }
       ];
-      for (var b = 0; b < bars.length; b++) {
-        ctx.fillStyle = "rgba(45,27,78,0.7)"; ctx.textAlign = "left";
-        ctx.font = "12px -apple-system, sans-serif";
-        ctx.fillText(bars[b].label, cx, y);
+      for (var bi = 0; bi < barItems.length; bi++) {
+        ctx.fillStyle = "rgba(45,27,78,0.7)";
+        ctx.textAlign = "left";
+        ctx.font = "13px -apple-system, sans-serif";
+        ctx.fillText(barItems[bi].label, 50, yPos);
         ctx.textAlign = "right";
-        ctx.font = "bold 12px -apple-system, sans-serif";
-        ctx.fillText(String(bars[b].val) + bars[b].suf, cx + rightW - 4, y);
+        ctx.font = "bold 13px -apple-system, sans-serif";
+        ctx.fillText(String(barItems[bi].val) + barItems[bi].suffix, W - 50, yPos);
         ctx.fillStyle = "rgba(45,27,78,0.12)";
-        ctx.fillRect(cx, y + 16, rightW, 4);
-        ctx.fillStyle = bars[b].color;
-        ctx.fillRect(cx, y + 16, rightW * Math.min(bars[b].val / 100, 1), 4);
-        y += 34;
+        ctx.fillRect(50, yPos + 17, W - 100, 4);
+        ctx.fillStyle = barItems[bi].color;
+        var bv = typeof barItems[bi].val === "number" ? barItems[bi].val : 0;
+        ctx.fillRect(50, yPos + 17, (W - 100) * Math.min(bv / 100, 1), 4);
+        yPos += 40;
       }
 
       // divider
-      y += 2;
-      ctx.strokeStyle = "rgba(45,27,78,0.1)"; ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(cx, y); ctx.lineTo(cx + rightW, y); ctx.stroke();
-      y += 8;
+      ctx.strokeStyle = "rgba(45,27,78,0.1)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(40, yPos);
+      ctx.lineTo(W - 40, yPos);
+      ctx.stroke();
+      yPos += 10;
 
-      // details
-      ctx.textBaseline = "top"; ctx.fillStyle = "rgba(45,27,78,0.6)";
-      ctx.font = "11px -apple-system, sans-serif"; ctx.textAlign = "center";
-      ctx.fillText("DETAILS", cx + rightW / 2, y); y += 16;
+      // details header
+      ctx.textBaseline = "top";
+      ctx.fillStyle = "rgba(45,27,78,0.6)";
+      ctx.font = "11px -apple-system, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("DETAILS", W / 2, yPos);
+      yPos += 18;
 
       var items = [
         { label: "CORRECT", color: "#4caf50", val: r.correct },
-        { label: "TOTAL", color: "rgba(45,27,78,0.3)", val: r.total }
+        { label: "INCORRECT", color: "rgba(45,27,78,0.3)", val: r.total - r.correct },
+        { label: "MAX COMBO", color: "#dbbee1", val: r.maxCombo },
+        { label: "TOTAL Q", color: "#8582fb", val: r.total }
       ];
       for (var i = 0; i < items.length; i++) {
-        ctx.fillStyle = "rgba(45,27,78,0.25)"; ctx.textAlign = "left";
-        ctx.font = "13px -apple-system, sans-serif";
-        ctx.fillText(items[i].label, cx + 8, y);
-        ctx.fillStyle = items[i].color; ctx.textAlign = "right";
-        ctx.fillText(String(items[i].val), cx + rightW - 8, y);
-        y += 22;
+        ctx.fillStyle = "rgba(45,27,78,0.25)";
+        ctx.textAlign = "left";
+        ctx.font = "14px -apple-system, sans-serif";
+        ctx.fillText(items[i].label, 55, yPos);
+        ctx.fillStyle = items[i].color;
+        ctx.textAlign = "right";
+        ctx.fillText(String(items[i].val), W - 55, yPos);
+        yPos += 24;
       }
 
-      return new Promise(function (r) { c.toBlob(function (b) { r(b); }, "image/png"); });
+      return new Promise(function (resolve) {
+        c.toBlob(function (b) { resolve(b); }, "image/png");
+      });
     });
   }
 
@@ -845,15 +835,11 @@
 
   function handleSave() {
     generateShareImage().then(function (blob) {
-      if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], "result.png", { type: "image/png" })] })) {
-        navigator.share({ files: [new File([blob], "result.png", { type: "image/png" })] });
-      } else {
-        var url = URL.createObjectURL(blob);
-        var a = document.createElement("a");
-        a.href = url; a.download = "milli_choice_result.png";
-        document.body.appendChild(a); a.click();
-        document.body.removeChild(a); URL.revokeObjectURL(url);
-      }
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url; a.download = "milli_choice_result.png";
+      document.body.appendChild(a); a.click();
+      document.body.removeChild(a); URL.revokeObjectURL(url);
     });
   }
 

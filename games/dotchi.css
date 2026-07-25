@@ -51,8 +51,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .header-logo { height: 22px; vertical-align: middle; }
 .game-logo { height: 36px; width: auto; vertical-align: middle; }
 .game-logo-banner { width: 220px; height: auto; object-fit: contain; margin: 0 auto 16px; }
-.top-right { margin-left: auto; font-size: 0.78rem; color: var(--text-muted); }
-#score-display { color: var(--primary); font-weight: 700; font-variant-numeric: tabular-nums; }
+
 
 /* ===== Game Wrapper ===== */
 #game-wrapper {
