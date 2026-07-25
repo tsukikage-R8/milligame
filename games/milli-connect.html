@@ -8,7 +8,6 @@
   <link rel="icon" href="../images/icon/192.png" sizes="192x192" type="image/png">
   <link rel="apple-touch-icon" href="../images/icon/192.png" sizes="192x192">
   <link rel="apple-touch-icon" href="../images/icon/518.png" sizes="518x518">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
   <style>
     :root {
       --primary: #8582fb;
@@ -132,12 +131,13 @@
 
     #game-area {
       flex: 1; display: flex; flex-direction: column;
-      padding: 8px; gap: 8px; position: relative;
+      padding: 6px 8px; gap: 6px; position: relative;
+      max-width: 380px; width: 100%; margin: 0 auto;
     }
 
     #hud-row {
       display: flex; gap: 8px; justify-content: center;
-      padding: 8px 12px;
+      padding: 6px 12px;
       background: var(--glass-bg);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
@@ -149,27 +149,28 @@
     .hud-value { font-size: 0.85rem; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
     .hud-value.highlight { color: var(--primary); }
 
-    .gauges { display: flex; gap: 8px; }
+    .gauges { display: flex; gap: 6px; }
     .gauge-wrap {
-      flex: 1; height: 14px; background: rgba(45,27,78,0.08);
+      flex: 1; height: 12px; background: rgba(45,27,78,0.08);
       border-radius: 999px; position: relative; overflow: hidden;
     }
     .gauge-bar { height: 100%; border-radius: 999px; transition: width 0.1s linear; }
     #fever-bar { background: linear-gradient(90deg, var(--primary-light), #ff8c00); width: 0%; }
     #combo-bar { background: linear-gradient(90deg, var(--primary), #b388ff); width: 0%; }
     .gauge-text {
-      position: absolute; top: 0; left: 8px; right: 8px;
-      font-size: 9px; line-height: 14px; font-weight: 700;
+      position: absolute; top: 0; left: 6px; right: 6px;
+      font-size: 8px; line-height: 12px; font-weight: 700;
       color: var(--text); text-shadow: 0 0 4px rgba(255,255,255,0.5);
       display: flex; justify-content: space-between;
     }
 
     #canvas-container {
-      flex: 1; position: relative; min-height: 240px;
+      flex: 1; position: relative; min-height: 200px;
       background: radial-gradient(circle, #1a0a2e 0%, #0d0e21 100%);
       border-radius: var(--radius-md);
-      border: 2px solid rgba(45,27,78,0.12);
+      border: 2px solid rgba(45,27,78,0.15);
       overflow: hidden;
+      max-width: 320px; width: 100%; margin: 0 auto;
       transition: background 0.3s, border-color 0.3s;
     }
     #canvas-container.fever-mode {
@@ -182,7 +183,7 @@
     #fx-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; overflow: hidden; }
     .comment {
       position: absolute; white-space: nowrap; font-weight: bold;
-      color: rgba(255,255,255,0.7); font-size: 16px;
+      color: rgba(255,255,255,0.7); font-size: 14px;
       animation: scrollL 3s linear forwards;
       text-shadow: 1px 1px 2px #000;
     }
@@ -190,18 +191,19 @@
 
     #cutin {
       position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
-      font-size: 28px; font-weight: 900; color: #fff;
+      font-size: 24px; font-weight: 900; color: #fff;
       text-shadow: 0 0 10px var(--primary), 2px 2px 0px #000;
       opacity: 0; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       text-align: center; white-space: nowrap;
     }
 
     #skills-row {
-      display: flex; gap: 10px; justify-content: center;
-      padding: 4px 0 2px;
+      display: flex; gap: 8px; justify-content: center;
+      padding: 2px 0;
+      max-width: 320px; margin: 0 auto; width: 100%;
     }
     .skill-btn {
-      width: 56px; height: 56px; border-radius: 50%;
+      width: 52px; height: 52px; border-radius: 50%;
       border: 2px solid rgba(45,27,78,0.12);
       background: var(--glass-bg);
       backdrop-filter: blur(10px);
@@ -209,6 +211,7 @@
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       position: relative; overflow: hidden;
       transition: var(--transition);
+      flex-shrink: 0;
     }
     .skill-btn:active { transform: scale(0.9); }
     .skill-btn.ready {
@@ -222,7 +225,7 @@
       transition: height 0.2s; z-index: 0;
     }
     .skill-icon { z-index: 1; font-size: 16px; line-height: 1; }
-    .skill-label { z-index: 1; font-size: 8px; font-weight: 700; color: var(--text-secondary); }
+    .skill-label { z-index: 1; font-size: 7px; font-weight: 700; color: var(--text-secondary); }
     .skill-notice { z-index: 1; font-size: 7px; font-weight: 600; color: var(--primary); }
 
     #result-screen .overlay-inner { max-width: 340px; }
@@ -315,9 +318,14 @@
           <div class="skill-label">BOOST</div>
           <div class="skill-notice" id="skill-notice-2"></div>
         </div>
+        <div class="skill-btn" id="shuffle-btn" onclick="doShuffle(true)">
+          <div class="skill-icon">&#x1F504;</div>
+          <div class="skill-label">SHUFFLE</div>
+          <div class="skill-notice" id="shuffle-count">3</div>
+        </div>
       </div>
 
-      <div id="controls-hint">同色のツムを3つ以上繋いで消せ！</div>
+      <div id="controls-hint">同色のツムを繋いで消せ！ 詰まったらシャッフル</div>
 
       <!-- Title Screen -->
       <div class="overlay active" id="title-screen">
@@ -332,6 +340,7 @@
           <div class="controls-info">
             <span>マウス/タッチ： ドラッグでツムを繋ぐ</span>
             <span>スキルゲージが溜まったらタップで発動</span>
+            <span>&#x1F504; シャッフル： 盤面を並び替え (3回)</span>
           </div>
           <button class="btn-start" onclick="changeState('PLAYING')">START</button>
         </div>
@@ -383,10 +392,9 @@
     };
 
     const GAME_TIME = 60;
-    const TSUM_RADIUS = 22;
-    const MAX_TSUMS = 45;
+    const COLS = 6;
+    const ROWS = 10;
     const SKILL_MAX = 15;
-    const CONNECT_DIST = TSUM_RADIUS * 2.8;
     const CHARS = [
       { id: 0, name: '\u2764', color: '#ff2a6d', textColor: '#fff' },
       { id: 1, name: '\u2666', color: '#05d9e8', textColor: '#000' },
@@ -398,14 +406,13 @@
     const ITEM_MIC = { id: 99, name: '\uD83C\uDFA4', color: '#ff007f', textColor: '#fff' };
     const ITEM_SPACHA = { id: 100, name: '\u5186', color: '#ff0000', textColor: '#fff' };
 
-    const { Engine, World, Bodies, Vector } = Matter;
-    let engine, world;
     let canvas, ctx, canvasW, canvasH;
     let state = 'TITLE';
     let reqId = null;
     let timerInterval = null;
-    let tsums = [];
-    let selected = [];
+
+    let grid = [];
+    let selectedCells = [];
     let isDragging = false;
     let floatingTexts = [];
     let score = 0;
@@ -416,30 +423,41 @@
     let skillGauges = [0, 0, 0]; let boostTimeLeft = 0;
     let statsCleared = 0; let statsCollab = 0;
     let lastChainId = -1; let lastChainLength = 0;
+    let shufflesLeft = 3;
+
+    let cellSize, tsumRadius, gridOffsetX, gridOffsetY;
 
     window.onload = () => {
       document.getElementById('hs-display').innerText = Number(highScore).toLocaleString();
       const container = document.getElementById('canvas-container');
       canvas = document.getElementById('game-canvas');
-      canvasW = container.clientWidth; canvasH = container.clientHeight;
-      canvas.width = canvasW; canvas.height = canvasH;
+      resizeCanvas();
       ctx = canvas.getContext('2d');
-      engine = Engine.create({ gravity: { x: 0, y: 1.2 } });
-      world = engine.world;
-      const wallOpt = { isStatic: true, friction: 0.1, restitution: 0.2 };
-      World.add(world, [
-        Bodies.rectangle(canvasW/2, canvasH + 25, canvasW * 2, 50, wallOpt),
-        Bodies.rectangle(-25, canvasH/2, 50, canvasH * 2, wallOpt),
-        Bodies.rectangle(canvasW + 25, canvasH/2, 50, canvasH * 2, wallOpt)
-      ]);
       canvas.addEventListener('mousedown', pointerDown);
       canvas.addEventListener('mousemove', pointerMove);
       window.addEventListener('mouseup', pointerUp);
       canvas.addEventListener('touchstart', pointerDown, { passive: false });
       canvas.addEventListener('touchmove', pointerMove, { passive: false });
       window.addEventListener('touchend', pointerUp);
+      window.addEventListener('resize', resizeCanvas);
       gameLoop();
     };
+
+    function resizeCanvas() {
+      const container = document.getElementById('canvas-container');
+      canvasW = container.clientWidth;
+      canvasH = container.clientHeight;
+      canvas.width = canvasW;
+      canvas.height = canvasH;
+      recalcLayout();
+    }
+
+    function recalcLayout() {
+      cellSize = Math.min(canvasW / COLS, canvasH / ROWS);
+      tsumRadius = cellSize * 0.42;
+      gridOffsetX = (canvasW - COLS * cellSize) / 2;
+      gridOffsetY = (canvasH - ROWS * cellSize) / 2;
+    }
 
     function changeState(newState) {
       if (newState === 'PLAYING') initAudio();
@@ -470,46 +488,91 @@
       floatingTexts.push({ x, y, text, color: color || '#8582fb', life: 40 });
     }
 
-    function initGame() {
-      tsums.forEach(t => World.remove(world, t.body));
-      tsums = []; selected = []; floatingTexts = [];
-      score = 0; timeLeft = GAME_TIME;
-      combo = 0; maxCombo = 0; comboTimer = 0;
-      feverGauge = 0; isFever = false; feverTimeLeft = 0;
-      skillGauges = [0, 0, 0]; boostTimeLeft = 0;
-      statsCleared = 0; statsCollab = 0;
-      lastChainId = -1; lastChainLength = 0;
-      document.getElementById('canvas-container').classList.remove('fever-mode');
-      updateUI();
-      spawnTsums(MAX_TSUMS);
-      showCutin("STREAM START!");
-      FX.fever();
-      if (timerInterval) clearInterval(timerInterval);
-      timerInterval = setInterval(() => {
-        if (state !== 'PLAYING') return;
-        timeLeft--;
-        if (boostTimeLeft > 0) boostTimeLeft--;
-        if (Math.random() < 0.05) spawnTsums(1, ITEM_SPACHA);
-        if (isFever) {
-          feverTimeLeft--; feverGauge = (feverTimeLeft / 10) * 100;
-          if (Math.random() < 0.6) spawnComment();
-          if (feverTimeLeft <= 0) { isFever = false; feverGauge = 0; document.getElementById('canvas-container').classList.remove('fever-mode'); }
-        }
-        updateUI();
-        if (timeLeft <= 0) changeState('RESULT');
-      }, 1000);
+    function randomChar() {
+      return CHARS[Math.floor(Math.random() * CHARS.length)];
     }
 
-    function spawnTsums(count, specificItem) {
-      for (let i = 0; i < count; i++) {
-        const x = Math.random() * (canvasW - TSUM_RADIUS*4) + TSUM_RADIUS*2;
-        const y = -Math.random() * 200 - TSUM_RADIUS*2;
-        let renderData = specificItem || CHARS[Math.floor(Math.random() * CHARS.length)];
-        const r = renderData.id === 100 ? TSUM_RADIUS * 1.3 : TSUM_RADIUS;
-        const den = renderData.id === 100 ? 0.01 : 0.002;
-        const body = Bodies.circle(x, y, r, { restitution: 0.15, friction: 0.1, density: den });
-        tsums.push({ body: body, data: renderData, radius: r });
-        World.add(world, body);
+    function createGrid() {
+      grid = [];
+      for (let r = 0; r < ROWS; r++) {
+        grid[r] = [];
+        for (let c = 0; c < COLS; c++) {
+          grid[r][c] = null;
+        }
+      }
+    }
+
+    function fillGrid() {
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          if (!grid[r][c]) {
+            grid[r][c] = { data: randomChar() };
+          }
+        }
+      }
+      if (!hasValidMoves()) {
+        for (let r = 0; r < ROWS; r++) {
+          for (let c = 0; c < COLS; c++) {
+            grid[r][c] = { data: randomChar() };
+          }
+        }
+        if (!hasValidMoves()) fillGrid();
+      }
+    }
+
+    function isAdjacent(r1, c1, r2, c2) {
+      return Math.abs(r1 - r2) + Math.abs(c1 - c2) === 1;
+    }
+
+    function floodFill(r, c, charId, visited) {
+      if (r < 0 || r >= ROWS || c < 0 || c >= COLS) return [];
+      if (visited[r][c]) return [];
+      if (!grid[r][c] || grid[r][c].data.id >= 90) return [];
+      if (grid[r][c].data.id !== charId) return [];
+      visited[r][c] = true;
+      let result = [{ r, c }];
+      result.push(...floodFill(r - 1, c, charId, visited));
+      result.push(...floodFill(r + 1, c, charId, visited));
+      result.push(...floodFill(r, c - 1, charId, visited));
+      result.push(...floodFill(r, c + 1, charId, visited));
+      return result;
+    }
+
+    function hasValidMoves() {
+      const visited = Array.from({ length: ROWS }, () => Array(COLS).fill(false));
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          if (grid[r][c] && grid[r][c].data.id < 90 && !visited[r][c]) {
+            const group = floodFill(r, c, grid[r][c].data.id, visited);
+            if (group.length >= 3) return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    function applyGravity() {
+      for (let c = 0; c < COLS; c++) {
+        let writeRow = ROWS - 1;
+        for (let r = ROWS - 1; r >= 0; r--) {
+          if (grid[r][c]) {
+            if (r !== writeRow) {
+              grid[writeRow][c] = grid[r][c];
+              grid[r][c] = null;
+            }
+            writeRow--;
+          }
+        }
+      }
+    }
+
+    function fillEmptyCells() {
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          if (!grid[r][c]) {
+            grid[r][c] = { data: randomChar() };
+          }
+        }
       }
     }
 
@@ -517,53 +580,82 @@
       const rect = canvas.getBoundingClientRect();
       const cx = e.touches ? e.touches[0].clientX : e.clientX;
       const cy = e.touches ? e.touches[0].clientY : e.clientY;
-      return { x: (cx - rect.left) * (canvas.width / rect.width), y: (cy - rect.top) * (canvas.height / rect.height) };
+      return {
+        x: (cx - rect.left) * (canvas.width / rect.width),
+        y: (cy - rect.top) * (canvas.height / rect.height)
+      };
     }
 
-    function getHitTsum(pos) {
-      return tsums.find(t => Vector.magnitude(Vector.sub(t.body.position, pos)) <= t.radius * 1.2);
+    function getCellFromPos(pos) {
+      const col = Math.floor((pos.x - gridOffsetX) / cellSize);
+      const row = Math.floor((pos.y - gridOffsetY) / cellSize);
+      if (col >= 0 && col < COLS && row >= 0 && row < ROWS) {
+        return { r: row, c: col };
+      }
+      return null;
+    }
+
+    function getCellCenter(row, col) {
+      return {
+        x: gridOffsetX + col * cellSize + cellSize / 2,
+        y: gridOffsetY + row * cellSize + cellSize / 2
+      };
     }
 
     function pointerDown(e) {
       if (state !== 'PLAYING') return; e.preventDefault();
-      const hit = getHitTsum(getPos(e));
-      if (hit) {
-        if (hit.data.id === 100) return;
-        if (hit.data.id === 98 || hit.data.id === 99) { activateItem(hit); return; }
-        isDragging = true; selected = [hit];
-        FX.connect(1);
-      }
+      const pos = getPos(e);
+      const cell = getCellFromPos(pos);
+      if (!cell || !grid[cell.r][cell.c]) return;
+      const tsum = grid[cell.r][cell.c];
+      if (tsum.data.id === 100) return;
+      if (tsum.data.id === 98 || tsum.data.id === 99) { activateItem(cell); return; }
+      isDragging = true;
+      selectedCells = [{ row: cell.r, col: cell.c }];
+      FX.connect(1);
     }
 
     function pointerMove(e) {
-      if (!isDragging || state !== 'PLAYING' || selected.length === 0) return; e.preventDefault();
-      const hit = getHitTsum(getPos(e));
-      if (!hit || hit.data.id >= 90) return;
-      const last = selected[selected.length - 1];
-      const prev = selected[selected.length - 2];
-      if (prev && hit === prev) { selected.pop(); return; }
-      if (!selected.includes(hit) && hit.data.id === last.data.id) {
-        if (Vector.magnitude(Vector.sub(hit.body.position, last.body.position)) <= CONNECT_DIST) {
-          selected.push(hit);
-          FX.connect(selected.length);
+      if (!isDragging || state !== 'PLAYING' || selectedCells.length === 0) return; e.preventDefault();
+      const pos = getPos(e);
+      const cell = getCellFromPos(pos);
+      if (!cell || !grid[cell.r][cell.c]) return;
+      const tsum = grid[cell.r][cell.c];
+      if (tsum.data.id >= 90) return;
+      const last = selectedCells[selectedCells.length - 1];
+      if (selectedCells.length >= 2) {
+        const prev = selectedCells[selectedCells.length - 2];
+        if (prev.row === cell.r && prev.col === cell.c) {
+          selectedCells.pop();
+          return;
+        }
+      }
+      if (last.row === cell.r && last.col === cell.c) return;
+      if (isAdjacent(cell.r, cell.c, last.row, last.col) && tsum.data.id === grid[last.row][last.col].data.id) {
+        if (!selectedCells.some(s => s.row === cell.r && s.col === cell.c)) {
+          selectedCells.push({ row: cell.r, col: cell.c });
+          FX.connect(selectedCells.length);
         }
       }
     }
 
     function pointerUp() {
       if (!isDragging) return; isDragging = false;
-      const min = isFever ? 2 : 3;
-      if (selected.length >= min) processChain(selected);
-      selected = [];
+      const minLen = isFever ? 2 : 3;
+      if (selectedCells.length >= minLen) processChain(selectedCells);
+      selectedCells = [];
     }
 
-    function processChain(chainArray) {
-      const count = chainArray.length;
-      const charId = chainArray[0].data.id;
+    function processChain(chainCells) {
+      const count = chainCells.length;
+      const firstTsum = grid[chainCells[0].row][chainCells[0].col];
+      if (!firstTsum) return;
+      const charId = firstTsum.data.id;
       statsCleared += count;
       FX.pop();
+      let spawnMic = false;
       if (count >= 7 && lastChainLength >= 7 && lastChainId !== charId && lastChainId !== -1) {
-        statsCollab++; score += 5000; showCutin("COLLAB BONUS!"); spawnTsums(1, ITEM_MIC);
+        statsCollab++; score += 5000; showCutin("COLLAB BONUS!"); spawnMic = true;
         FX.fever(); triggerShake(false);
       }
       lastChainId = charId; lastChainLength = count;
@@ -575,54 +667,92 @@
       if (boostTimeLeft > 0) mult *= 2.0;
       const addedScore = Math.floor(base * mult);
       score += addedScore;
-      const lastPos = chainArray[chainArray.length - 1].body.position;
+      const lastPos = getCellCenter(chainCells[chainCells.length - 1].row, chainCells[chainCells.length - 1].col);
       addFloatingText(lastPos.x, lastPos.y - 20, '+' + addedScore);
       if (!isFever) {
         feverGauge = Math.min(100, feverGauge + count * 3);
         if (feverGauge >= 100) startFever();
       }
       if (charId >= 0 && charId <= 2) skillGauges[charId] = Math.min(SKILL_MAX, skillGauges[charId] + count);
-      let spawnItem = null;
-      if (count >= 7 && Math.random() > 0.3) spawnItem = ITEM_BOMB;
-      removeTsums(chainArray);
-      let spawnCount = count;
-      if (spawnItem) { spawnTsums(1, spawnItem); spawnCount--; }
-      spawnTsums(spawnCount);
+      let spawnBomb = count >= 7 && Math.random() > 0.3;
+      removeGridCells(chainCells);
+      applyGravity();
+      if (spawnMic) placeItemOnBoard(ITEM_MIC);
+      if (spawnBomb) placeItemOnBoard(ITEM_BOMB);
+      fillEmptyCells();
+      if (!hasValidMoves()) doShuffle(false);
       updateUI();
     }
 
-    function removeTsums(arr) {
-      arr.forEach(t => { World.remove(world, t.body); tsums = tsums.filter(ts => ts !== t); });
+    function placeItemOnBoard(item) {
+      const emptyCells = [];
+      for (let r = 0; r < ROWS; r++)
+        for (let c = 0; c < COLS; c++)
+          if (!grid[r][c]) emptyCells.push({ r, c });
+      if (emptyCells.length > 0) {
+        const cell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+        grid[cell.r][cell.c] = { data: item };
+        return;
+      }
+      const normals = [];
+      for (let r = 0; r < ROWS; r++)
+        for (let c = 0; c < COLS; c++)
+          if (grid[r][c] && grid[r][c].data.id < 90) normals.push({ r, c });
+      if (normals.length > 0) {
+        const cell = normals[Math.floor(Math.random() * normals.length)];
+        grid[cell.r][cell.c] = { data: item };
+      }
     }
 
-    function activateItem(tsumItem) {
-      const pos = tsumItem.body.position;
-      removeTsums([tsumItem]);
+    function removeGridCells(cells) {
+      cells.forEach(({ r, c }) => { grid[r][c] = null; });
+    }
+
+    function activateItem(cell) {
+      const tsum = grid[cell.r][cell.c];
+      if (!tsum) return;
+      const itemId = tsum.data.id;
+      const center = getCellCenter(cell.r, cell.c);
+      grid[cell.r][cell.c] = null;
       let hits = [];
-      if (tsumItem.data.id === 98) {
-        hits = tsums.filter(t => Vector.magnitude(Vector.sub(t.body.position, pos)) < TSUM_RADIUS * 4.5);
+      if (itemId === 98) {
+        for (let dr = -2; dr <= 2; dr++) {
+          for (let dc = -2; dc <= 2; dc++) {
+            const nr = cell.r + dr, nc = cell.c + dc;
+            if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS && grid[nr][nc] && grid[nr][nc].data.id !== 98 && grid[nr][nc].data.id !== 99) {
+              hits.push({ r: nr, c: nc });
+            }
+          }
+        }
         FX.bomb(); triggerShake(false); showCutin("BOMB!");
-      } else if (tsumItem.data.id === 99) {
-        hits = tsums.filter(t => Math.abs(t.body.position.y - pos.y) < TSUM_RADIUS * 2);
+      } else if (itemId === 99) {
+        for (let nc = 0; nc < COLS; nc++) {
+          if (grid[cell.r][nc] && grid[cell.r][nc].data.id !== 98 && grid[cell.r][nc].data.id !== 99) {
+            hits.push({ r: cell.r, c: nc });
+          }
+        }
         FX.bomb(); triggerShake(false); showCutin("MIC ON!");
         if (!isFever) { feverGauge = Math.min(100, feverGauge + 30); if (feverGauge >= 100) startFever(); }
       }
-      processExplosionHits(hits, pos);
+      processExplosionHits(hits, center);
     }
 
     function processExplosionHits(hits, originPos) {
-      if (hits.length === 0) { spawnTsums(1); return; }
+      if (hits.length === 0) { applyGravity(); fillEmptyCells(); updateUI(); return; }
       let addedScore = 0;
       let hasSpacha = false;
-      hits.forEach(t => {
-        if (t.data.id === 100) { hasSpacha = true; addedScore += 10000; }
+      hits.forEach(({ r, c }) => {
+        const t = grid[r][c];
+        if (t && t.data.id === 100) { hasSpacha = true; addedScore += 10000; }
         else { addedScore += Math.floor(150 * (1 + (combo * 0.05))); statsCleared++; }
+        grid[r][c] = null;
       });
-      removeTsums(hits);
       score += addedScore;
       addFloatingText(originPos.x, originPos.y, '+' + addedScore, hasSpacha ? '#ff0000' : '#8582fb');
       if (hasSpacha) { FX.spacha(); triggerShake(true); showCutin("SUPER CHAT!"); }
-      spawnTsums(hits.length + 1);
+      applyGravity();
+      fillEmptyCells();
+      if (!hasValidMoves()) doShuffle(false);
       updateUI();
     }
 
@@ -633,18 +763,94 @@
       for (let i = 0; i < 5; i++) setTimeout(spawnComment, i * 300);
     }
 
+    function doShuffle(manual) {
+      if (manual && shufflesLeft <= 0) return;
+      if (manual) shufflesLeft--;
+      const items = [];
+      const positions = [];
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          if (grid[r][c] && grid[r][c].data.id < 90) {
+            items.push(grid[r][c].data);
+            positions.push({ r, c });
+          }
+        }
+      }
+      if (items.length < 3) { if (manual) shufflesLeft++; return; }
+      for (let i = items.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [items[i], items[j]] = [items[j], items[i]];
+      }
+      positions.forEach((p, idx) => { grid[p.r][p.c] = { data: items[idx] }; });
+      if (!hasValidMoves()) {
+        for (let r = 0; r < ROWS; r++) {
+          for (let c = 0; c < COLS; c++) {
+            if (grid[r][c] && grid[r][c].data.id < 90) grid[r][c] = { data: randomChar() };
+          }
+        }
+      }
+      showCutin(manual ? "SHUFFLE!" : "AUTO SHUFFLE!");
+      FX.fever();
+      updateUI();
+    }
+
+    window.doShuffle = doShuffle;
     window.activateSkill = function(id) {
       if (state !== 'PLAYING' || skillGauges[id] < SKILL_MAX) return;
       skillGauges[id] = 0; showCutin((['\u2764','\u2666','\u2660'])[id] + ' SKILL!'); FX.fever();
       if (id === 0) {
-        const center = { x: canvasW/2, y: canvasH/2 + 50 };
-        const hits = tsums.filter(t => Vector.magnitude(Vector.sub(t.body.position, center)) < 120);
+        const centerR = Math.floor(ROWS / 2);
+        const centerC = Math.floor(COLS / 2);
+        const hits = [];
+        for (let dr = -3; dr <= 3; dr++) {
+          for (let dc = -3; dc <= 3; dc++) {
+            const nr = centerR + dr, nc = centerC + dc;
+            if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS && grid[nr][nc] && grid[nr][nc].data.id !== 98 && grid[nr][nc].data.id !== 99) {
+              if (Math.abs(dr) + Math.abs(dc) <= 3) hits.push({ r: nr, c: nc });
+            }
+          }
+        }
         triggerShake(true);
-        processExplosionHits(hits, center);
-      } else if (id === 1) { timeLeft += 5; addFloatingText(canvasW/2, canvasH/2, "TIME +5", "#05d9e8"); }
-      else if (id === 2) { boostTimeLeft = 8; addFloatingText(canvasW/2, canvasH/2, "SCORE x2", "#00ff87"); }
+        const centerPos = getCellCenter(centerR, centerC);
+        processExplosionHits(hits, centerPos);
+      } else if (id === 1) { timeLeft += 5; addFloatingText(canvasW / 2, canvasH / 2, "TIME +5", "#05d9e8"); }
+      else if (id === 2) { boostTimeLeft = 8; addFloatingText(canvasW / 2, canvasH / 2, "SCORE x2", "#00ff87"); }
       updateUI();
     };
+
+    function initGame() {
+      shufflesLeft = 3;
+      floatingTexts = [];
+      score = 0; timeLeft = GAME_TIME;
+      combo = 0; maxCombo = 0; comboTimer = 0;
+      feverGauge = 0; isFever = false; feverTimeLeft = 0;
+      skillGauges = [0, 0, 0]; boostTimeLeft = 0;
+      statsCleared = 0; statsCollab = 0;
+      lastChainId = -1; lastChainLength = 0;
+      document.getElementById('canvas-container').classList.remove('fever-mode');
+      createGrid();
+      fillGrid();
+      if (!hasValidMoves()) doShuffle(false);
+      updateUI();
+      showCutin("STREAM START!");
+      FX.fever();
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        if (state !== 'PLAYING') return;
+        timeLeft--;
+        if (boostTimeLeft > 0) boostTimeLeft--;
+        if (Math.random() < 0.05) {
+          placeItemOnBoard(ITEM_SPACHA);
+        }
+        if (isFever) {
+          feverTimeLeft--; feverGauge = (feverTimeLeft / 10) * 100;
+          if (Math.random() < 0.6) spawnComment();
+          if (feverTimeLeft <= 0) { isFever = false; feverGauge = 0; document.getElementById('canvas-container').classList.remove('fever-mode'); }
+        }
+        updateUI();
+        if (timeLeft <= 0) changeState('RESULT');
+      }, 1000);
+    }
 
     function updateUI() {
       document.getElementById('ui-score').innerText = score.toLocaleString();
@@ -655,10 +861,12 @@
       document.getElementById('fever-pct').innerText = Math.floor(Math.min(100, feverGauge));
       for (let i = 0; i < 3; i++) {
         let pct = (skillGauges[i] / SKILL_MAX) * 100;
-        document.getElementById("skill-fill-"+i).style.height = pct + '%';
-        document.getElementById("skill-btn-"+i).classList.toggle('ready', pct >= 100);
-        document.getElementById("skill-notice-"+i).innerText = pct >= 100 ? 'READY' : '';
+        document.getElementById("skill-fill-" + i).style.height = pct + '%';
+        document.getElementById("skill-btn-" + i).classList.toggle('ready', pct >= 100);
+        document.getElementById("skill-notice-" + i).innerText = pct >= 100 ? 'READY' : '';
       }
+      document.getElementById('shuffle-count').innerText = shufflesLeft;
+      document.getElementById('shuffle-btn').style.opacity = shufflesLeft <= 0 ? '0.4' : '1';
     }
 
     function showCutin(text) {
@@ -695,43 +903,65 @@
 
     function gameLoop() {
       if (state === 'PLAYING') {
-        Engine.update(engine, 1000/60);
         if (combo > 0) {
-          comboTimer -= 0.6;
+          comboTimer -= 1.2;
           if (comboTimer <= 0) { combo = 0; comboTimer = 0; lastChainId = -1; lastChainLength = 0; updateUI(); }
           else document.getElementById('combo-bar').style.width = comboTimer + '%';
         }
       }
       ctx.clearRect(0, 0, canvasW, canvasH);
       if (state === 'PLAYING') {
-        if (selected.length > 1) {
-          ctx.beginPath(); ctx.strokeStyle = selected[0].data.color; ctx.lineWidth = 14; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-          selected.forEach((t, i) => { i === 0 ? ctx.moveTo(t.body.position.x, t.body.position.y) : ctx.lineTo(t.body.position.x, t.body.position.y); });
+        for (let r = 0; r < ROWS; r++) {
+          for (let c = 0; c < COLS; c++) {
+            const x = gridOffsetX + c * cellSize;
+            const y = gridOffsetY + r * cellSize;
+            ctx.fillStyle = (r + c) % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.07)';
+            ctx.fillRect(x, y, cellSize, cellSize);
+          }
+        }
+        if (selectedCells.length > 1) {
+          const firstTsum = grid[selectedCells[0].row][selectedCells[0].col];
+          const lineColor = firstTsum ? firstTsum.data.color : '#8582fb';
+          ctx.beginPath();
+          selectedCells.forEach((cell, i) => {
+            const pos = getCellCenter(cell.row, cell.col);
+            i === 0 ? ctx.moveTo(pos.x, pos.y) : ctx.lineTo(pos.x, pos.y);
+          });
+          ctx.strokeStyle = lineColor; ctx.lineWidth = cellSize * 0.3; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
           ctx.stroke();
-          ctx.beginPath(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 4;
-          selected.forEach((t, i) => { i === 0 ? ctx.moveTo(t.body.position.x, t.body.position.y) : ctx.lineTo(t.body.position.x, t.body.position.y); });
+          ctx.beginPath();
+          selectedCells.forEach((cell, i) => {
+            const pos = getCellCenter(cell.row, cell.col);
+            i === 0 ? ctx.moveTo(pos.x, pos.y) : ctx.lineTo(pos.x, pos.y);
+          });
+          ctx.strokeStyle = '#fff'; ctx.lineWidth = cellSize * 0.08;
           ctx.stroke();
         }
-        tsums.forEach(t => {
-          const {x, y} = t.body.position; const angle = t.body.angle;
-          const isSel = selected.includes(t);
-          const r = isSel ? t.radius * 1.15 : t.radius;
-          ctx.save(); ctx.translate(x, y); ctx.rotate(angle);
-          ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2);
-          ctx.fillStyle = t.data.color;
-          if (isSel || t.data.id >= 90) { ctx.shadowColor = t.data.id === 100 ? '#ff0000' : '#fff'; ctx.shadowBlur = 15; }
-          ctx.fill(); ctx.shadowBlur = 0;
-          ctx.lineWidth = 2; ctx.strokeStyle = t.data.id === 100 ? '#ffd700' : 'rgba(255,255,255,0.5)'; ctx.stroke();
-          ctx.fillStyle = t.data.textColor;
-          ctx.font = t.data.id === 100 ? 'bold 18px sans-serif' : 'bold 12px sans-serif';
-          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-          ctx.fillText(t.data.name, 0, 0);
-          ctx.restore();
-        });
+        for (let r = 0; r < ROWS; r++) {
+          for (let c = 0; c < COLS; c++) {
+            const tsum = grid[r][c];
+            if (!tsum) continue;
+            const pos = getCellCenter(r, c);
+            const isSel = selectedCells.some(s => s.row === r && s.col === c);
+            const radius = isSel ? tsumRadius * 1.15 : tsumRadius;
+            ctx.save();
+            ctx.beginPath(); ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
+            ctx.fillStyle = tsum.data.color;
+            if (isSel || tsum.data.id >= 90) { ctx.shadowColor = tsum.data.id === 100 ? '#ff0000' : '#fff'; ctx.shadowBlur = 15; }
+            ctx.fill(); ctx.shadowBlur = 0;
+            ctx.lineWidth = 2; ctx.strokeStyle = tsum.data.id === 100 ? '#ffd700' : 'rgba(255,255,255,0.5)'; ctx.stroke();
+            ctx.fillStyle = tsum.data.textColor;
+            const fontSize = Math.max(10, cellSize * 0.35);
+            ctx.font = tsum.data.id === 100 ? `bold ${fontSize + 4}px sans-serif` : `bold ${fontSize}px sans-serif`;
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText(tsum.data.name, pos.x, pos.y);
+            ctx.restore();
+          }
+        }
         floatingTexts.forEach(ft => {
           ft.life--; ft.y -= 1;
           ctx.save(); ctx.globalAlpha = Math.max(0, ft.life / 40);
-          ctx.fillStyle = ft.color; ctx.font = 'bold 20px sans-serif';
+          ctx.fillStyle = ft.color; ctx.font = 'bold 18px sans-serif';
           ctx.shadowColor = '#000'; ctx.shadowBlur = 4;
           ctx.textAlign = 'center'; ctx.fillText(ft.text, ft.x, ft.y);
           ctx.restore();
