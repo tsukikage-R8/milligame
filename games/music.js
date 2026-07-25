@@ -416,8 +416,8 @@
   function shouldInclude(note) {
     var level = note.lvl || 0;
     if (config.difficulty === "easy") return level === 0;
-    if (config.difficulty === "hard") return true;
-    return level <= 1;
+    if (config.difficulty === "normal") return level === 1;
+    return level === 2;
   }
 
   // ============================================

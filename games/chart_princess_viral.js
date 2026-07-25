@@ -28,7 +28,7 @@ CHARTS.princess_viral = (function () {
   // push(時間, レーン, 種類, 長さ, 難易度)
   // ========================================
   // bar0
-   push(bar(0) + beat(), 1, "tap", 0, 0);
+   push(bar(0) + beat(1), 1, "tap", 0, 0);
    push(bar(0) + beat(), 1, "tap", 0, 0);
    push(bar(0) + beat(), 1, "tap", 0, 0);
    push(bar(0) + beat(), 1, "tap", 0, 0);
@@ -43,20 +43,8 @@ CHARTS.princess_viral = (function () {
 
 
 
-   
-  // 難易度自動振り分け:
-  //   lvl未指定のノーツを拍の位置で lvl 0（Easy） or 1（Normal）に割り振る
-  //   強拍（0, 2拍目）→ lvl 0, 弱拍/裏拍 → lvl 1
-  //   既にlvl指定があるもの（Hard専用など）は変更しない
-  var beatDur = 60 / BPM;
-  var barDur = beatDur * 4;
-  for (var i = 0; i < notes.length; i++) {
-    var n = notes[i];
-    if (n.lvl !== undefined) continue;
-    var beatInBar = (n.t % barDur) / beatDur;
-    var rounded = Math.round(beatInBar * 2) / 2;
-    n.lvl = (rounded === 0 || rounded === 2) ? 0 : 1;
-  }
+    
+  notes.sort(function (a, b) { return a.t - b.t; });
 
   return {
     videoId: "MF4Yw8IS6og",
@@ -91,10 +79,10 @@ CHARTS.princess_viral = (function () {
       "hold"  : 長押し（第4引数に長さを秒で指定）
 
     【難易度レベル（第5引数 lvl）】
-      省略       → 自動で強拍=lvl0(Easy) / 弱拍=lvl1(Normal) に振り分け
       0          → Easy のみ
       1          → Normal のみ
       2          → Hard のみ
+      省略した場合 → Easy（lvl 0）扱いになるので全レベルに書くこと
 
     【タイミング調整】
       ノーツが曲より早い → 時間の値を大きく（+0.05ずつ）
