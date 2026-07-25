@@ -80,7 +80,7 @@
   var score = 0, bestScore = 0, combo = 0, maxCombo = 0;
   var totalNotes = 0, judgedNotes = 0, accuracyTotal = 0, accuracyMax = 0;
   var counts = { perfect: 0, great: 0, good: 0, miss: 0 };
-  var running = false, started = false, chartTime = 0, gameStartTime = 0;
+  var running = false, started = false, chartTime = 0;
   var lastResult = null;
   var player = null, playerReady = false, animId = null;
   var activeNotes = [], effects = [], judgeTexts = [];
@@ -427,7 +427,11 @@
   function update() {
     if (!running) return;
 
-    chartTime = (performance.now() - gameStartTime) / 1000 - (chart.offset || 0) + (config.userOffset / 1000);
+    try {
+      if (player && player.getCurrentTime) {
+        chartTime = player.getCurrentTime() - (chart.offset || 0) + (config.userOffset / 1000);
+      }
+    } catch (e) {}
 
     spawnNotes();
     cleanupNotes();
@@ -1135,7 +1139,7 @@
     elQuitBtn.classList.add("visible");
     setVideoVisible(true);
 
-    running = true; started = true; gameStartTime = performance.now();
+    running = true; started = true;
 
     try { player.seekTo(0); player.playVideo(); } catch (e) {}
 
