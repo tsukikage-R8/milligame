@@ -1308,17 +1308,6 @@
         ctx.fillRect(0, 0, W, H);
       }
 
-      // gold border
-      ctx.shadowColor = "rgba(212,175,55,0.4)";
-      ctx.shadowBlur = 20;
-      ctx.strokeStyle = "#d4af37";
-      ctx.lineWidth = 3;
-      ctx.strokeRect(6, 6, W - 12, H - 12);
-      ctx.shadowBlur = 0;
-      ctx.strokeStyle = "rgba(212,175,55,0.25)";
-      ctx.lineWidth = 1;
-      ctx.strokeRect(11, 11, W - 22, H - 22);
-
       // rogo at top
       var yBase = 12;
       if (rogoImg && rogoImg.width > 0 && rogoImg.height > 0) {
