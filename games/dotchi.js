@@ -706,11 +706,25 @@
     var ctx = c.getContext("2d");
     ctx.scale(s, s);
 
-    return loadImage("../images/games/rogo/Milli Choice-rogo.png").then(function (rogoImg) {
+    var bgMap = {
+      "VfZaDBPnzqs": "../images/games/share/Milli Choice-share-nono.JPEG",
+      "fHaRxiDVCjE": "../images/games/share/Milli Choice-share-rako.JPEG",
+      "NAoBxWcJAG0": "../images/games/share/Milli Choice-share-koma.JPEG"
+    };
+    var bgSrc = bgMap[selectedVideoId] || "../images/games/share/Milli Choice-share-nono.JPEG";
+    return Promise.all([
+      loadImage("../images/games/rogo/Milli Choice-rogo.png"),
+      loadImage(bgSrc)
+    ]).then(function (imgs) {
+      var rogoImg = imgs[0], bgImg = imgs[1];
       // background
-      var g = ctx.createLinearGradient(0, 0, 0, H);
-      g.addColorStop(0, "#f5e6ff"); g.addColorStop(1, "#e8d4f0");
-      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+      if (bgImg && bgImg.width > 0 && bgImg.height > 0) {
+        ctx.drawImage(bgImg, 0, 0, W, H);
+      } else {
+        var g = ctx.createLinearGradient(0, 0, 0, H);
+        g.addColorStop(0, "#f5e6ff"); g.addColorStop(1, "#e8d4f0");
+        ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+      }
 
       // gold border
       ctx.shadowColor = "rgba(212,175,55,0.4)"; ctx.shadowBlur = 20;

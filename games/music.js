@@ -1292,13 +1292,21 @@
     var ctx = cvs.getContext("2d");
     ctx.scale(scale, scale);
 
-    return loadImage("../images/games/rogo/Milli Pulse-rogo.png").then(function(rogoImg) {
+    return Promise.all([
+      loadImage("../images/games/rogo/Milli Pulse-rogo.png"),
+      loadImage("../images/games/share/Milli Pulse-share.PNG")
+    ]).then(function(imgs) {
+      var rogoImg = imgs[0], bgImg = imgs[1];
       // background
-      var grad = ctx.createLinearGradient(0, 0, 0, H);
-      grad.addColorStop(0, "#f5e6ff");
-      grad.addColorStop(1, "#e8d4f0");
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, W, H);
+      if (bgImg && bgImg.width > 0 && bgImg.height > 0) {
+        ctx.drawImage(bgImg, 0, 0, W, H);
+      } else {
+        var grad = ctx.createLinearGradient(0, 0, 0, H);
+        grad.addColorStop(0, "#f5e6ff");
+        grad.addColorStop(1, "#e8d4f0");
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, W, H);
+      }
 
       // gold border
       ctx.shadowColor = "rgba(212,175,55,0.4)";
