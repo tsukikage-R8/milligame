@@ -120,6 +120,7 @@
     btnStart: $("btn-start"),
     btnRetry: $("btn-retry"),
     btnSave: $("btn-save"),
+    btnShare: $("btn-share"),
     btnX: $("btn-x"),
     qNumber: $("q-number"),
     qText: $("q-text"),
@@ -858,6 +859,30 @@
     });
   }
 
+  function handleShare() {
+    generateShareImage().then(function (blob) {
+      var text = getXText();
+      var file = new File([blob], "result.png", { type: "image/png" });
+      if (navigator.share) {
+        var data = { title: "Milli Choice", text: text };
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          data.files = [file];
+        }
+        navigator.share(data);
+      } else {
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = "milli_choice_result.png";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        try { navigator.clipboard.writeText(text); } catch (e) {}
+      }
+    });
+  }
+
   function handlePostX() {
     generateShareImage().then(function (blob) {
       var text = getXText();
@@ -880,6 +905,7 @@
   el.btnStart.addEventListener("click", startGame);
   el.btnRetry.addEventListener("click", retry);
   el.btnSave.addEventListener("click", handleSave);
+  el.btnShare.addEventListener("click", handleShare);
   el.btnX.addEventListener("click", handlePostX);
 
   el.questionCard.style.opacity = "0";
