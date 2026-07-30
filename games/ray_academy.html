@@ -95,7 +95,8 @@
   #rei-bubble::after { content: ''; position: absolute; bottom: -10px; right: 20px; border-width: 10px 10px 0; border-style: solid; border-color: var(--glass-border) transparent; }
 
   /* --- Result Screen --- */
-  #result-screen { text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px 20px; background: radial-gradient(circle, var(--white) 0%, var(--ice-blue) 100%); z-index: 200; box-sizing: border-box;}
+  #result-screen { text-align: center; padding: 40px 20px; background: radial-gradient(circle, var(--white) 0%, var(--ice-blue) 100%); z-index: 200; box-sizing: border-box;}
+  #result-screen.active { display: flex; flex-direction: column; justify-content: center; align-items: center; }
   #result-rank { font-size: 5rem; font-weight: bold; color: var(--pastel-purple); text-shadow: var(--hologram-glow); margin: 10px 0;}
   .s-rank-bg { background: linear-gradient(135deg, var(--white), var(--pastel-purple), var(--ice-blue)) !important; }
 
