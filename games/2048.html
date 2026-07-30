@@ -400,15 +400,18 @@
             const TILE_IMAGE_PATH = '../images/games/2048/';
             const TILE_VALUES = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048];
             const loadingOverlay = document.getElementById('loading-overlay');
+            var tileImageUrls = {};
 
             function preloadImages() {
                 return Promise.all(TILE_VALUES.map(function(v) {
-                    return new Promise(function(resolve) {
-                        var img = new Image();
-                        img.onload = resolve;
-                        img.onerror = resolve;
-                        img.src = TILE_IMAGE_PATH + v + '.svg';
-                    });
+                    return fetch(TILE_IMAGE_PATH + v + '.svg')
+                        .then(function(res) { return res.blob(); })
+                        .then(function(blob) {
+                            tileImageUrls[v] = URL.createObjectURL(blob);
+                        })
+                        .catch(function() {
+                            tileImageUrls[v] = TILE_IMAGE_PATH + v + '.svg';
+                        });
                 }));
             }
 
@@ -427,7 +430,7 @@
             }
 
             function updateTileEl(el, value) {
-                el.style.backgroundImage = `url(${TILE_IMAGE_PATH}${value}.svg)`;
+                el.style.backgroundImage = 'url(' + (tileImageUrls[value] || TILE_IMAGE_PATH + value + '.svg') + ')';
                 el.style.backgroundSize = 'cover';
                 el.style.backgroundPosition = 'center';
                 el.textContent = '';
