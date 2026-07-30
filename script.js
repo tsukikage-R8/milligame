@@ -905,7 +905,7 @@ if (creditBtn) {
   creditBtn.addEventListener("click", function () {
     var html = '<div class="credit-content">'
       + '<div class="credit-item"><span class="credit-label">制作者</span><span class="credit-value"><a href="https://x.com/SunSunmachi" target="_blank" rel="noopener">すんすん</a></span></div>'
-      + '<div class="credit-item"><span class="credit-label">イラスト</span><span class="credit-value">すんすん</span></div>'
+      + '<div class="credit-item"><span class="credit-label">イラスト</span><span class="credit-value">すんすん、なこ 様</span></div>'
       + '<p class="credit-note">このゲームは一部にYouTubeの埋め込み機能を使用しています。</p>'
       + '<p class="credit-note">この作品はファンによる二次創作であり、著作権はMillion Productionに帰属します。</p>'
       + '<p class="credit-note disclaimer">Milli Gamesは今後もアップデートを予定しています！<br>ゲーム内の表現や診断結果などは、ミリプロのメンバー様や関係者の方々の実際の性格などを正確に表したものではありません。<br>あくまでファンによる創作としてお楽しみください。</p>'
