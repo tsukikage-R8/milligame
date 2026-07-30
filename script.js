@@ -9,7 +9,7 @@
 //   "complete": ポイント/EXPを全て表示（完全版）
 // ============================================
 const SITE_TYPE = "demo";
-const VERSION = "Ver.1.0";
+const VERSION = "Ver.2.0";
 
 // ============================================
 // UA通知
@@ -203,16 +203,16 @@ const games = [
     tags: ["おすすめ", "新着"],
     link: "games/dotchi.html"
   },
-  // {
-  //   id: 2,
-  //   title: "Millipro 2048",
-  //   description: "数字を合わせて2048を目指せ！\n\nミリプロデザインの2048パズル。\nスワイプでタイルを移動して、同じ数字を重ねて大きい数字を作ろう。\n\nシンプルだけど奥が深い、定番パズルゲーム。",
-  //   image: "images/games/icon/Millipro 2048-icon.png",
-  //   points: 50,
-  //   exp: "x1.0",
-  //   tags: ["パズル"],
-  //   link: "games/2048.html"
-  // }
+  {
+    id: 2,
+    title: "Millipro 2048",
+    description: "数字を合わせて2048を目指せ！\n\nミリプロデザインの2048パズル。\nスワイプでタイルを移動して、同じ数字を重ねて大きい数字を作ろう。\n\nシンプルだけど奥が深い、定番パズルゲーム。",
+    image: "images/games/icon/Millipro 2048-icon.png",
+    points: 50,
+    exp: "x1.0",
+    tags: ["パズル"],
+    link: "games/2048.html"
+  }
 ];
 
 // お知らせデータ
