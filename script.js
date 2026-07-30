@@ -10,6 +10,10 @@
 // ============================================
 const SITE_TYPE = "demo";
 const VERSION = "Ver.2.0";
+document.addEventListener("DOMContentLoaded", function() {
+  var vb = document.getElementById("version-badge");
+  if (vb) vb.textContent = VERSION;
+});
 
 // ============================================
 // UA通知
