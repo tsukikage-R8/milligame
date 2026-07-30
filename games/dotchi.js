@@ -81,6 +81,13 @@
     { id: "b26", diff: D.B, q: "虹深°ぬふのファンネームは？", left: "ぷかファミリー", right: "ぷかぬファミリー", correct: 1 },
     { id: "b27", diff: D.B, q: "夕霧レイのファンネームは？", left: "オペレーター", right: "的", correct: 0 },
     { id: "b28", diff: D.B, q: "ミリプロのファンネームは？", left: "ミリリス", right: "ミリ隊", correct: 0 },
+    { id: "b29", diff: D.B, q: "ミリプロの設立メンバーであり、0期生兼クリエイターなのは誰？", left: "甘狼このみ", right: "音ノ乃のの", correct: 0 },
+    { id: "b30", diff: D.B, q: "ミリプロの事務所としての目標は「デビュー1年で登録者何万人」？", left: "10万人", right: "30万人", correct: 1 },
+    { id: "b31", diff: D.B, q: "ミリプロに所属するタレントの性別は現在どちらに限定されている？", left: "女性のみ", right: "男女混合", correct: 0 },
+    { id: "b32", diff: D.B, q: "ミリプロオーディションに応募できる最低年齢は何歳以上？", left: "16歳以上", right: "18歳以上", correct: 0 },
+    { id: "b33", diff: D.B, q: "甘狼このみのように、イラストやモデルを全て自分で作ることを何と呼ぶ？", left: "完全セルフ受肉", right: "フルスクラッチ", correct: 0 },
+    { id: "b34", diff: D.B, q: "ミリプロの1st 3D LIVEのタイトルは何？", left: "Mile Stone", right: "Million Story", correct: 1 },
+    { id: "b35", diff: D.B, q: "2026年5月にコラボが行われた中古品買取チェーン店はどこ？", left: "BOOKOFF", right: "ゲオ", correct: 0 },
 
     // ===== ふつう =====
     { id: "i1", diff: D.I, q: "甘狼このみの誕生日は？", left: "08/28", right: "02/14", correct: 1 },
