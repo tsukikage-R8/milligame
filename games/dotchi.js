@@ -102,6 +102,16 @@
     { id: "i10", diff: D.I, q: "夕霧レイの誕生日は？", left: "01/30", right: "11/08", correct: 0 },
     { id: "i11", diff: D.I, q: "ミリプロの誕生日は？", left: "04/01", right: "12/07", correct: 0 },
     { id: "i12", diff: D.I, q: "ミリプロに所属するタレントの主な配信プラットフォームは？", left: "YouTube", right: "Twitch", correct: 0 },
+    { id: "i13", diff: D.I, q: "音ノ瀬らこ、ゆらぎゆら、虹深°ぬふが所属するグループ名は？", left: "ミリプロUNI", right: "ミリプロNOVA", correct: 1 },
+    { id: "i14", diff: D.I, q: "VSingerとして活動し、3Dお披露目も果たしている1期生は誰？", left: "音ノ乃のの", right: "あくび・でもんすぺーど", correct: 0 },
+    { id: "i15", diff: D.I, q: "2026年7月にチャンネル登録者数50万人を突破した2期生は誰？", left: "甘狼このみ", right: "あくび・でもんすぺーど", correct: 1 },
+    { id: "i16", diff: D.I, q: "小廻こまの特技として記載されている、特徴的なスキルは何？", left: "DJ", right: "いろんな声と大声をだすこと", correct: 1 },
+    { id: "i17", diff: D.I, q: "ミリプロ初のオリジナル全体楽曲のタイトルは何？", left: "Mile Stone", right: "Million Story", correct: 0 },
+    { id: "i18", diff: D.I, q: "2026年5月に開催されたミリプロ初の3Dライブの会場は？", left: "Zepp Shinjuku", right: "日本武道館", correct: 0 },
+    { id: "i19", diff: D.I, q: "「マルチクリエイティブVTuber」を名乗り、作曲や動画編集もこなすのは？", left: "眠雲ツクリ", right: "夕霧レイ", correct: 0 },
+    { id: "i20", diff: D.I, q: "2026年7月時点で、公式LINEスタンプは第何弾まで発売されている？", left: "第2弾", right: "第3弾", correct: 0 },
+    { id: "i21", diff: D.I, q: "音ノ乃のののメジャー1stデジタルシングルのタイトルは？", left: "約束", right: "アルテマ", correct: 0 },
+    { id: "i22", diff: D.I, q: "甘狼このみの年齢は現在「約何歳」？", left: "約2歳", right: "約2000歳", correct: 0 },
 
     // ===== 難問 =====
     { id: "a1", diff: D.A, q: "甘狼このみの初配信はいつ？", left: "2022/12/23", right: "2026/10/28", correct: 0 },
