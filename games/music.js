@@ -1214,6 +1214,11 @@
       elBestResult.textContent = "ベスト: " + bestScore;
     }
 
+    var currentArtist = "";
+    for (var si = 0; si < SONGS.length; si++) {
+      if (SONGS[si].id === selectedSongId) { currentArtist = SONGS[si].artist; break; }
+    }
+
     lastResult = {
       score: score,
       bestScore: bestScore,
@@ -1222,6 +1227,7 @@
       rankLabel: rankInfo.rank,
       rankColor: rankInfo.color,
       chartTitle: chart ? (chart.title || elResultSongTitle.textContent || "") : "",
+      artist: currentArtist,
       difficulty: config.difficulty.toUpperCase(),
       counts: {
         perfect: counts.perfect,
@@ -1256,6 +1262,7 @@
       : 0;
     return {
       title: r.chartTitle,
+      artist: r.artist,
       difficulty: r.difficulty,
       score: r.score,
       acc: acc,
@@ -1317,12 +1324,25 @@
         yBase = yBase + rogoH + 6;
       }
 
+      // song title & artist
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      var yPos = yBase + 2;
+      ctx.fillStyle = "rgba(45,27,78,0.8)";
+      ctx.font = "bold 13px -apple-system, sans-serif";
+      ctx.fillText(r.title, W / 2, yPos);
+      yPos += 18;
+      ctx.fillStyle = "rgba(45,27,78,0.5)";
+      ctx.font = "11px -apple-system, sans-serif";
+      ctx.fillText(r.artist, W / 2, yPos);
+      yBase = yPos + 8;
+
       // difficulty
       ctx.fillStyle = "rgba(45,27,78,0.35)";
       ctx.font = "11px -apple-system, sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "top";
-      var yPos = yBase + 2;
+      yPos = yBase + 2;
       ctx.fillText(r.difficulty, W / 2, yPos);
 
       // rank badge

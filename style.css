@@ -176,6 +176,15 @@ ul, ol { list-style: none; }
   transition: var(--transition);
 }
 
+#menu-btn {
+  background: rgba(255,255,255,0.45);
+  border-color: rgba(255,255,255,0.7);
+}
+
+#menu-btn svg {
+  stroke-width: 2.5;
+}
+
 #profile-btn {
   width: auto;
   border-radius: var(--radius-full);
@@ -1151,12 +1160,13 @@ ul, ol { list-style: none; }
 }
 .version-badge {
   font-size: 0.7rem;
-  font-weight: 600;
-  color: var(--primary);
-  background: color-mix(in srgb, var(--primary) 15%, transparent);
+  font-weight: 700;
+  color: #fff;
+  background: var(--primary);
   padding: 2px 8px;
   border-radius: 10px;
   letter-spacing: 0.5px;
+  box-shadow: 0 1px 4px rgba(133,130,251,0.3);
 }
 
 #side-menu-body {

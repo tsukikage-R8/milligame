@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>2048 - Milli Games</title>
+    <title>Millipro 2048 - Milli Games</title>
     <link rel="icon" href="../images/icon/favicon.ico" sizes="any">
     <link rel="icon" href="../images/icon/192.png" sizes="192x192" type="image/png">
+    <link rel="icon" href="../images/games/icon/Millipro 2048-icon.png" sizes="192x192" type="image/png">
     <link rel="apple-touch-icon" href="../images/icon/192.png" sizes="192x192">
     <link rel="apple-touch-icon" href="../images/icon/518.png" sizes="518x518">
+    <link rel="apple-touch-icon" href="../images/games/icon/Millipro 2048-icon.png" sizes="192x192">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html, body { height: 100%; }
@@ -35,6 +37,7 @@
         }
         header a { display: flex; align-items: center; text-decoration: none; }
         .header-logo { height: 28px; width: auto; display: block; }
+        .game-logo { height: 36px; width: auto; vertical-align: middle; margin-left: 12px; }
 
         .game-container {
             flex: 1;
@@ -318,13 +321,14 @@
         <div class="loading-text">NOW LOADING<div class="loading-dots"><span>.</span><span>.</span><span>.</span></div></div>
     </div>
 
-    <header>
+    <header id="top-bar">
         <a href="../index.html"><img src="../images/rogo.png" alt="Milli Games" class="header-logo"></a>
+        <img src="../images/games/rogo/Millipro 2048-rogo.png" alt="Millipro 2048" class="game-logo">
     </header>
 
     <div class="game-container">
         <div class="header-row">
-            <h1>2048</h1>
+            <h1>Millipro 2048</h1>
             <div class="header-right">
                 <div class="score-box">
                     <div class="score-item">
