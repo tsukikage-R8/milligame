@@ -1332,9 +1332,13 @@
     var ctx = cvs.getContext("2d");
     ctx.scale(scale, scale);
 
+    var shareBg = selectedSongId === "okiraku_superstar"
+      ? "../images/games/share/Milli Pulse-share-okiraku.png"
+      : "../images/games/share/Milli Pulse-share.PNG";
+
     return Promise.all([
       loadImage("../images/games/rogo/Milli Pulse-rogo.png"),
-      loadImage("../images/games/share/Milli Pulse-share.PNG")
+      loadImage(shareBg)
     ]).then(function(imgs) {
       var rogoImg = imgs[0], bgImg = imgs[1];
       // background

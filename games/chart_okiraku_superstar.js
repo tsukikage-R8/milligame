@@ -1107,14 +1107,14 @@ CHARTS.okiraku_superstar = (function () {
   // ========================================
   // EASY
   // NORMAL
-  push(bar(63) + beat(0.5), 0, "tap", 0, 1);
-  push(bar(63) + beat(1), 0, "tap", 0, 1);
-  push(bar(63) + beat(1.5), 0, "tap", 0, 1);
-  push(bar(63) + beat(2), 0, "tap", 0, 1);
-  push(bar(63) + beat(0.5), 3, "tap", 0, 1);
-  push(bar(63) + beat(1), 3, "tap", 0, 1);
-  push(bar(63) + beat(1.5), 3, "tap", 0, 1);
-  push(bar(63) + beat(2), 3, "tap", 0, 1);
+  push(bar(64) + beat(0.5), 0, "tap", 0, 1);
+  push(bar(64) + beat(1), 0, "tap", 0, 1);
+  push(bar(64) + beat(1.5), 0, "tap", 0, 1);
+  push(bar(64) + beat(2), 0, "tap", 0, 1);
+  push(bar(64) + beat(0.5), 3, "tap", 0, 1);
+  push(bar(64) + beat(1), 3, "tap", 0, 1);
+  push(bar(64) + beat(1.5), 3, "tap", 0, 1);
+  push(bar(64) + beat(2), 3, "tap", 0, 1);
   // HARD
   push(bar(64) + beat(0), 0, "tap", 0, 2);
   push(bar(64) + beat(1), 0, "tap", 0, 2);
@@ -1130,8 +1130,7 @@ CHARTS.okiraku_superstar = (function () {
     title: "おきらくスーパースター",
     bpm: BPM,
     offset: 0,
-    duration: 88,
-    hasHard: false,
+    duration: 84,
     notes: notes
   };
 })();
