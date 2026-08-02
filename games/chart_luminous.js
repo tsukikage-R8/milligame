@@ -960,6 +960,12 @@ return {
   bpm: BPM,
    offset: 0.05, // +50ms 初期オフセット
   duration: 93,
+  theme: {
+    bgTop: "#0a2133",
+    bgBottom: "#1b5a5e",
+    accent: "#ffd23f",
+    lanes: ["#ffd23f", "#8fd8ff", "#ffd86b", "#6ccfff"]
+  },
   notes: notes
 };
 })();

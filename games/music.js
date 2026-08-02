@@ -19,6 +19,13 @@
   // ============================================
   var LANE_COUNT = 4;
   var LANE_COLORS = ["#8582fb", "#dbbee1", "#b794d4", "#716ed5"];
+  var DEFAULT_THEME = {
+    bgTop: "#1a0a2e",
+    bgBottom: "#2d1b4e",
+    accent: "#8582fb",
+    lanes: LANE_COLORS
+  };
+  var theme = DEFAULT_THEME;
   var LANE_KEYS = ["KeyD", "KeyF", "KeyJ", "KeyK"];
   var JUDGE_Y_RATIO = 0.80;
   var SCROLL_AHEAD = 2.0;
@@ -290,11 +297,11 @@
     var judgeText = "", judgeColor = "", points = 0;
 
     if (absDiff <= PERFECT_RANGE) {
-      judgeText = "PERFECT"; judgeColor = "#8582fb"; points = SCORE_PERFECT; counts.perfect++;
+      judgeText = "PERFECT"; judgeColor = theme.lanes[0]; points = SCORE_PERFECT; counts.perfect++;
     } else if (absDiff <= GREAT_RANGE) {
-      judgeText = "GREAT"; judgeColor = "#dbbee1"; points = SCORE_GREAT; counts.great++;
+      judgeText = "GREAT"; judgeColor = theme.lanes[1]; points = SCORE_GREAT; counts.great++;
     } else if (absDiff <= GOOD_RANGE) {
-      judgeText = "GOOD"; judgeColor = "#b794d4"; points = SCORE_GOOD; counts.good++;
+      judgeText = "GOOD"; judgeColor = theme.lanes[2]; points = SCORE_GOOD; counts.good++;
     } else {
       return;
     }
@@ -482,7 +489,7 @@
         n.holdProgress = Math.min(1, (chartTime - n.t) / n.d);
         if (n.holdProgress >= 1) {
           score += HOLD_BONUS; updateHUD();
-          spawnJudgeText("HOLD OK", "#8582fb", cw / 2, judgeY - 55, 0);
+          spawnJudgeText("HOLD OK", theme.accent, cw / 2, judgeY - 55, 0);
           holdActive[n.l] = null;
         }
       }
@@ -547,8 +554,8 @@
 
     // ===== 背景 =====
     var grad = ctx.createLinearGradient(0, 0, 0, ch);
-    grad.addColorStop(0, "#1a0a2e");
-    grad.addColorStop(1, "#2d1b4e");
+    grad.addColorStop(0, theme.bgTop);
+    grad.addColorStop(1, theme.bgBottom);
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, cw, ch);
 
@@ -576,8 +583,8 @@
 
     // レーン下端（判定線手前）に明るい輝き
     var laneBottomGrad = ctx.createLinearGradient(0, judgeY * 0.85, 0, judgeY);
-    laneBottomGrad.addColorStop(0, "rgba(133,130,251,0)");
-    laneBottomGrad.addColorStop(1, "rgba(133,130,251,0.05)");
+    laneBottomGrad.addColorStop(0, "rgba(" + hexToRgb(theme.accent) + ",0)");
+    laneBottomGrad.addColorStop(1, "rgba(" + hexToRgb(theme.accent) + ",0.05)");
     ctx.fillStyle = laneBottomGrad;
     ctx.fillRect(0, judgeY * 0.85, cw, judgeY * 0.15);
 
@@ -600,7 +607,7 @@
     // ===== レーンフラッシュ =====
     for (var i = 0; i < LANE_COUNT; i++) {
       if (laneFlash[i] > 0) {
-        ctx.fillStyle = "rgba(" + hexToRgb(LANE_COLORS[i]) + "," + (laneFlash[i] * 0.15) + ")";
+        ctx.fillStyle = "rgba(" + hexToRgb(theme.lanes[i]) + "," + (laneFlash[i] * 0.15) + ")";
         ctx.fillRect(i * lw, 0, lw, ch);
       }
     }
@@ -613,13 +620,13 @@
     ctx.beginPath(); ctx.moveTo(0, judgeY); ctx.lineTo(cw, judgeY);
     ctx.strokeStyle = "rgba(238,242,255,0.5)"; ctx.lineWidth = 2; ctx.stroke();
     ctx.beginPath(); ctx.moveTo(0, judgeY); ctx.lineTo(cw, judgeY);
-    ctx.strokeStyle = "rgba(133,130,251,0.3)"; ctx.lineWidth = 6; ctx.stroke();
+    ctx.strokeStyle = "rgba(" + hexToRgb(theme.accent) + ",0.3)"; ctx.lineWidth = 6; ctx.stroke();
     // グロー
     var glowGrad = ctx.createLinearGradient(0, judgeY - 10, 0, judgeY + 10);
-    glowGrad.addColorStop(0, "rgba(133,130,251,0)");
-    glowGrad.addColorStop(0.4, "rgba(133,130,251,0.1)");
-    glowGrad.addColorStop(0.6, "rgba(133,130,251,0.1)");
-    glowGrad.addColorStop(1, "rgba(133,130,251,0)");
+    glowGrad.addColorStop(0, "rgba(" + hexToRgb(theme.accent) + ",0)");
+    glowGrad.addColorStop(0.4, "rgba(" + hexToRgb(theme.accent) + ",0.1)");
+    glowGrad.addColorStop(0.6, "rgba(" + hexToRgb(theme.accent) + ",0.1)");
+    glowGrad.addColorStop(1, "rgba(" + hexToRgb(theme.accent) + ",0)");
     ctx.fillStyle = glowGrad;
     ctx.fillRect(0, judgeY - 10, cw, 20);
     // レーン区切りマーカー
@@ -637,7 +644,7 @@
       var beatPhase = (elapsed % beatMs) / beatMs;
       var pulse = Math.max(0, 1 - beatPhase * 4);
       if (pulse > 0) {
-        ctx.fillStyle = "rgba(133,130,251," + (pulse * 0.05) + ")";
+        ctx.fillStyle = "rgba(" + hexToRgb(theme.accent) + "," + (pulse * 0.05) + ")";
         ctx.fillRect(0, 0, cw, ch);
       }
     }
@@ -656,7 +663,7 @@
       var ny = judgeY - (diff / SCROLL_AHEAD) * judgeY;
 
       var nx = n.l * lw + lw / 2;
-      var color = LANE_COLORS[n.l];
+      var color = theme.lanes[n.l];
 
       var approachRatio = Math.max(0.2, Math.min(1, (diff / SCROLL_AHEAD) + 0.2));
       var scale = 0.7 + (1 - approachRatio) * 0.65;
@@ -676,9 +683,9 @@
           var tb = Math.min(ch, tailBottom);
           var tGrad = ctx.createLinearGradient(tx, 0, tx + tw, 0);
           if (n.hit) {
-            tGrad.addColorStop(0, "rgba(133,130,251,0.5)");
-            tGrad.addColorStop(0.5, "rgba(133,130,251,0.8)");
-            tGrad.addColorStop(1, "rgba(133,130,251,0.3)");
+            tGrad.addColorStop(0, "rgba(" + hexToRgb(theme.accent) + ",0.5)");
+            tGrad.addColorStop(0.5, "rgba(" + hexToRgb(theme.accent) + ",0.8)");
+            tGrad.addColorStop(1, "rgba(" + hexToRgb(theme.accent) + ",0.3)");
           } else {
             tGrad.addColorStop(0, "rgba(238,242,255,0.08)");
             tGrad.addColorStop(0.5, "rgba(238,242,255,0.15)");
@@ -783,7 +790,7 @@
       ctx.globalAlpha = rp.life * 0.4;
       var rpx = rp.lane * lw + lw / 2;
       ctx.beginPath(); ctx.arc(rpx, rp.y, (1 - rp.life) * lw * 0.8 + 4, 0, Math.PI * 2);
-      ctx.fillStyle = LANE_COLORS[rp.lane];
+      ctx.fillStyle = theme.lanes[rp.lane];
       ctx.fill();
     }
     ctx.globalAlpha = 1;
@@ -816,7 +823,7 @@
       if (progress >= 0) {
         ctx.fillStyle = "rgba(238,242,255,0.06)";
         ctx.fillRect(0, 0, cw, 3);
-        ctx.fillStyle = "#8582fb";
+        ctx.fillStyle = theme.accent;
         ctx.fillRect(0, 0, cw * progress, 3);
       }
     }
@@ -832,7 +839,7 @@
     // ===== オフセットトースト =====
     if (offsetToastTimer > 0) {
       offsetToastTimer--;
-      ctx.fillStyle = "rgba(133,130,251,0.85)";
+      ctx.fillStyle = "rgba(" + hexToRgb(theme.accent) + ",0.85)";
       ctx.font = "bold 14px sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "top";
@@ -916,7 +923,7 @@
         var completion = n.holdProgress;
         if (completion > 0.8) {
           score += HOLD_BONUS; updateHUD();
-          spawnJudgeText("HOLD OK", "#8582fb", cw / 2, judgeY - 55, 0);
+          spawnJudgeText("HOLD OK", theme.accent, cw / 2, judgeY - 55, 0);
         } else {
           spawnJudgeText("HOLD BREAK", "#e74c3c", cw / 2, judgeY - 55, 0);
         }
@@ -1065,6 +1072,14 @@
     setVideoVisible(false);
   }
 
+  function applyTheme() {
+    var chartData = (typeof CHARTS !== "undefined" && selectedSongId && CHARTS[selectedSongId])
+      ? CHARTS[selectedSongId] : null;
+    theme = (chartData && chartData.theme) ? chartData.theme : DEFAULT_THEME;
+    elGameWrapper.style.setProperty("--accent", theme.accent);
+    elGameWrapper.style.setProperty("--accent-rgb", hexToRgb(theme.accent));
+  }
+
   function selectSong(songId) {
     selectedSongId = songId;
     var song = null;
@@ -1076,6 +1091,9 @@
     elSongTitle.textContent = song.title + " / " + song.artist;
     elSettingsSongTitle.textContent = song.title;
     elSettingsSongArtist.textContent = song.artist;
+
+    // 曲テーマを反映（プレイ画面・HUDの配色）
+    applyTheme();
 
     // この曲の難しい度別ベストスコアを表示
     loadBest();
@@ -1155,6 +1173,7 @@
     fadeOutActive = false;
 
     chart = CHARTS[selectedSongId];
+    applyTheme();
     totalNotes = 0;
     for (var ni = 0; ni < chart.notes.length; ni++) {
       if (shouldInclude(chart.notes[ni])) totalNotes++;
@@ -1162,7 +1181,7 @@
 
     updateHUD();
     elScore.textContent = "0"; elCombo.textContent = "0";
-    elJudge.textContent = "-"; elJudge.style.color = "#8582fb";
+    elJudge.textContent = "-"; elJudge.style.color = theme.accent;
     elAccuracy.textContent = "100%";
     elOffsetHud.style.display = "";
 
@@ -1332,9 +1351,16 @@
     var ctx = cvs.getContext("2d");
     ctx.scale(scale, scale);
 
-    var shareBg = selectedSongId === "okiraku_superstar"
+    var isOkiraku = selectedSongId === "okiraku_superstar";
+    var shareBg = isOkiraku
       ? "../images/games/share/Milli Pulse-share-okiraku.png"
       : "../images/games/share/Milli Pulse-share.PNG";
+
+    var inkRGB = isOkiraku ? "78,43,13" : "45,27,78";
+    function ink(a) {
+      var k = isOkiraku ? Math.min(a * 2, 1) : a;
+      return "rgba(" + inkRGB + "," + k.toFixed(2) + ")";
+    }
 
     return Promise.all([
       loadImage("../images/games/rogo/Milli Pulse-rogo.png"),
@@ -1365,17 +1391,17 @@
       ctx.textAlign = "center";
       ctx.textBaseline = "top";
       var yPos = yBase + 2;
-      ctx.fillStyle = "rgba(45,27,78,0.8)";
+      ctx.fillStyle = ink(0.8);
       ctx.font = "bold 13px -apple-system, sans-serif";
       ctx.fillText(r.title, W / 2, yPos);
       yPos += 18;
-      ctx.fillStyle = "rgba(45,27,78,0.5)";
+      ctx.fillStyle = ink(0.5);
       ctx.font = "11px -apple-system, sans-serif";
       ctx.fillText(r.artist, W / 2, yPos);
       yBase = yPos + 8;
 
       // difficulty
-      ctx.fillStyle = "rgba(45,27,78,0.35)";
+      ctx.fillStyle = ink(0.35);
       ctx.font = "11px -apple-system, sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "top";
@@ -1406,7 +1432,7 @@
       ctx.fillStyle = "#8582fb";
       ctx.font = "bold 28px -apple-system, sans-serif";
       ctx.fillText(r.score.toLocaleString(), W / 2, yPos);
-      ctx.fillStyle = "rgba(45,27,78,0.3)";
+      ctx.fillStyle = ink(0.3);
       ctx.font = "12px -apple-system, sans-serif";
       ctx.fillText("SCORE", W / 2, yPos + 32);
 
@@ -1417,14 +1443,14 @@
         { label: "MAX COMBO", val: r.maxCombo, suffix: "", color: "#dbbee1" }
       ];
       for (var bi = 0; bi < barItems.length; bi++) {
-        ctx.fillStyle = "rgba(45,27,78,0.7)";
+        ctx.fillStyle = ink(0.7);
         ctx.textAlign = "left";
         ctx.font = "13px -apple-system, sans-serif";
         ctx.fillText(barItems[bi].label, 50, yPos);
         ctx.textAlign = "right";
         ctx.font = "bold 13px -apple-system, sans-serif";
         ctx.fillText(String(barItems[bi].val) + barItems[bi].suffix, W - 50, yPos);
-        ctx.fillStyle = "rgba(45,27,78,0.12)";
+        ctx.fillStyle = ink(0.12);
         ctx.fillRect(50, yPos + 17, W - 100, 4);
         ctx.fillStyle = barItems[bi].color;
         var bv = typeof barItems[bi].val === "number" ? barItems[bi].val : 0;
@@ -1433,7 +1459,7 @@
       }
 
       // divider
-      ctx.strokeStyle = "rgba(45,27,78,0.1)";
+      ctx.strokeStyle = ink(0.1);
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(40, yPos);
@@ -1443,7 +1469,7 @@
 
       // judge counts header
       ctx.textBaseline = "top";
-      ctx.fillStyle = "rgba(45,27,78,0.6)";
+      ctx.fillStyle = ink(0.6);
       ctx.font = "11px -apple-system, sans-serif";
       ctx.textAlign = "center";
       ctx.fillText("DETAILS", W / 2, yPos);
@@ -1453,10 +1479,10 @@
         { label: "PERFECT", color: "#8582fb", val: r.perfect },
         { label: "GREAT", color: "#dbbee1", val: r.great },
         { label: "GOOD", color: "#b794d4", val: r.good },
-        { label: "MISS", color: "rgba(45,27,78,0.3)", val: r.miss }
+        { label: "MISS", color: ink(0.3), val: r.miss }
       ];
       for (var i = 0; i < items.length; i++) {
-        ctx.fillStyle = "rgba(45,27,78,0.25)";
+        ctx.fillStyle = ink(0.25);
         ctx.textAlign = "left";
         ctx.font = "14px -apple-system, sans-serif";
         ctx.fillText(items[i].label, 55, yPos);
@@ -1469,12 +1495,12 @@
       // best
       yPos += 4;
       if (r.isNewBest) {
-        ctx.fillStyle = "#fbbf24";
+        ctx.fillStyle = isOkiraku ? "#4a2608" : "#fbbf24";
         ctx.font = "bold 14px -apple-system, sans-serif";
         ctx.textAlign = "center";
         ctx.fillText("NEW BEST!", W / 2, yPos);
       } else {
-        ctx.fillStyle = "rgba(45,27,78,0.3)";
+        ctx.fillStyle = ink(0.3);
         ctx.font = "12px -apple-system, sans-serif";
         ctx.textAlign = "center";
         ctx.fillText("BEST " + r.bestScore.toLocaleString(), W / 2, yPos);
@@ -1662,6 +1688,7 @@
       loadBest();
       updateHardButton();
     }
+    applyTheme();
     var rt = setInterval(function () {
       if (playerReady) {
         clearInterval(rt);
@@ -1676,11 +1703,11 @@
   (function () {
     initCanvas();
     var grad = ctx.createLinearGradient(0, 0, 0, ch);
-    grad.addColorStop(0, "#1a0a2e");
-    grad.addColorStop(1, "#2d1b4e");
+    grad.addColorStop(0, theme.bgTop);
+    grad.addColorStop(1, theme.bgBottom);
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, cw, ch);
-    ctx.fillStyle = "rgba(133,130,251,0.1)";
+    ctx.fillStyle = "rgba(" + hexToRgb(theme.accent) + ",0.1)";
     ctx.font = "16px sans-serif";
     ctx.textAlign = "center";
     ctx.fillText("曲を選択してください", cw / 2, ch / 2);

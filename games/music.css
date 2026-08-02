@@ -6,6 +6,11 @@
   padding: 0;
 }
 
+:root {
+  --accent: #8582fb;
+  --accent-rgb: 133, 130, 251;
+}
+
 html,
 body {
   height: 100%;
@@ -149,7 +154,7 @@ body {
 }
 
 #score {
-  color: #8582fb;
+  color: var(--accent);
   font-size: 1rem;
 }
 
@@ -167,7 +172,7 @@ body {
 }
 
 #combo.active {
-  color: #8582fb;
+  color: var(--accent);
 }
 
 #combo.high {
@@ -280,8 +285,8 @@ body {
 }
 
 .lane-btn.pressed {
-  background: rgba(133, 130, 251, 0.2);
-  border-color: rgba(133, 130, 251, 0.3);
+  background: rgba(var(--accent-rgb), 0.2);
+  border-color: rgba(var(--accent-rgb), 0.3);
 }
 
 /* ===== オーバーレイ（ガラス調） ===== */

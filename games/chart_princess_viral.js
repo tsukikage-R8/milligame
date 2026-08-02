@@ -1402,6 +1402,12 @@ push(bar(35) + beat(0), 0, "tap", beat(0.5), 2);
    bpm: BPM,
    offset: 0,
    duration: 98,
+   theme: {
+     bgTop: "#0a1830",
+     bgBottom: "#1d3a63",
+     accent: "#5b9bff",
+     lanes: ["#5b9bff", "#93b4e8", "#7fa6e0", "#3a6cb5"]
+   },
    notes: notes
  };
 })();

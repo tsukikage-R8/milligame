@@ -1132,6 +1132,12 @@ CHARTS.okiraku_superstar = (function () {
     offset: 0,
     duration: 88,
     hasHard: false,
+    theme: {
+      bgTop: "#2b1506",
+      bgBottom: "#5c2f10",
+      accent: "#f5a524",
+      lanes: ["#e0562e", "#3fb6d9", "#d9772e", "#57b6d9"]
+    },
     notes: notes
   };
 })();
