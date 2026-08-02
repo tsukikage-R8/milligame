@@ -3,6 +3,7 @@
    BPM: 178
    小節数: 65 (bar 0-64)
    レーンは全て0(左端), 全て通常ノーツ
+   最初の6拍は休み(bar0全部+bar1の1,2拍目)、bar1の3拍目から開始
    beat(0)=1拍目, beat(1)=2拍目, beat(2)=3拍目, beat(3)=4拍目
    ============================================ */
 var CHARTS = CHARTS || {};
@@ -35,38 +36,20 @@ CHARTS.okiraku_superstar = (function () {
   // ========================================
   // bar 0
   // ========================================
-  // EASY
-  push(bar(0) + beat(0), 0, "tap", 0, 0);
-  push(bar(0) + beat(1), 0, "tap", 0, 0);
-  push(bar(0) + beat(2), 0, "tap", 0, 0);
-  push(bar(0) + beat(3), 0, "tap", 0, 0);
-  // NORMAL
-  push(bar(0) + beat(0), 0, "tap", 0, 1);
-  push(bar(0) + beat(1), 0, "tap", 0, 1);
-  push(bar(0) + beat(2), 0, "tap", 0, 1);
-  push(bar(0) + beat(3), 0, "tap", 0, 1);
-  // HARD
-  push(bar(0) + beat(0), 0, "tap", 0, 2);
-  push(bar(0) + beat(1), 0, "tap", 0, 2);
-  push(bar(0) + beat(2), 0, "tap", 0, 2);
-  push(bar(0) + beat(3), 0, "tap", 0, 2);
+  // 最初の6拍は休み（全てのレベル）
+
 
   // ========================================
   // bar 1
   // ========================================
+  // この小節の3拍目から曲が始まる
   // EASY
-  push(bar(1) + beat(0), 0, "tap", 0, 0);
-  push(bar(1) + beat(1), 0, "tap", 0, 0);
   push(bar(1) + beat(2), 0, "tap", 0, 0);
   push(bar(1) + beat(3), 0, "tap", 0, 0);
   // NORMAL
-  push(bar(1) + beat(0), 0, "tap", 0, 1);
-  push(bar(1) + beat(1), 0, "tap", 0, 1);
   push(bar(1) + beat(2), 0, "tap", 0, 1);
   push(bar(1) + beat(3), 0, "tap", 0, 1);
   // HARD
-  push(bar(1) + beat(0), 0, "tap", 0, 2);
-  push(bar(1) + beat(1), 0, "tap", 0, 2);
   push(bar(1) + beat(2), 0, "tap", 0, 2);
   push(bar(1) + beat(3), 0, "tap", 0, 2);
 
