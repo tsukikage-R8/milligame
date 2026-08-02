@@ -226,12 +226,13 @@
   function loadConfig() {
     var savedDiff = localStorage.getItem("rhythmDifficulty");
     if (savedDiff) {
-
+      if (savedDiff === "hard" && !chartHasHard()) savedDiff = "normal";
       config.difficulty = savedDiff;
       diffBtns.forEach(function (b) {
         b.classList.toggle("active", b.getAttribute("data-diff") === savedDiff);
       });
     }
+    updateHardButton();
     updateJudgment();
 
     var savedOffset = localStorage.getItem("rhythmOffset");
@@ -420,6 +421,36 @@
     if (config.difficulty === "easy") return level === 0;
     if (config.difficulty === "normal") return level === 1;
     return level === 2;
+  }
+
+  function chartHasHard() {
+    if (typeof CHARTS === "undefined" || !selectedSongId || !CHARTS[selectedSongId]) return false;
+    var ch = CHARTS[selectedSongId];
+    if (ch.hasHard === false) return false;
+    for (var i = 0; i < ch.notes.length; i++) {
+      if (ch.notes[i].lvl === 2) return true;
+    }
+    return false;
+  }
+
+  function updateHardButton() {
+    var wrapper = document.getElementById("hard-wrapper");
+    if (!wrapper) return;
+    var btn = wrapper.querySelector(".diff-btn");
+    if (!btn) return;
+    var available = chartHasHard();
+    wrapper.classList.toggle("disabled", !available);
+    btn.classList.toggle("disabled", !available);
+    wrapper.classList.remove("touch-hover");
+    if (!available && config.difficulty === "hard") {
+      config.difficulty = "normal";
+      diffBtns.forEach(function (b) {
+        b.classList.toggle("active", b.getAttribute("data-diff") === "normal");
+      });
+      elResultDifficulty.textContent = "NORMAL";
+      loadBest();
+    }
+    updateJudgment();
   }
 
   // ============================================
@@ -1048,6 +1079,7 @@
 
     // この曲の難しい度別ベストスコアを表示
     loadBest();
+    updateHardButton();
 
     elSongSelectOverlay.classList.remove("active");
     elStartOverlay.classList.add("active");
@@ -1527,6 +1559,17 @@
     (function (btn) {
       btn.addEventListener("click", function () {
         var diff = btn.getAttribute("data-diff");
+        if (diff === "hard") {
+          var wrapper = document.getElementById("hard-wrapper");
+          if (wrapper && wrapper.classList.contains("disabled")) {
+            if (wrapper.classList.contains("touch-hover")) {
+              wrapper.classList.remove("touch-hover");
+            } else {
+              wrapper.classList.add("touch-hover");
+            }
+            return;
+          }
+        }
         diffBtns.forEach(function (b) { b.classList.remove("active"); });
         btn.classList.add("active");
         config.difficulty = diff;
@@ -1613,6 +1656,7 @@
       elSettingsSongTitle.textContent = song.title;
       elSettingsSongArtist.textContent = song.artist;
       loadBest();
+      updateHardButton();
     }
     var rt = setInterval(function () {
       if (playerReady) {
