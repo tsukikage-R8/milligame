@@ -1130,7 +1130,8 @@ CHARTS.okiraku_superstar = (function () {
     title: "おきらくスーパースター",
     bpm: BPM,
     offset: 0,
-    duration: 84,
+    duration: 88,
+    hasHard: false,
     notes: notes
   };
 })();
