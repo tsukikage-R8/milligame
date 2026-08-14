@@ -1287,6 +1287,48 @@ ul, ol { list-style: none; }
   color: var(--text-muted);
 }
 
+.mp-field-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.mp-field-row .mp-input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.mp-pass-toggle {
+  flex: 0 0 auto;
+  width: 42px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  background: var(--glass-bg);
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mp-pass-toggle:active {
+  transform: scale(0.95);
+}
+
+.mp-switch {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  background: none;
+  color: var(--primary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .mp-actions {
   display: flex;
   gap: 8px;

@@ -140,16 +140,19 @@ function completeMilliproLogin(uid) {
 // ---------- アカウント連携UI（§2-4） ----------
 
 function mpRender(uid) {
-  var form = document.getElementById("mp-account-form");
   var ok = document.getElementById("mp-account-ok");
-  if (!form || !ok) return;
+  var lv = document.getElementById("mp-login-view");
+  var sv = document.getElementById("mp-signup-view");
+  if (!ok) return;
   if (uid) {
-    form.style.display = "none";
+    if (lv) lv.style.display = "none";
+    if (sv) sv.style.display = "none";
     ok.style.display = "block";
     document.getElementById("mp-pid").textContent = getMilliproPlayerId() || uid;
   } else {
-    form.style.display = "block";
     ok.style.display = "none";
+    if (lv) lv.style.display = "block";
+    if (sv) sv.style.display = "none";
   }
   var ms = document.getElementById("mp-menu-status");
   if (ms) {
@@ -157,6 +160,67 @@ function mpRender(uid) {
     ms.textContent = pid ? "連携ID: " + pid : "未連携";
     ms.classList.toggle("linked", !!pid);
   }
+}
+
+function mpShow(view) {
+  var lv = document.getElementById("mp-login-view");
+  var sv = document.getElementById("mp-signup-view");
+  if (!lv || !sv) return;
+  var showSignup = view === "signup";
+  lv.style.display = showSignup ? "none" : "block";
+  sv.style.display = showSignup ? "block" : "none";
+  var m1 = document.getElementById("mp-login-msg");
+  var m2 = document.getElementById("mp-new-msg");
+  if (m1) m1.textContent = "";
+  if (m2) m2.textContent = "";
+}
+
+function mpTogglePass(id, btn) {
+  var inp = document.getElementById(id);
+  if (!inp) return;
+  var show = inp.type === "password";
+  inp.type = show ? "text" : "password";
+  if (btn) {
+    btn.innerHTML = show ? "&#x1F648;" : "&#x1F441;";
+    btn.setAttribute("aria-pressed", show ? "true" : "false");
+  }
+}
+
+function mpAuthError(e) {
+  var j = e && e.code ? e.code : String(e);
+  if (j.indexOf("email-already-in-use") >= 0) return "そのメールは既に登録されています。ログインしてください";
+  if (j.indexOf("wrong-password") >= 0 || j.indexOf("user-not-found") >= 0) return "メールまたはパスワードが違います";
+  if (j.indexOf("weak-password") >= 0) return "パスワードは6文字以上にしてください";
+  if (j.indexOf("invalid-email") >= 0) return "メールアドレスの形式が正しくありません";
+  return "エラー: " + j;
+}
+
+function mpLogin() {
+  var email = document.getElementById("mp-email").value.trim();
+  var pass = document.getElementById("mp-pass").value;
+  var msg = document.getElementById("mp-login-msg");
+  if (!msg) return;
+  if (!email || !pass) { msg.textContent = "メールとパスワードを入力してください"; return; }
+  milliproLogin(email, pass).then(function () {
+    msg.textContent = "連携しました。playerId を端末に反映中...";
+  }).catch(function (e) {
+    msg.textContent = mpAuthError(e);
+  });
+}
+
+function mpSignup() {
+  var email = document.getElementById("mp-new-email").value.trim();
+  var pass = document.getElementById("mp-new-pass").value;
+  var pass2 = document.getElementById("mp-new-pass2").value;
+  var msg = document.getElementById("mp-new-msg");
+  if (!msg) return;
+  if (!email || !pass) { msg.textContent = "メールとパスワードを入力してください"; return; }
+  if (pass !== pass2) { msg.textContent = "パスワードが一致しません"; return; }
+  milliproSignup(email, pass).then(function () {
+    msg.textContent = "登録しました。playerId を端末に反映中...";
+  }).catch(function (e) {
+    msg.textContent = mpAuthError(e);
+  });
 }
 
 function mpOpen() {
@@ -196,25 +260,6 @@ function mpOpenAccount() {
     el.style.display = "block";
     el.scrollIntoView({ behavior: "smooth", block: "center" });
   }
-}
-
-function mpSubmit(isSignup) {
-  var email = document.getElementById("mp-email").value.trim();
-  var pass = document.getElementById("mp-pass").value;
-  var msg = document.getElementById("mp-msg");
-  if (!msg) return;
-  if (!email || !pass) { msg.textContent = "メールとパスワードを入力してください"; return; }
-  var p = isSignup ? milliproSignup(email, pass) : milliproLogin(email, pass);
-  p.then(function () {
-    msg.textContent = "連携しました。playerId を端末に反映中...";
-  }).catch(function (e) {
-    var j = e && e.code ? e.code : String(e);
-    if (j.indexOf("email-already-in-use") >= 0) msg.textContent = "そのメールは既に登録されています。ログインしてください";
-    else if (j.indexOf("wrong-password") >= 0 || j.indexOf("user-not-found") >= 0) msg.textContent = "メールまたはパスワードが違います";
-    else if (j.indexOf("weak-password") >= 0) msg.textContent = "パスワードは6文字以上にしてください";
-    else if (j.indexOf("invalid-email") >= 0) msg.textContent = "メールアドレスの形式が正しくありません";
-    else msg.textContent = "エラー: " + j;
-  });
 }
 
 function mpLogout() {
@@ -266,3 +311,21 @@ if (document.getElementById("mp-popup-close")) {
     mpClose();
   });
 }
+
+// フォームのEnterキーで送信
+(function () {
+  var le = document.getElementById("mp-email");
+  var lp = document.getElementById("mp-pass");
+  if (le && lp) {
+    le.addEventListener("keydown", function (e) { if (e.key === "Enter") mpLogin(); });
+    lp.addEventListener("keydown", function (e) { if (e.key === "Enter") mpLogin(); });
+  }
+  var ne = document.getElementById("mp-new-email");
+  var np = document.getElementById("mp-new-pass");
+  var np2 = document.getElementById("mp-new-pass2");
+  if (ne && np && np2) {
+    [ne, np, np2].forEach(function (inp) {
+      inp.addEventListener("keydown", function (e) { if (e.key === "Enter") mpSignup(); });
+    });
+  }
+})();
