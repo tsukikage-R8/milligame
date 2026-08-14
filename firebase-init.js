@@ -160,6 +160,19 @@ function mpProfileInfo() {
   return { pid: pid, name: name, icon: icon, comment: comment, email: email };
 }
 
+// profile.icon (絵文字 or 画像 dataURL) を表示する（§2-4 参考実装と同じロジック）
+function renderUserIcon(el, user) {
+  if (!el) return;
+  var icon = user && user.icon;
+  if (typeof icon === "string" && icon.indexOf("data:image/") === 0) {
+    el.innerHTML = '<img src="' + icon + '" alt="icon">';
+  } else if (icon) {
+    el.textContent = icon;
+  } else {
+    el.textContent = user && user.playerName ? user.playerName.charAt(0) : "?";
+  }
+}
+
 // ---------- アカウント連携UI（§2-4） ----------
 
 function mpRender(uid) {
@@ -184,6 +197,12 @@ function mpRender(uid) {
   if (pl) {
     var info = mpProfileInfo();
     pl.textContent = info.name || info.pid || "ゲスト";
+  }
+  var pbtn = document.getElementById("profile-btn");
+  var picon = document.getElementById("profile-header-icon");
+  if (pbtn && picon) {
+    renderUserIcon(picon, info);
+    picon.style.display = info.icon ? "" : "none";
   }
 }
 

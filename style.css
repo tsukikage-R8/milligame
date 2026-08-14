@@ -202,6 +202,25 @@ ul, ol { list-style: none; }
   white-space: nowrap;
 }
 
+.profile-header-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.1rem;
+}
+
+.profile-header-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .icon-btn:hover {
   background: var(--glass-hover);
   border-color: var(--glass-border-hover);
@@ -823,11 +842,23 @@ ul, ol { list-style: none; }
   justify-content: center;
   color: var(--text-muted);
   flex-shrink: 0;
+  overflow: hidden;
+}
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .profile-name {
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--text);
+}
+.profile-comment {
+  font-size: 0.8rem;
+  color: var(--text);
+  margin-top: 2px;
 }
 .profile-status {
   font-size: 0.78rem;

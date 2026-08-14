@@ -961,12 +961,24 @@ if (el.profileBtn) {
     } else {
       statusHtml = '未連携です<br><span style="font-size:0.75rem;color:var(--text-muted)">ログインまたは連携IDの設定で報酬を受け取れます</span>';
     }
+    var commentHtml = '';
+    if (info.comment) {
+      commentHtml = '<div class="profile-comment">' + info.comment + '</div>';
+    }
     var profileLabel = document.getElementById("profile-label");
     if (profileLabel) profileLabel.textContent = displayName;
 
+    var avatarHtml = '<div class="profile-avatar">';
+    if (typeof renderUserIcon === 'function') {
+      try { avatarHtml += '<span id="profile-icon"></span>'; } catch (e) {}
+    } else {
+      avatarHtml += '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>';
+    }
+    avatarHtml += '</div>';
+
     var html = '<div class="profile-header">'
-      + '<div class="profile-avatar"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg></div>'
-      + '<div class="profile-info"><div class="profile-name">' + displayName + '</div><div class="profile-status">' + statusHtml + '</div></div>'
+      + avatarHtml
+      + '<div class="profile-info"><div class="profile-name">' + displayName + '</div>' + commentHtml + '<div class="profile-status">' + statusHtml + '</div></div>'
       + '</div>';
 
     if (history.length === 0) {
@@ -1013,7 +1025,12 @@ if (el.profileBtn) {
       html += '<div class="hist-container">' + tabsHtml + panesHtml + '</div>';
     }
     closeMenu();
-    setTimeout(function () { openPopup('プレイ履歴', html); }, 300);
+    setTimeout(function () {
+      openPopup('プレイ履歴', html);
+      if (typeof renderUserIcon === 'function') {
+        try { renderUserIcon(document.getElementById('profile-icon'), info); } catch (e) {}
+      }
+    }, 300);
   });
 }
 
