@@ -151,6 +151,37 @@ function mpRender(uid) {
     form.style.display = "block";
     ok.style.display = "none";
   }
+  var ms = document.getElementById("mp-menu-status");
+  if (ms) {
+    var pid = getMilliproPlayerId();
+    ms.textContent = pid ? "連携ID: " + pid : "未連携";
+    ms.classList.toggle("linked", !!pid);
+  }
+}
+
+function mpOpen() {
+  var popup = document.getElementById("login-popup");
+  if (popup) popup.classList.add("open");
+}
+
+function mpClose(skip) {
+  var popup = document.getElementById("login-popup");
+  if (popup) popup.classList.remove("open");
+  if (skip) {
+    try { sessionStorage.setItem("milli_login_skipped", "1"); } catch (e) {}
+  }
+}
+
+// localStorage に playerId が無い（未ログイン）ならポップアップを表示する
+function mpSyncPopup() {
+  var popup = document.getElementById("login-popup");
+  if (!popup) return;
+  if (getMilliproPlayerId()) {
+    popup.classList.remove("open");
+    return;
+  }
+  try { if (sessionStorage.getItem("milli_login_skipped")) return; } catch (e) {}
+  setTimeout(function () { popup.classList.add("open"); }, 400);
 }
 
 function mpSubmit(isSignup) {
@@ -197,6 +228,7 @@ function mpSetId() {
   if (!v) return;
   setMilliproPlayerId(v);
   mpRender(getMilliproUid());
+  mpSyncPopup();
   alert("連携IDを保存しました: " + v);
 }
 
@@ -205,8 +237,15 @@ initFirebase();
 // 画面初期化時に1回呼ぶ（auth 未設定でも mpRender(null) になるだけで安全）
 onMilliproAuth(function (uid) {
   if (uid) {
-    completeMilliproLogin(uid).then(function () { mpRender(uid); });
+    completeMilliproLogin(uid).then(function () { mpRender(uid); mpSyncPopup(); });
   } else {
     mpRender(null);
+    mpSyncPopup();
   }
 });
+
+if (document.getElementById("mp-popup-close")) {
+  document.getElementById("mp-popup-close").addEventListener("click", function () {
+    mpClose(true);
+  });
+}

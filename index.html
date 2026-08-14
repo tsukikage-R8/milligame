@@ -128,6 +128,41 @@
       </section>
       <section class="menu-section menu-account-section">
         <h3>アカウント連携</h3>
+        <div id="mp-menu-status" class="mp-menu-status">未連携</div>
+        <button class="menu-popup-btn" onclick="mpOpen()">アカウント連携を開く</button>
+      </section>
+      <section class="menu-section menu-install-section">
+        <button id="menu-install-btn" class="menu-install-btn">アプリとしてインストール</button>
+      </section>
+      <section class="menu-section menu-credit-section" style="margin-top:auto;">
+        <button id="credit-btn" class="menu-credit-btn">クレジット</button>
+      </section>
+    </div>
+  </nav>
+
+  <!-- UA通知オーバーレイ -->
+  <div id="ua-overlay" class="ua-overlay ua-hidden">
+    <div class="ua-card">
+      <div class="ua-header">
+        <span id="ua-title" class="ua-title"></span>
+        <button id="ua-close" class="ua-close">&times;</button>
+      </div>
+      <div id="ua-body" class="ua-body"></div>
+    </div>
+  </div>
+
+  <!-- アカウント連携ポップアップ -->
+  <div id="login-popup" class="login-popup">
+    <div class="login-popup-card">
+      <div class="login-popup-header">
+        <span class="login-popup-title">アカウント連携</span>
+        <button class="login-popup-close" id="mp-popup-close" aria-label="閉じる">&times;</button>
+      </div>
+      <div class="login-popup-body">
+        <p class="login-popup-desc">
+          クリア報酬を受け取るにはログイン（または連携IDの設定）が必要です。<br>
+          本アプリ・Milli Unishare と Milli Games で同じ連携IDを共有します。
+        </p>
         <div id="mp-account">
           <div id="mp-account-form">
             <input id="mp-email" class="mp-input" type="email" placeholder="メールアドレス" autocomplete="email">
@@ -153,24 +188,8 @@
             </div>
           </div>
         </div>
-      </section>
-      <section class="menu-section menu-install-section">
-        <button id="menu-install-btn" class="menu-install-btn">アプリとしてインストール</button>
-      </section>
-      <section class="menu-section menu-credit-section" style="margin-top:auto;">
-        <button id="credit-btn" class="menu-credit-btn">クレジット</button>
-      </section>
-    </div>
-  </nav>
-
-  <!-- UA通知オーバーレイ -->
-  <div id="ua-overlay" class="ua-overlay ua-hidden">
-    <div class="ua-card">
-      <div class="ua-header">
-        <span id="ua-title" class="ua-title"></span>
-        <button id="ua-close" class="ua-close">&times;</button>
+        <button class="login-popup-skip" onclick="mpClose(true)">あとで</button>
       </div>
-      <div id="ua-body" class="ua-body"></div>
     </div>
   </div>
 
