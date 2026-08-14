@@ -1269,6 +1269,103 @@ ul, ol { list-style: none; }
   font-weight: 600;
 }
 
+/* ===== アカウント連携（Firebase Auth・§2-4） ===== */
+.mp-input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 0.84rem;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.mp-input::placeholder {
+  color: var(--text-muted);
+}
+
+.mp-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.mp-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--primary), #b388ff);
+  color: #fff;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.mp-btn:active {
+  transform: scale(0.97);
+}
+
+.mp-btn-outline {
+  background: var(--glass-bg);
+  color: var(--text);
+  border: 1px solid var(--glass-border);
+  font-weight: 500;
+}
+
+.mp-msg {
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  min-height: 1.2em;
+  margin: 0;
+}
+
+.mp-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.mp-row b {
+  color: var(--primary);
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
+  word-break: break-all;
+}
+
+.mp-id-input {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--glass-border);
+}
+
+.mp-id-input .mp-row {
+  align-items: stretch;
+}
+
+.mp-id-input .mp-row .mp-btn-save {
+  flex: 0 0 auto;
+  padding: 10px 16px;
+}
+
+.mp-id-input .mp-input {
+  margin-bottom: 0;
+}
+
+.mp-hint {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
 /* ===== ホーム/全ゲーム画面 ===== */
 #home-view {
   padding-top: 80px;

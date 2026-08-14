@@ -126,6 +126,34 @@
           </div>
         </div>
       </section>
+      <section class="menu-section menu-account-section">
+        <h3>アカウント連携</h3>
+        <div id="mp-account">
+          <div id="mp-account-form">
+            <input id="mp-email" class="mp-input" type="email" placeholder="メールアドレス" autocomplete="email">
+            <input id="mp-pass" class="mp-input" type="password" placeholder="パスワード" autocomplete="current-password">
+            <div class="mp-actions">
+              <button class="mp-btn" onclick="mpSubmit(false)">ログイン</button>
+              <button class="mp-btn mp-btn-outline" onclick="mpSubmit(true)">新規作成</button>
+            </div>
+            <p id="mp-msg" class="mp-msg"></p>
+          </div>
+          <div id="mp-account-ok" style="display:none">
+            <div class="mp-row">連携ID: <b id="mp-pid"></b></div>
+            <div class="mp-actions">
+              <button class="mp-btn mp-btn-outline" onclick="mpCopyId()">IDをコピー</button>
+              <button class="mp-btn mp-btn-outline" onclick="mpLogout()">ログアウト</button>
+            </div>
+          </div>
+          <div id="mp-id-input" class="mp-id-input">
+            <div class="mp-hint">ログインせず連携IDを設定（本アプリの🔗連携でコピーしたIDを貼り付け）</div>
+            <div class="mp-row">
+              <input id="mp-id" class="mp-input" placeholder="連携ID（例: TEST001）" autocomplete="off">
+              <button class="mp-btn mp-btn-outline mp-btn-save" onclick="mpSetId()">保存</button>
+            </div>
+          </div>
+        </div>
+      </section>
       <section class="menu-section menu-install-section">
         <button id="menu-install-btn" class="menu-install-btn">アプリとしてインストール</button>
       </section>
@@ -148,6 +176,7 @@
 
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="firebase-config.js"></script>
   <script src="firebase-init.js"></script>
   <script src="script.js"></script>
