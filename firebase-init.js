@@ -164,24 +164,38 @@ function mpOpen() {
   if (popup) popup.classList.add("open");
 }
 
-function mpClose(skip) {
+function mpClose() {
   var popup = document.getElementById("login-popup");
   if (popup) popup.classList.remove("open");
-  if (skip) {
-    try { sessionStorage.setItem("milli_login_skipped", "1"); } catch (e) {}
-  }
 }
 
-// localStorage に playerId が無い（未ログイン）ならポップアップを表示する
-function mpSyncPopup() {
+// ---------- 連携案内バナー（ログイン任意・§2-4） ----------
+
+// 未ログイン & 連携ID未設定ならバナーを表示（ページ表示時に毎回判定。あとで閉じても次回また出る）
+function mpRefreshBanner() {
+  var b = document.getElementById("mp-banner");
+  if (!b) return;
+  var connected = (isAuthAvailable() && getMilliproUid()) || !!getMilliproPlayerId();
+  b.style.display = connected ? "none" : "flex";
+}
+
+function mpHideBanner() {
+  var b = document.getElementById("mp-banner");
+  if (b) b.style.display = "none";
+}
+
+// 「連携する」→ アカウント連携UI（モーダル）を開いて案内する
+function mpOpenAccount() {
   var popup = document.getElementById("login-popup");
-  if (!popup) return;
-  if (getMilliproPlayerId()) {
-    popup.classList.remove("open");
+  if (popup) {
+    mpOpen();
     return;
   }
-  try { if (sessionStorage.getItem("milli_login_skipped")) return; } catch (e) {}
-  setTimeout(function () { popup.classList.add("open"); }, 400);
+  var el = document.getElementById("mp-account");
+  if (el) {
+    el.style.display = "block";
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
 }
 
 function mpSubmit(isSignup) {
@@ -228,7 +242,7 @@ function mpSetId() {
   if (!v) return;
   setMilliproPlayerId(v);
   mpRender(getMilliproUid());
-  mpSyncPopup();
+  mpRefreshBanner();
   alert("連携IDを保存しました: " + v);
 }
 
@@ -237,15 +251,18 @@ initFirebase();
 // 画面初期化時に1回呼ぶ（auth 未設定でも mpRender(null) になるだけで安全）
 onMilliproAuth(function (uid) {
   if (uid) {
-    completeMilliproLogin(uid).then(function () { mpRender(uid); mpSyncPopup(); });
+    completeMilliproLogin(uid).then(function () {
+      mpRender(uid);
+      mpRefreshBanner();
+    });
   } else {
     mpRender(null);
-    mpSyncPopup();
+    mpRefreshBanner();
   }
 });
 
 if (document.getElementById("mp-popup-close")) {
   document.getElementById("mp-popup-close").addEventListener("click", function () {
-    mpClose(true);
+    mpClose();
   });
 }

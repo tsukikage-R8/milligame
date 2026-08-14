@@ -188,9 +188,18 @@
             </div>
           </div>
         </div>
-        <button class="login-popup-skip" onclick="mpClose(true)">あとで</button>
+        <button class="login-popup-skip" onclick="mpClose()">あとで</button>
       </div>
     </div>
+  </div>
+
+  <!-- 連携案内バナー（ログイン任意・§2-4） -->
+  <div id="mp-banner" class="mp-banner" style="display:none">
+    <span class="mp-banner-text">🎁 ミニゲームをクリアすると本アプリで報酬がもらえます！</span>
+    <span class="mp-banner-actions">
+      <button class="mp-banner-btn" onclick="mpOpenAccount()">連携する</button>
+      <button class="mp-banner-btn mp-banner-btn-outline" onclick="mpHideBanner()">あとで</button>
+    </span>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
