@@ -473,6 +473,7 @@ function showResult() {
   };
 
   saveHistory(primary.talent.type, primary.talent.name, primaryPct, norm);
+  recordGameClear('milli-spectrum', primaryPct);
 
   showScreen('result');
   window.scrollTo({ top: 0, behavior: 'smooth' });

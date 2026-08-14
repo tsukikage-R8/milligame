@@ -1291,6 +1291,7 @@
     };
 
     saveHistory(lastResult);
+    recordGameClear('milli-pulse', score);
 
     elQuitBtn.classList.remove("visible");
     document.getElementById("hud-row").style.display = "none";

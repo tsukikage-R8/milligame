@@ -669,6 +669,7 @@
                     if (h.length > 50) h = h.slice(0, 50);
                     localStorage.setItem('milliGames_history', JSON.stringify(h));
                 } catch (e) {}
+                recordGameClear('clicker', views);
                 clearModal.style.display = 'flex';
             }
         }
@@ -739,5 +740,9 @@
         updateUI();
 
     </script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <script src="../firebase-init.js"></script>
 </body>
 </html>

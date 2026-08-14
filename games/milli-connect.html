@@ -899,6 +899,7 @@
       document.getElementById('res-combo').innerText = maxCombo;
       document.getElementById('res-cleared').innerText = statsCleared;
       document.getElementById('res-collab').innerText = statsCollab;
+      recordGameClear('milli-connect', score);
     }
 
     function gameLoop() {
@@ -971,5 +972,9 @@
       reqId = requestAnimationFrame(gameLoop);
     }
   </script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <script src="../firebase-init.js"></script>
 </body>
 </html>

@@ -430,6 +430,7 @@ function endGame() {
         msg = "【S Rank Certified】\n" + msg;
     }
     document.getElementById('result-rei-msg').innerText = msg;
+    recordGameClear('ray-academy', state.score);
 }
 
 function backToTitle() {
@@ -437,5 +438,9 @@ function backToTitle() {
     document.getElementById('title-screen').classList.add('active');
 }
 </script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <script src="../firebase-init.js"></script>
 </body>
 </html>

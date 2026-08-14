@@ -674,6 +674,7 @@
     };
 
     saveHistory(lastResult);
+    recordGameClear('milli-choice', score);
     el.resultOverlay.classList.add("active");
   }
 
