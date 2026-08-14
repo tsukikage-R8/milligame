@@ -1316,6 +1316,35 @@ ul, ol { list-style: none; }
   transform: scale(0.95);
 }
 
+.auth-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.mp-tab {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  background: var(--glass-bg);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.mp-tab.active {
+  background: linear-gradient(135deg, var(--primary), #b388ff);
+  color: #fff;
+  border-color: transparent;
+}
+
+.mp-tab:active {
+  transform: scale(0.97);
+}
+
 .mp-switch {
   display: block;
   width: 100%;

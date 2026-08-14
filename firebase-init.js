@@ -90,12 +90,14 @@ function newPlayerIdFallback() {
   return "P" + Date.now();
 }
 
-// プロフィールを保証する（無ければローカルの playerId で作成）→ Promise<profile>
+// プロフィールを保証する（無ければローカルの playerId / 名前 / アイコン / 一言で作成）→ Promise<profile>
 function ensureMilliproProfile(uid) {
   var ud = null;
   try { ud = JSON.parse(localStorage.getItem("millipro_userdata")); } catch (e) {}
   var localId = ud && ud.playerId;
   var localName = ud && ud.playerName;
+  var localIcon = ud && ud.icon;
+  var localComment = ud && ud.comment;
 
   return firebase.database().ref("millipro/users/" + uid + "/profile").once("value").then(function (snap) {
     var p = snap.val();
@@ -104,12 +106,16 @@ function ensureMilliproProfile(uid) {
       var changed = false;
       if (!p.playerId) { p.playerId = localId || newPlayerIdFallback(); changed = true; }
       if (!p.playerName && localName) { p.playerName = localName; changed = true; }
+      if (!p.icon && localIcon) { p.icon = localIcon; changed = true; }
+      if (!p.comment && localComment) { p.comment = localComment; changed = true; }
       if (changed) firebase.database().ref("millipro/users/" + uid + "/profile").set(p);
       return p;
     }
     var np = {
       playerId: localId || newPlayerIdFallback(),
       playerName: localName || "",
+      icon: localIcon || "",
+      comment: localComment || "",
       updatedAt: now
     };
     firebase.database().ref("millipro/users/" + uid + "/profile").set(np);
@@ -117,13 +123,15 @@ function ensureMilliproProfile(uid) {
   });
 }
 
-// profile の playerId / playerName をこの端末の localStorage に反映（他項目は保持）
+// profile の playerId / playerName / icon / comment をこの端末の localStorage に反映（他項目は保持）
 function applyMilliproProfile(profile) {
   var ud = null;
   try { ud = JSON.parse(localStorage.getItem("millipro_userdata")); } catch (e) {}
   if (!ud || typeof ud !== "object") ud = { createdAt: Date.now() };
   ud.playerId = profile.playerId;
   if (profile.playerName) ud.playerName = profile.playerName;
+  if (profile.icon) ud.icon = profile.icon;
+  if (profile.comment) ud.comment = profile.comment;
   ud.updatedAt = Date.now();
   localStorage.setItem("millipro_userdata", JSON.stringify(ud));
   return ud;
@@ -143,29 +151,28 @@ function mpProfileInfo() {
   try { ud = JSON.parse(localStorage.getItem("millipro_userdata")); } catch (e) {}
   var pid = ud && ud.playerId ? ud.playerId : "";
   var name = ud && ud.playerName ? ud.playerName : "";
+  var icon = ud && ud.icon ? ud.icon : "";
+  var comment = ud && ud.comment ? ud.comment : "";
   var email = "";
   try {
     if (isAuthAvailable() && firebase.auth().currentUser) email = firebase.auth().currentUser.email || "";
   } catch (e) {}
-  return { pid: pid, name: name, email: email };
+  return { pid: pid, name: name, icon: icon, comment: comment, email: email };
 }
 
 // ---------- アカウント連携UI（§2-4） ----------
 
 function mpRender(uid) {
+  var form = document.getElementById("mp-account-form");
   var ok = document.getElementById("mp-account-ok");
-  var lv = document.getElementById("mp-login-view");
-  var sv = document.getElementById("mp-signup-view");
-  if (!ok) return;
+  if (!form || !ok) return;
   if (uid) {
-    if (lv) lv.style.display = "none";
-    if (sv) sv.style.display = "none";
+    form.style.display = "none";
     ok.style.display = "block";
     document.getElementById("mp-pid").textContent = getMilliproPlayerId() || uid;
   } else {
+    form.style.display = "block";
     ok.style.display = "none";
-    if (lv) lv.style.display = "block";
-    if (sv) sv.style.display = "none";
   }
   var ms = document.getElementById("mp-menu-status");
   if (ms) {
@@ -180,28 +187,29 @@ function mpRender(uid) {
   }
 }
 
-function mpShow(view) {
-  var lv = document.getElementById("mp-login-view");
-  var sv = document.getElementById("mp-signup-view");
-  if (!lv || !sv) return;
-  var showSignup = view === "signup";
-  lv.style.display = showSignup ? "none" : "block";
-  sv.style.display = showSignup ? "block" : "none";
-  var m1 = document.getElementById("mp-login-msg");
-  var m2 = document.getElementById("mp-new-msg");
-  if (m1) m1.textContent = "";
-  if (m2) m2.textContent = "";
+// ログイン / 新規登録のタブ切替
+function mpTab(tab) {
+  var loginPanel = document.getElementById("mp-panel-login");
+  var signupPanel = document.getElementById("mp-panel-signup");
+  var loginTab = document.getElementById("mp-tab-login");
+  var signupTab = document.getElementById("mp-tab-signup");
+  if (!loginPanel || !signupPanel) return;
+  loginPanel.style.display = tab === "login" ? "block" : "none";
+  signupPanel.style.display = tab === "signup" ? "block" : "none";
+  if (loginTab) loginTab.className = tab === "login" ? "mp-tab active" : "mp-tab";
+  if (signupTab) signupTab.className = tab === "signup" ? "mp-tab active" : "mp-tab";
+  var msg = document.getElementById("mp-msg");
+  if (msg) msg.textContent = "";
 }
 
-function mpTogglePass(id, btn) {
-  var inp = document.getElementById(id);
-  if (!inp) return;
-  var show = inp.type === "password";
-  inp.type = show ? "text" : "password";
-  if (btn) {
-    btn.innerHTML = show ? "&#x1F648;" : "&#x1F441;";
-    btn.setAttribute("aria-pressed", show ? "true" : "false");
-  }
+// パスワードの表示 / 非表示を切り替え
+function mpToggle(inputId, btnId) {
+  var input = document.getElementById(inputId);
+  var btn = document.getElementById(btnId);
+  if (!input) return;
+  var show = input.type === "password";
+  input.type = show ? "text" : "password";
+  if (btn) btn.textContent = show ? "🙈" : "👁";
 }
 
 function mpAuthError(e) {
@@ -213,29 +221,19 @@ function mpAuthError(e) {
   return "エラー: " + j;
 }
 
-function mpLogin() {
-  var email = document.getElementById("mp-email").value.trim();
-  var pass = document.getElementById("mp-pass").value;
-  var msg = document.getElementById("mp-login-msg");
+function mpSubmit(isSignup) {
+  var email = document.getElementById(isSignup ? "mp2-email" : "mp-email").value.trim();
+  var pass = document.getElementById(isSignup ? "mp2-pass" : "mp-pass").value;
+  var msg = document.getElementById("mp-msg");
   if (!msg) return;
   if (!email || !pass) { msg.textContent = "メールとパスワードを入力してください"; return; }
-  milliproLogin(email, pass).then(function () {
-    msg.textContent = "連携しました。playerId を端末に反映中...";
-  }).catch(function (e) {
-    msg.textContent = mpAuthError(e);
-  });
-}
-
-function mpSignup() {
-  var email = document.getElementById("mp-new-email").value.trim();
-  var pass = document.getElementById("mp-new-pass").value;
-  var pass2 = document.getElementById("mp-new-pass2").value;
-  var msg = document.getElementById("mp-new-msg");
-  if (!msg) return;
-  if (!email || !pass) { msg.textContent = "メールとパスワードを入力してください"; return; }
-  if (pass !== pass2) { msg.textContent = "パスワードが一致しません"; return; }
-  milliproSignup(email, pass).then(function () {
-    msg.textContent = "登録しました。playerId を端末に反映中...";
+  if (isSignup) {
+    var pass2 = document.getElementById("mp2-pass2").value;
+    if (pass !== pass2) { msg.textContent = "パスワードが一致しません"; return; }
+  }
+  var p = isSignup ? milliproSignup(email, pass) : milliproLogin(email, pass);
+  p.then(function () {
+    msg.textContent = isSignup ? "登録しました。playerId を端末に反映中..." : "連携しました。playerId を端末に反映中...";
   }).catch(function (e) {
     msg.textContent = mpAuthError(e);
   });
@@ -335,15 +333,15 @@ if (document.getElementById("mp-popup-close")) {
   var le = document.getElementById("mp-email");
   var lp = document.getElementById("mp-pass");
   if (le && lp) {
-    le.addEventListener("keydown", function (e) { if (e.key === "Enter") mpLogin(); });
-    lp.addEventListener("keydown", function (e) { if (e.key === "Enter") mpLogin(); });
+    le.addEventListener("keydown", function (e) { if (e.key === "Enter") mpSubmit(false); });
+    lp.addEventListener("keydown", function (e) { if (e.key === "Enter") mpSubmit(false); });
   }
-  var ne = document.getElementById("mp-new-email");
-  var np = document.getElementById("mp-new-pass");
-  var np2 = document.getElementById("mp-new-pass2");
+  var ne = document.getElementById("mp2-email");
+  var np = document.getElementById("mp2-pass");
+  var np2 = document.getElementById("mp2-pass2");
   if (ne && np && np2) {
     [ne, np, np2].forEach(function (inp) {
-      inp.addEventListener("keydown", function (e) { if (e.key === "Enter") mpSignup(); });
+      inp.addEventListener("keydown", function (e) { if (e.key === "Enter") mpSubmit(true); });
     });
   }
 })();

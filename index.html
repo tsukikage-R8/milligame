@@ -164,37 +164,40 @@
           本アプリ・Milli Unishare と Milli Games で同じ連携IDを共有します。
         </p>
         <div id="mp-account">
-          <div id="mp-login-view">
-            <div class="mp-field-row">
-              <input id="mp-email" class="mp-input" type="email" placeholder="メールアドレス" autocomplete="email">
+          <div id="mp-account-form" style="display:none">
+            <div class="auth-tabs">
+              <button type="button" id="mp-tab-login" class="mp-tab active" onclick="mpTab('login')">ログイン</button>
+              <button type="button" id="mp-tab-signup" class="mp-tab" onclick="mpTab('signup')">新規登録</button>
             </div>
-            <div class="mp-field-row">
-              <input id="mp-pass" class="mp-input" type="password" placeholder="パスワード" autocomplete="current-password">
-              <button type="button" class="mp-pass-toggle" onclick="mpTogglePass('mp-pass', this)" aria-pressed="false">&#x1F441;</button>
+            <div id="mp-panel-login">
+              <div class="mp-field-row">
+                <input id="mp-email" class="mp-input" type="email" placeholder="メールアドレス" autocomplete="email">
+              </div>
+              <div class="mp-field-row">
+                <input id="mp-pass" class="mp-input" type="password" placeholder="パスワード" autocomplete="current-password">
+                <button type="button" class="mp-pass-toggle" id="mp-pass-toggle" onclick="mpToggle('mp-pass','mp-pass-toggle')">👁</button>
+              </div>
+              <div class="mp-actions">
+                <button class="mp-btn" onclick="mpSubmit(false)">ログイン</button>
+              </div>
             </div>
-            <div class="mp-actions">
-              <button class="mp-btn" onclick="mpLogin()">ログイン</button>
+            <div id="mp-panel-signup" style="display:none">
+              <div class="mp-field-row">
+                <input id="mp2-email" class="mp-input" type="email" placeholder="メールアドレス" autocomplete="email">
+              </div>
+              <div class="mp-field-row">
+                <input id="mp2-pass" class="mp-input" type="password" placeholder="パスワード（6文字以上）" autocomplete="new-password">
+                <button type="button" class="mp-pass-toggle" id="mp2-pass-toggle" onclick="mpToggle('mp2-pass','mp2-pass-toggle')">👁</button>
+              </div>
+              <div class="mp-field-row">
+                <input id="mp2-pass2" class="mp-input" type="password" placeholder="パスワード（確認）" autocomplete="new-password">
+                <button type="button" class="mp-pass-toggle" id="mp2-pass2-toggle" onclick="mpToggle('mp2-pass2','mp2-pass2-toggle')">👁</button>
+              </div>
+              <div class="mp-actions">
+                <button class="mp-btn" onclick="mpSubmit(true)">新規登録</button>
+              </div>
             </div>
-            <p id="mp-login-msg" class="mp-msg"></p>
-            <button class="mp-switch" onclick="mpShow('signup')">アカウントをお持ちでない方は新規作成</button>
-          </div>
-          <div id="mp-signup-view" style="display:none">
-            <div class="mp-field-row">
-              <input id="mp-new-email" class="mp-input" type="email" placeholder="メールアドレス" autocomplete="email">
-            </div>
-            <div class="mp-field-row">
-              <input id="mp-new-pass" class="mp-input" type="password" placeholder="パスワード（6文字以上）" autocomplete="new-password">
-              <button type="button" class="mp-pass-toggle" onclick="mpTogglePass('mp-new-pass', this)" aria-pressed="false">&#x1F441;</button>
-            </div>
-            <div class="mp-field-row">
-              <input id="mp-new-pass2" class="mp-input" type="password" placeholder="パスワード（確認）" autocomplete="new-password">
-              <button type="button" class="mp-pass-toggle" onclick="mpTogglePass('mp-new-pass2', this)" aria-pressed="false">&#x1F441;</button>
-            </div>
-            <div class="mp-actions">
-              <button class="mp-btn" onclick="mpSignup()">新規作成</button>
-            </div>
-            <p id="mp-new-msg" class="mp-msg"></p>
-            <button class="mp-switch" onclick="mpShow('login')">アカウントをお持ちの方はログイン</button>
+            <p id="mp-msg" class="mp-msg"></p>
           </div>
           <div id="mp-account-ok" style="display:none">
             <div class="mp-row">連携ID: <b id="mp-pid"></b></div>
