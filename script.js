@@ -949,9 +949,24 @@ if (el.profileBtn) {
     var history = [];
     try { history = JSON.parse(localStorage.getItem('milliGames_history') || '[]'); } catch (e) {}
 
+    var info = { pid: '', name: '', email: '' };
+    if (typeof mpProfileInfo === 'function') { try { info = mpProfileInfo(); } catch (e) {} }
+    var displayName = info.name || info.pid || 'ゲスト';
+    var statusHtml = '';
+    if (info.pid) {
+      statusHtml = '連携ID: ' + info.pid;
+      if (info.name) statusHtml += '<br>プレイヤー名: ' + info.name;
+      if (info.email) statusHtml += '<br>' + info.email;
+      statusHtml += '<br><span style="font-size:0.75rem;color:var(--text-muted)">※ 本アプリ・Milli Unishare と連携中</span>';
+    } else {
+      statusHtml = '未連携です<br><span style="font-size:0.75rem;color:var(--text-muted)">ログインまたは連携IDの設定で報酬を受け取れます</span>';
+    }
+    var profileLabel = document.getElementById("profile-label");
+    if (profileLabel) profileLabel.textContent = displayName;
+
     var html = '<div class="profile-header">'
       + '<div class="profile-avatar"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg></div>'
-      + '<div class="profile-info"><div class="profile-name">ゲスト</div><div class="profile-status">ログイン機能は準備中です</div></div>'
+      + '<div class="profile-info"><div class="profile-name">' + displayName + '</div><div class="profile-status">' + statusHtml + '</div></div>'
       + '</div>';
 
     if (history.length === 0) {

@@ -137,6 +137,19 @@ function completeMilliproLogin(uid) {
   });
 }
 
+// localStorage の連携情報と Auth メールをまとめて返す
+function mpProfileInfo() {
+  var ud = null;
+  try { ud = JSON.parse(localStorage.getItem("millipro_userdata")); } catch (e) {}
+  var pid = ud && ud.playerId ? ud.playerId : "";
+  var name = ud && ud.playerName ? ud.playerName : "";
+  var email = "";
+  try {
+    if (isAuthAvailable() && firebase.auth().currentUser) email = firebase.auth().currentUser.email || "";
+  } catch (e) {}
+  return { pid: pid, name: name, email: email };
+}
+
 // ---------- アカウント連携UI（§2-4） ----------
 
 function mpRender(uid) {
@@ -159,6 +172,11 @@ function mpRender(uid) {
     var pid = getMilliproPlayerId();
     ms.textContent = pid ? "連携ID: " + pid : "未連携";
     ms.classList.toggle("linked", !!pid);
+  }
+  var pl = document.getElementById("profile-label");
+  if (pl) {
+    var info = mpProfileInfo();
+    pl.textContent = info.name || info.pid || "ゲスト";
   }
 }
 
