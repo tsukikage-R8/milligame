@@ -3,10 +3,17 @@
 // config 未設定（apiKey が空）の間は連携機能は無効（エラーも出さない）
 var firebaseReady = false;
 
+function getFirebaseConfig() {
+  if (typeof FIREBASE_CONFIG !== "undefined" && FIREBASE_CONFIG) return FIREBASE_CONFIG;
+  if (typeof firebaseConfig !== "undefined" && firebaseConfig) return firebaseConfig;
+  return null;
+}
+
 function initFirebase() {
   if (firebaseReady || typeof firebase === "undefined") return;
-  if (!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.databaseURL) return;
-  firebase.initializeApp(firebaseConfig);
+  var cfg = getFirebaseConfig();
+  if (!cfg || !cfg.apiKey || !cfg.databaseURL) return;
+  firebase.initializeApp(cfg);
   firebaseReady = true;
 }
 
