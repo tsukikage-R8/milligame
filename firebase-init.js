@@ -85,6 +85,29 @@ function milliproLogout() {
   return firebase.auth().signOut();
 }
 
+// 最推し / 推しで使うタレントID一覧（全サイト共通・§2-4「最推し/推しの共有」）
+var MILLIPRO_TALENTS = {
+  konomi: { name: "甘狼このみ" },
+  rizu:   { name: "雨夜リズ" },
+  nono:   { name: "音ノ乃のの" },
+  tukuri: { name: "眠雲ツクリ" },
+  akubi:  { name: "あくび・でもんすぺーど" },
+  nuhu:   { name: "虹深°ぬふ" },
+  rako:   { name: "音ノ瀬らこ" },
+  rei:    { name: "夕霧レイ" },
+  yura:   { name: "ゆらぎゆら" },
+  koma:   { name: "小廻こま" }
+};
+
+// パスワード再設定メールを送信（全サイト共通。リセット後に自サイトへ戻る）
+function milliproResetPassword(email) {
+  if (!isAuthAvailable()) return Promise.reject(new Error("auth unavailable"));
+  return firebase.auth().sendPasswordResetEmail(String(email).trim(), {
+    url: (typeof window !== "undefined" && window.location && window.location.origin) ? window.location.origin + "/" : "",
+    handleCodeInApp: false
+  });
+}
+
 function newPlayerIdFallback() {
   if (typeof crypto !== "undefined" && crypto && typeof crypto.randomUUID === "function") return crypto.randomUUID();
   return "P" + Date.now();
@@ -98,6 +121,8 @@ function ensureMilliproProfile(uid) {
   var localName = ud && ud.playerName;
   var localIcon = ud && ud.icon;
   var localComment = ud && ud.comment;
+  var localUltimateOshi = ud && MILLIPRO_TALENTS[ud.ultimateOshi] ? ud.ultimateOshi : null;
+  var localFavorites = (ud && Array.isArray(ud.favorites)) ? ud.favorites.filter(function (id) { return MILLIPRO_TALENTS[id]; }).slice(0, 10) : [];
 
   return firebase.database().ref("millipro/users/" + uid + "/profile").once("value").then(function (snap) {
     var p = snap.val();
@@ -108,6 +133,8 @@ function ensureMilliproProfile(uid) {
       if (!p.playerName && localName) { p.playerName = localName; changed = true; }
       if (!p.icon && localIcon) { p.icon = localIcon; changed = true; }
       if (!p.comment && localComment) { p.comment = localComment; changed = true; }
+      if (!p.ultimateOshi && localUltimateOshi) { p.ultimateOshi = localUltimateOshi; changed = true; }
+      if (!p.favorites && localFavorites.length) { p.favorites = localFavorites; changed = true; }
       if (changed) firebase.database().ref("millipro/users/" + uid + "/profile").set(p);
       return p;
     }
@@ -116,6 +143,8 @@ function ensureMilliproProfile(uid) {
       playerName: localName || "",
       icon: localIcon || "",
       comment: localComment || "",
+      ultimateOshi: localUltimateOshi,
+      favorites: localFavorites,
       updatedAt: now
     };
     firebase.database().ref("millipro/users/" + uid + "/profile").set(np);
@@ -123,7 +152,7 @@ function ensureMilliproProfile(uid) {
   });
 }
 
-// profile の playerId / playerName / icon / comment をこの端末の localStorage に反映（他項目は保持）
+// profile の playerId / playerName / icon / comment / 最推し / 推し をこの端末の localStorage に反映（他項目は保持）
 function applyMilliproProfile(profile) {
   var ud = null;
   try { ud = JSON.parse(localStorage.getItem("millipro_userdata")); } catch (e) {}
@@ -132,9 +161,63 @@ function applyMilliproProfile(profile) {
   if (profile.playerName) ud.playerName = profile.playerName;
   if (profile.icon) ud.icon = profile.icon;
   if (profile.comment) ud.comment = profile.comment;
+  if (profile.ultimateOshi && MILLIPRO_TALENTS[profile.ultimateOshi]) ud.ultimateOshi = profile.ultimateOshi;
+  if (Array.isArray(profile.favorites)) {
+    ud.favorites = profile.favorites.filter(function (id) { return MILLIPRO_TALENTS[id]; }).slice(0, 10);
+  }
   ud.updatedAt = Date.now();
   localStorage.setItem("millipro_userdata", JSON.stringify(ud));
   return ud;
+}
+
+// プロフィールの一部をクラウドに保存（ログイン中のみ。未ログインなら何もしない）
+// patch 例: { icon: '😊' } や { playerName: '...', comment: '...' } や { ultimateOshi: 'konomi', favorites: [...] }
+// 戻り値: Promise<boolean>（保存できたか）
+function updateMilliproProfile(patch) {
+  if (!isAuthAvailable()) return Promise.resolve(false);
+  var uid = getMilliproUid();
+  if (!uid) return Promise.resolve(false);
+  if (!patch || typeof patch !== "object") return Promise.resolve(false);
+  patch.updatedAt = Date.now();
+  var ref = firebase.database().ref("millipro/users/" + uid + "/profile");
+  return ref.once("value").then(function (snap) {
+    var p = snap.val();
+    if (p && typeof p === "object") return ref.update(patch);
+    return ref.set(patch);
+  }).then(function () { return true; }).catch(function (e) {
+    console.warn("profile update failed:", e);
+    return false;
+  });
+}
+
+// 最推し / 推しをローカル（+ ログイン中はクラウド）に保存する
+// 不正IDの除去・10人上限の切り詰めを自動で行う
+// 戻り値: Promise<boolean>（クラウドに保存できたか。未ログインなら false）
+function updateMilliproOshi(ultimateId, favIds) {
+  var ud = null;
+  try { ud = JSON.parse(localStorage.getItem("millipro_userdata")); } catch (e) {}
+  if (!ud || typeof ud !== "object") ud = { createdAt: Date.now() };
+  var ult = MILLIPRO_TALENTS[ultimateId] ? ultimateId : null;
+  var favs = Array.isArray(favIds) ? favIds.filter(function (id) { return MILLIPRO_TALENTS[id]; }).slice(0, 10) : [];
+  if (ult) {
+    ud.ultimateOshi = ult;
+    if (favs.indexOf(ult) < 0) favs.unshift(ult);
+  } else {
+    ud.ultimateOshi = null;
+  }
+  ud.favorites = favs.slice(0, 10);
+  ud.updatedAt = Date.now();
+  localStorage.setItem("millipro_userdata", JSON.stringify(ud));
+  return updateMilliproProfile({ ultimateOshi: ud.ultimateOshi, favorites: ud.favorites });
+}
+
+// ローカルの最推し / 推しをまとめて返す
+function getMilliproOshi() {
+  var ud = null;
+  try { ud = JSON.parse(localStorage.getItem("millipro_userdata")); } catch (e) {}
+  var ult = ud && MILLIPRO_TALENTS[ud.ultimateOshi] ? ud.ultimateOshi : null;
+  var favs = (ud && Array.isArray(ud.favorites)) ? ud.favorites.filter(function (id) { return MILLIPRO_TALENTS[id]; }).slice(0, 10) : [];
+  return { ultimateOshi: ult, favorites: favs };
 }
 
 // ログイン時にまとめて実行（Unishare / Games 版。gamedata 同期は本アプリのみの仕事）
@@ -255,6 +338,21 @@ function mpSubmit(isSignup) {
     msg.textContent = isSignup ? "登録しました。playerId を端末に反映中..." : "連携しました。playerId を端末に反映中...";
   }).catch(function (e) {
     msg.textContent = mpAuthError(e);
+  });
+}
+
+// パスワード再設定（§2-4・milliproResetPassword を使う）
+function mpResetPassword() {
+  var email = (document.getElementById("mp-email").value || "").trim();
+  if (!email) { alert("メールアドレスを入力してください"); return; }
+  milliproResetPassword(email).then(function () {
+    alert("再設定メールを送信しました。メールのリンクからパスワードを再設定してください。");
+  }).catch(function (e) {
+    var j = e && e.code ? e.code : String(e);
+    if (j.indexOf("user-not-found") >= 0) alert("そのメールアドレスは登録されていません");
+    else if (j.indexOf("invalid-email") >= 0) alert("メールアドレスの形式が正しくありません");
+    else if (j.indexOf("too-many-requests") >= 0) alert("試行回数が多すぎます。しばらくしてから再度お試しください");
+    else alert("送信に失敗しました: " + j);
   });
 }
 
