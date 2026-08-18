@@ -38,6 +38,7 @@
       <div class="hud-box" id="hud-combo">
         <div class="hud-label">COMBO</div>
         <div class="hud-value hud-combo-val" id="hud-combo-val">x1</div>
+        <div class="hud-combo-bar"><i id="hud-combo-bar"></i></div>
       </div>
       <button id="hud-pause" class="icon-btn">&#10073;&#10073;</button>
     </div>
@@ -93,6 +94,20 @@
           <button class="menu-btn" id="btn-howto">HOW TO PLAY</button>
           <button class="menu-btn" id="btn-settings">SETTINGS</button>
         </div>
+        <div class="ctrl-pick">
+          <div class="ctrl-pick-title">操作方式を選ぶ</div>
+          <div class="ctrl-pick-btns">
+            <button class="ctrl-btn" data-ctrl="keyboard" id="ctrl-keyboard">
+              <span class="ctrl-icon"><svg viewBox="0 0 64 40" aria-hidden="true"><rect x="2" y="4" width="60" height="32" rx="5" fill="#3a254f"/><g fill="#fff"><rect x="8" y="10" width="8" height="8" rx="1.5"/><rect x="20" y="10" width="8" height="8" rx="1.5"/><rect x="32" y="10" width="8" height="8" rx="1.5"/><rect x="44" y="10" width="8" height="8" rx="1.5"/><rect x="14" y="23" width="8" height="8" rx="1.5"/><rect x="26" y="23" width="8" height="8" rx="1.5"/><rect x="38" y="23" width="8" height="8" rx="1.5"/></g><rect x="20" y="12" width="24" height="3.6" rx="1.8" fill="#ff5f9e"/></svg></span>
+              <span class="ctrl-label">キーボード<br><small>WASD + SPACE</small></span>
+            </button>
+            <button class="ctrl-btn" data-ctrl="touch" id="ctrl-touch">
+              <span class="ctrl-icon"><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M6 6a16 16 0 010 20M4 2a24 24 0 010 28" stroke="#ff5f9e" stroke-width="2.6" fill="none" stroke-linecap="round"/><rect x="24" y="4" width="20" height="32" rx="3" fill="#3a254f"/><rect x="30" y="30" width="8" height="2.4" rx="1.2" fill="#9a7ab0"/><circle cx="34" cy="13" r="3.2" fill="#fff"/></svg></span>
+              <span class="ctrl-label">タッチ<br><small>ジョイスティック</small></span>
+            </button>
+          </div>
+          <button class="ctrl-auto" id="ctrl-auto">自動判定に戻す</button>
+        </div>
         <div class="title-note">短時間で何度も遊べる、にぎやかカフェ経営アクション</div>
       </div>
     </div>
@@ -116,9 +131,9 @@
           <div class="recipe-item"><span class="recipe-name" style="color:#c2537f">パフェ</span><span>フルーツ → マシン → 盛付台 → 提供</span></div>
         </div>
         <div class="howto-controls">
-          <div><b>PC</b><span>WASD / 矢印キーで移動、SPACEで操作</span></div>
+          <div><b>PC</b><span>WASD / 矢印キーで移動、SPACEで操作、1〜4で食材を選択</span></div>
           <div><b>スマホ</b><span>左下ジョイスティックで移動、右下ボタンで操作</span></div>
-          <div><b>変更</b><span>SETTINGSで「操作方式」を選べます</span></div>
+          <div><b>変更</b><span>タイトル画面またはSETTINGSで操作方式を選べます</span></div>
         </div>
         <div class="panel-actions">
           <button class="menu-btn primary" id="howto-start">GAME START</button>

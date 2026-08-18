@@ -83,9 +83,9 @@ var STATION_DEFS = [
 // ---- ステージ設定 ----
 var STAGE = {
   timeLimit: 90,
-  maxCustomers: 3,
-  spawnBase: 7.5,
-  spawnMin: 3.0,
+  maxCustomers: 4,
+  spawnBase: 6.2,
+  spawnMin: 2.4,
   spawnDecay: 0.045,
   patienceBase: 46,
   serveRange: 2.8,
@@ -498,7 +498,7 @@ var caféGroup = null;
 var colliders = [];
 var stations = [];
 var doorX = 6.4, doorZ = 1.5;
-var SEATS = [{ x: -3 }, { x: 0 }, { x: 3 }];
+var SEATS = [{ x: -4.5 }, { x: -1.5 }, { x: 1.5 }, { x: 4.5 }];
 var SERVE_Z = 2.85;
 
 function buildCafé(quality) {
@@ -1091,6 +1091,7 @@ function spawnCustomer(recipeId, talentId, patience, force) {
     maxPatience: maxPat,
     angry: false,
     happyUntil: 0,
+    serveT: 0,
     el: null,
     group: null,
     walkT: 0,
@@ -1165,11 +1166,12 @@ function updateCustomers(dt) {
         rebuildOrders();
       }
     } else if (c.state === "served") {
-      if (now() < c.happyUntil) {
-        c.group.position.y = 0;
+      if (c.serveT < 1) {
+        c.serveT = Math.min(1, c.serveT + dt * 3.6);
+        c.group.position.y = Math.sin(c.serveT * Math.PI) * 0.24;
       } else {
         c.group.position.y = 0;
-        c.state = "leaving";
+        if (now() >= c.happyUntil) c.state = "leaving";
       }
     }
     if (c.state === "leaving") {
@@ -1384,7 +1386,7 @@ function updatePrompt() {
     return;
   }
   el.classList.remove("hidden");
-  el.innerHTML = act.text + (isKeyboardMode() ? " <b>[SPACE]</b>" : "");
+  el.innerHTML = act.text + (isKeyboardMode() ? " <b>[SPACE]</b>" : "") + (act.action === "shelf" && isKeyboardMode() ? " / <b>[1-4]</b> で選択" : "");
   if (ab) ab.textContent = act.text.length > 8 ? act.text.slice(0, 8) + "…" : act.text;
   var v = new THREE.Vector3(player.x, 2.1, player.z).project(camera);
   if (v.z > 1) { el.classList.add("hidden"); return; }
@@ -1402,30 +1404,21 @@ function showToast(text, ms) {
 }
 
 // ---- 食材選択（棚） ----
-function neededRaws() {
-  var set = [];
-  customers.forEach(function (c) {
-    if (c.state !== "waiting") return;
-    var r = RECIPES[c.recipeId].raw;
-    if (set.indexOf(r) < 0) set.push(r);
-  });
-  return set;
-}
 function openChooser(show) {
   var el = $("shelf-chooser");
   if (!show || held || (state.phase !== "playing" && state.phase !== "tutorial")) { el.classList.add("hidden"); return; }
   el.classList.remove("hidden");
-  var needed = neededRaws();
-  var key = needed.length ? needed.join(",") : "all";
+  var key = "all" + (isKeyboardMode() ? ":k" : ":t");
   if (el.dataset.key === key) return;
   el.dataset.key = key;
   el.innerHTML = "";
-  var list = needed.length ? SHELF_ITEMS.filter(function (id) { return needed.indexOf(id) >= 0; }) : SHELF_ITEMS;
-  list.forEach(function (id) {
+  SHELF_ITEMS.forEach(function (id, i) {
     var it = ITEMS[id];
     var b = document.createElement("button");
     b.className = "ing-btn";
-    b.innerHTML = '<span class="i-em" style="background:' + itemColor(id) + '"></span><span class="i-name">' + it.name + "</span>";
+    var keyBadge = isKeyboardMode() ? '<span class="i-key">' + (i + 1) + "</span>" : "";
+    b.innerHTML = keyBadge +
+      '<span class="i-em" style="background:' + itemColor(id) + '"></span><span class="i-name">' + it.name + "</span>";
     b.addEventListener("click", function () {
       setHeld(id);
       SFX.take();
@@ -1439,6 +1432,15 @@ function openChooser(show) {
 /* ============================================================
    [15] HUD
    ============================================================ */
+function updateComboTimer() {
+  var bar = $("hud-combo-bar");
+  if (!bar) return;
+  var since = now() - state.lastServe;
+  var frac = state.combo > 0 ? clamp(1 - since / (STAGE.comboWindow * 1000), 0, 1) : 0;
+  bar.style.width = (frac * 100) + "%";
+  if (bar.parentNode) bar.parentNode.classList.toggle("combo-active", frac > 0);
+}
+
 function updateHUD() {
   $("hud-score-val").textContent = state.score;
   var t = Math.max(0, Math.ceil(state.timeLeft));
@@ -1589,6 +1591,7 @@ function goTitle() {
   state.phase = "title";
   hideScreensExcept("screen-title");
   showScreen("screen-title");
+  applyControlPick();
   $("hud").classList.add("hidden");
   $("tutorial-bar").classList.add("hidden");
   $("joy-zone").classList.add("hidden");
@@ -1768,9 +1771,29 @@ function setupScreens() {
   ct.addEventListener("change", function () {
     settings.control = ct.value;
     saveSettings();
-    var t = isTouchMode();
-    $("joy-zone").classList.toggle("hidden", !t);
-    $("action-btn").classList.toggle("hidden", !t);
+    applyControlPick();
+  });
+
+  // タイトル画面の操作方式選択
+  wire("ctrl-keyboard", function () { pickControl("keyboard"); });
+  wire("ctrl-touch", function () { pickControl("touch"); });
+  wire("ctrl-auto", function () { pickControl("auto"); });
+}
+function pickControl(mode) {
+  ensureAudio();
+  SFX.click();
+  settings.control = mode;
+  saveSettings();
+  applyControlPick();
+  if ($("set-control")) $("set-control").value = mode;
+}
+function applyControlPick() {
+  var t = isTouchMode();
+  $("joy-zone").classList.toggle("hidden", !t);
+  $("action-btn").classList.toggle("hidden", !t);
+  ["keyboard", "touch", "auto"].forEach(function (m) {
+    var b = $("ctrl-" + m);
+    if (b) b.classList.toggle("sel", settings.control === m);
   });
 }
 function rebuildQualityDecor() {
@@ -1800,7 +1823,7 @@ function updateCamera(dt) {
     camera.lookAt(0, 0.9, 0);
     return;
   }
-  var tx = clamp(player.x, -3.4, 3.4);
+  var tx = clamp(player.x, -4.6, 4.6);
   var tz = clamp(player.z, -2.2, 2.0);
   var ease = 1 - Math.exp(-dt * 5);
   camTarget.x = lerp(camTarget.x, tx, ease);
@@ -1873,6 +1896,7 @@ function update(dt, t) {
         }
       }
       updateServeArrow();
+      updateComboTimer();
       if (state.timeLeft <= 0) {
         state.timeLeft = 0;
         updateHUD();

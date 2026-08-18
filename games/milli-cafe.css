@@ -155,6 +155,49 @@ html, body {
 .menu-list { display: flex; flex-direction: column; gap: 12px; max-width: 340px; margin: 0 auto; }
 .title-note { margin-top: 20px; font-size: 0.82rem; color: #fff; opacity: 0.9; text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
 
+/* ============ 操作方式選択（タイトル） ============ */
+.ctrl-pick { margin: 24px auto 0; max-width: 400px; }
+.ctrl-pick-title { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; color: #fff; opacity: 0.92; margin-bottom: 10px; text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
+.ctrl-pick-btns { display: flex; gap: 12px; }
+.ctrl-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 8px 12px;
+  background: rgba(255, 248, 251, 0.92);
+  border: 2px solid #e7c9e2;
+  border-radius: 18px;
+  cursor: pointer;
+  color: #6b4a9e;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s;
+  box-shadow: 0 4px 0 rgba(190, 150, 200, 0.5);
+}
+.ctrl-btn:active { transform: scale(0.96); }
+.ctrl-btn.sel {
+  border-color: #ff5f9e;
+  background: #fff;
+  box-shadow: 0 4px 0 #d63a77, 0 8px 20px rgba(255, 95, 158, 0.45);
+}
+.ctrl-btn.sel .ctrl-label { color: #d63a77; }
+.ctrl-icon { width: 64px; height: 40px; }
+.ctrl-icon svg { width: 100%; height: 100%; display: block; }
+.ctrl-label { font-size: 0.92rem; font-weight: 800; line-height: 1.25; text-align: center; }
+.ctrl-label small { display: block; font-size: 0.66rem; font-weight: 600; color: #9a7ab0; }
+.ctrl-auto {
+  margin-top: 10px;
+  background: none;
+  border: none;
+  color: #fff;
+  opacity: 0.8;
+  font-size: 0.78rem;
+  text-decoration: underline;
+  cursor: pointer;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+.ctrl-auto.sel { opacity: 1; color: #ffe9a8; }
+
 /* ============ HOW TO ============ */
 .howto-body { text-align: left; display: flex; flex-direction: column; gap: 12px; }
 .howto-row {
@@ -270,6 +313,17 @@ html, body {
 .hud-label { font-size: 0.62rem; font-weight: 900; letter-spacing: 0.18em; color: #8a6ab0; }
 .hud-value { font-size: 1.35rem; font-weight: 900; color: #4a2a6a; line-height: 1.2; }
 #hud-combo .hud-combo-val { color: #ff5f9e; }
+.hud-combo-bar {
+  height: 4px;
+  border-radius: 2px;
+  background: #f0e2ee;
+  margin-top: 4px;
+  overflow: hidden;
+  opacity: 0.25;
+  transition: opacity 0.2s;
+}
+.hud-combo-bar i { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, #ff8fb3, #ff5f9e); border-radius: 2px; }
+.hud-combo-bar.combo-active { opacity: 1; }
 #hud-time-box.low-time { animation: timeBlink 0.5s step-end infinite; }
 #hud-time-box.low-time .hud-value { color: #ff4d4d; }
 @keyframes timeBlink { 50% { opacity: 0.45; } }
@@ -283,6 +337,8 @@ html, body {
   transform: translateX(-50%);
   z-index: 15;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;
   max-width: 96vw;
   overflow: visible;
@@ -554,6 +610,18 @@ html, body {
   box-shadow: 0 0 0 2px rgba(58, 37, 79, 0.25);
 }
 .ing-btn .i-name { font-size: 0.62rem; font-weight: 900; color: #3a254f; }
+.ing-btn .i-key {
+  align-self: flex-end;
+  margin-bottom: 1px;
+  font-size: 0.6rem;
+  font-weight: 900;
+  line-height: 1;
+  color: #fff;
+  background: linear-gradient(135deg, #9a7ab0, #6b4a9e);
+  border-radius: 5px;
+  padding: 2px 5px;
+  box-shadow: 0 1px 0 rgba(58, 37, 79, 0.4);
+}
 
 /* ============ カウントダウン ============ */
 #countdown {
