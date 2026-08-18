@@ -26,6 +26,13 @@ html, body {
   position: absolute;
   inset: 0;
 }
+#gl-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 52%, rgba(46, 22, 66, 0.34) 100%);
+}
 #gl-wrap canvas { display: block; width: 100%; height: 100%; }
 
 #ui {
@@ -174,6 +181,33 @@ html, body {
   box-shadow: 0 3px 0 #d63a77, 0 5px 12px rgba(255, 95, 158, 0.35);
 }
 .howto-row b { display: block; color: #6b4a9e; font-size: 0.95rem; }
+.recipe-guide {
+  margin-top: 14px;
+  background: #f4edfb;
+  border-radius: 14px;
+  padding: 12px 14px;
+  text-align: left;
+}
+.recipe-guide-title {
+  font-size: 0.78rem;
+  font-weight: 900;
+  color: #6b4a9e;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+.recipe-item {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 0.76rem;
+  color: #5d4a70;
+  padding: 3px 0;
+}
+.recipe-name {
+  flex-shrink: 0;
+  min-width: 58px;
+  font-weight: 900;
+}
 .howto-row span { font-size: 0.82rem; color: #7a6a8a; }
 .howto-controls {
   margin-top: 16px;
@@ -263,7 +297,7 @@ html, body {
   border-radius: 14px;
   padding: 6px 10px;
   box-shadow: 0 6px 18px rgba(40, 20, 70, 0.32);
-  min-width: 118px;
+  min-width: 132px;
 }
 .order-card.urgent { border-color: #ff6b6b; animation: urg 0.5s step-end infinite; }
 @keyframes urg { 50% { background: #ffe4e0; } }
@@ -288,6 +322,15 @@ html, body {
   flex-shrink: 0;
 }
 .order-talent { font-size: 0.62rem; color: #a08ab0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.order-steps {
+  font-size: 0.56rem;
+  font-weight: 700;
+  color: #7a5aa0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 1px 0;
+}
 .order-bar {
   height: 5px;
   border-radius: 3px;
@@ -326,6 +369,13 @@ html, body {
   font-size: 0.72rem; font-weight: 900; color: #3a254f;
   white-space: nowrap;
 }
+.bubble .b-steps {
+  font-size: 0.56rem;
+  font-weight: 700;
+  color: #7a5aa0;
+  white-space: nowrap;
+  margin-top: 1px;
+}
 .bubble .dot {
   width: 11px; height: 11px; border-radius: 50%;
   border: 2px solid #fff;
@@ -363,17 +413,17 @@ html, body {
 /* ============ 所持アイテム表示 ============ */
 #held {
   position: absolute;
-  right: 14px;
-  bottom: calc(130px + env(safe-area-inset-bottom));
+  left: 14px;
+  bottom: calc(172px + env(safe-area-inset-bottom));
   z-index: 16;
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255, 250, 245, 0.95);
-  border: 2px solid #fff;
+  background: rgba(255, 250, 245, 0.96);
+  border: 2px solid #6b4a9e;
   border-radius: 14px;
   padding: 8px 12px;
-  box-shadow: 0 6px 18px rgba(70, 40, 100, 0.25);
+  box-shadow: 0 6px 18px rgba(40, 20, 70, 0.35);
 }
 #held .h-icon {
   width: 26px; height: 26px;
@@ -673,4 +723,5 @@ html, body {
   #hud { justify-content: flex-start; }
   #orders-panel { bottom: 24px; }
   #held { bottom: 24px; }
+  #shelf-chooser { bottom: 120px; }
 }

@@ -26,16 +26,16 @@ function now() { return performance.now(); }
 // id は全サイト共通の MILLIPRO_TALENTS と一致させています。
 // 立ち絵画像は images/talents/<id>.webp を使用（無ければイニシャル表示）。
 var TALENTS = {
-  konomi:  { name: "甘狼このみ",   hair: 0xf2a0b8, outfit: 0xffd9e6, fav: "cake",    freq: 1.0, patience: 34, color: "#f2a0b8" },
-  rizu:    { name: "雨夜リズ",     hair: 0x6fa8dc, outfit: 0xcfe3f7, fav: "drink",   freq: 1.0, patience: 30, color: "#6fa8dc" },
-  nono:    { name: "音ノ乃のの",   hair: 0xb29dd6, outfit: 0xe6ddf5, fav: "cake",    freq: 1.0, patience: 32, color: "#b29dd6" },
-  tukuri:  { name: "眠雲ツクリ",   hair: 0x9ccbd0, outfit: 0xd8f0f2, fav: "bread",   freq: 1.0, patience: 40, color: "#9ccbd0" },
-  akubi:   { name: "あくび・でもんすぺーど", hair: 0xb8c0d6, outfit: 0xe0e4f0, fav: "bread",   freq: 1.0, patience: 36, color: "#b8c0d6" },
-  nuhu:    { name: "虹深°ぬふ",     hair: 0x6f7bd9, outfit: 0xd5d9f5, fav: "parfait", freq: 1.0, patience: 28, color: "#6f7bd9" },
-  rako:    { name: "音ノ瀬らこ",   hair: 0x8fcf8f, outfit: 0xd9f2d9, fav: "cake",    freq: 1.0, patience: 33, color: "#8fcf8f" },
-  rei:     { name: "夕霧レイ",     hair: 0x8a7bb8, outfit: 0xe2ddf2, fav: "parfait", freq: 1.0, patience: 31, color: "#8a7bb8" },
-  yura:    { name: "ゆらぎゆら",   hair: 0xc9d98a, outfit: 0xeef2cf, fav: "bread",   freq: 1.0, patience: 30, color: "#c9d98a" },
-  koma:    { name: "小廻こま",     hair: 0xe0a080, outfit: 0xf7e0d0, fav: "drink",   freq: 1.0, patience: 27, color: "#e0a080" }
+  konomi:  { name: "甘狼このみ",   hair: 0xf2a0b8, outfit: 0xffd9e6, fav: "cake",    freq: 1.0, patience: 46, color: "#f2a0b8" },
+  rizu:    { name: "雨夜リズ",     hair: 0x6fa8dc, outfit: 0xcfe3f7, fav: "drink",   freq: 1.0, patience: 42, color: "#6fa8dc" },
+  nono:    { name: "音ノ乃のの",   hair: 0xb29dd6, outfit: 0xe6ddf5, fav: "cake",    freq: 1.0, patience: 44, color: "#b29dd6" },
+  tukuri:  { name: "眠雲ツクリ",   hair: 0x9ccbd0, outfit: 0xd8f0f2, fav: "bread",   freq: 1.0, patience: 52, color: "#9ccbd0" },
+  akubi:   { name: "あくび・でもんすぺーど", hair: 0xb8c0d6, outfit: 0xe0e4f0, fav: "bread",   freq: 1.0, patience: 48, color: "#b8c0d6" },
+  nuhu:    { name: "虹深°ぬふ",     hair: 0x6f7bd9, outfit: 0xd5d9f5, fav: "parfait", freq: 1.0, patience: 40, color: "#6f7bd9" },
+  rako:    { name: "音ノ瀬らこ",   hair: 0x8fcf8f, outfit: 0xd9f2d9, fav: "cake",    freq: 1.0, patience: 45, color: "#8fcf8f" },
+  rei:     { name: "夕霧レイ",     hair: 0x8a7bb8, outfit: 0xe2ddf2, fav: "parfait", freq: 1.0, patience: 43, color: "#8a7bb8" },
+  yura:    { name: "ゆらぎゆら",   hair: 0xc9d98a, outfit: 0xeef2cf, fav: "bread",   freq: 1.0, patience: 42, color: "#c9d98a" },
+  koma:    { name: "小廻こま",     hair: 0xe0a080, outfit: 0xf7e0d0, fav: "drink",   freq: 1.0, patience: 39, color: "#e0a080" }
 };
 var TALENT_IDS = Object.keys(TALENTS);
 
@@ -57,10 +57,10 @@ var SHELF_ITEMS = ["cakeBatter", "breadDough", "cup", "fruit"];
 
 // ---- レシピ ----
 var RECIPES = {
-  cake:    { name: "ケーキ",     base: 300, raw: "cakeBatter",  cook: "oven",   time: 4.2, burn: 4.0, plate: true,  final: "cake" },
-  bread:   { name: "パン",       base: 220, raw: "breadDough",  cook: "oven",   time: 3.0, burn: 4.0, plate: false, final: "bakedBread" },
-  drink:   { name: "ドリンク",   base: 200, raw: "cup",         cook: "machine", time: 2.4, burn: 4.0, plate: false, final: "drink" },
-  parfait: { name: "パフェ",     base: 260, raw: "fruit",       cook: "machine", time: 3.6, burn: 4.0, plate: true,  final: "parfait" }
+  cake:    { name: "ケーキ",     base: 300, raw: "cakeBatter",  cook: "oven",   time: 4.2, burn: 6.0, plate: true,  final: "cake",        steps: "ケーキ生地→オーブン→盛付台" },
+  bread:   { name: "パン",       base: 220, raw: "breadDough",  cook: "oven",   time: 3.0, burn: 6.0, plate: false, final: "bakedBread", steps: "パン生地→オーブン" },
+  drink:   { name: "ドリンク",   base: 200, raw: "cup",         cook: "machine", time: 2.4, burn: 6.0, plate: false, final: "drink",      steps: "カップ→マシン" },
+  parfait: { name: "パフェ",     base: 260, raw: "fruit",       cook: "machine", time: 3.6, burn: 6.0, plate: true,  final: "parfait",    steps: "フルーツ→マシン→盛付台" }
 };
 var RECIPE_IDS = Object.keys(RECIPES);
 // 調理台の「素材 → 出力」対応表（出力が mid なら盛付台へ）
@@ -87,7 +87,7 @@ var STAGE = {
   spawnBase: 7.5,
   spawnMin: 3.0,
   spawnDecay: 0.045,
-  patienceBase: 34,
+  patienceBase: 46,
   serveRange: 2.8,
   interactRange: 2.1,
   comboWindow: 10
@@ -110,10 +110,17 @@ function loadSettings() {
       if (s.sfx === undefined) s.sfx = 80;
       if (s.bgm === undefined) s.bgm = 50;
       if (s.quality === undefined) s.quality = "high";
+      if (s.control === undefined) s.control = "auto";
       return s;
     }
   } catch (e) {}
-  return { sfx: 80, bgm: 50, quality: (navigator.maxTouchPoints > 0 ? "low" : "high") };
+  return { sfx: 80, bgm: 50, quality: (navigator.maxTouchPoints > 0 ? "low" : "high"), control: "auto" };
+}
+function isKeyboardMode() {
+  return settings.control === "keyboard" || (settings.control === "auto" && !isTouch);
+}
+function isTouchMode() {
+  return settings.control === "touch" || (settings.control === "auto" && isTouch);
 }
 function saveSettings() {
   try { localStorage.setItem("milliCafe_settings", JSON.stringify(settings)); } catch (e) {}
@@ -202,11 +209,11 @@ function setupRenderer() {
   var wrap = $("gl-wrap");
   renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance" });
   renderer.outputEncoding = THREE.sRGBEncoding;
-  renderer.setClearColor(0xe9cfb4, 1);
+  renderer.setClearColor(0xdcbd9c, 1);
   wrap.appendChild(renderer.domElement);
 
   scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0xe9cfb4, 14, 34);
+  scene.fog = new THREE.Fog(0xdcbd9c, 12, 30);
   camera = new THREE.PerspectiveCamera(50, 1, 0.1, 90);
 
   var amb = new THREE.AmbientLight(0xffffff, 0.62);
@@ -263,8 +270,8 @@ function checkerTexture() {
   var c = document.createElement("canvas");
   c.width = c.height = 64;
   var g = c.getContext("2d");
-  g.fillStyle = "#f9e9d8"; g.fillRect(0, 0, 64, 64);
-  g.fillStyle = "#f1ccd7"; g.fillRect(0, 0, 32, 32); g.fillRect(32, 32, 32, 32);
+  g.fillStyle = "#f0d7ae"; g.fillRect(0, 0, 64, 64);
+  g.fillStyle = "#e0aebf"; g.fillRect(0, 0, 32, 32); g.fillRect(32, 32, 32, 32);
   var t = makeTex(c);
   t.repeat.set(7, 5);
   t.wrapS = t.wrapT = THREE.RepeatWrapping;
@@ -481,8 +488,8 @@ function buildChibi(opts) {
    [6] カフェ3Dシーン構築
    ============================================================ */
 function buildShadow() {
-  var s = new THREE.Mesh(new THREE.CircleGeometry(0.3, 18),
-    new THREE.MeshBasicMaterial({ color: 0x241a33, transparent: true, opacity: 0.16, depthWrite: false }));
+  var s = new THREE.Mesh(new THREE.CircleGeometry(0.36, 18),
+    new THREE.MeshBasicMaterial({ color: 0x241a33, transparent: true, opacity: 0.24, depthWrite: false }));
   s.rotation.x = -Math.PI / 2;
   s.position.y = 0.015;
   return s;
@@ -503,7 +510,7 @@ function buildCafé(quality) {
   function addCollider(x0, z0, x1, z1) { colliders.push({ x0: x0, z0: z0, x1: x1, z1: z1 }); }
 
   // 周囲の地面
-  var ground = plane(120, 120, 0xd9bf96);
+  var ground = plane(120, 120, 0xc09c73);
   ground.position.y = -0.03;
   caféGroup.add(ground);
 
@@ -652,6 +659,7 @@ function buildCafé(quality) {
       cookTime: 0,
       burnLeft: 0,
       plated: null,
+      warned: false,
       display: new THREE.Group(),
       barFill: null,
       barMat: null
@@ -749,7 +757,7 @@ function buildPlayer() {
   playerGroup.add(playerHand);
   scene.add(playerGroup);
   playerShadow = buildShadow();
-  playerShadow.scale.setScalar(1.2);
+  playerShadow.scale.setScalar(1.35);
   scene.add(playerShadow);
   updatePlayerTransform(true);
 }
@@ -779,9 +787,9 @@ function setHeld(id) {
 function updatePlayerTransform(instant) {
   playerGroup.position.set(player.x, 0, player.z);
   playerGroup.rotation.y = player.rot;
-  var bob = player.moving ? Math.abs(Math.sin(player.bob)) * 0.07 : 0;
+  var bob = player.moving ? Math.abs(Math.sin(player.bob)) * 0.03 : 0;
   playerGroup.position.y = bob;
-  if (playerShadow) playerShadow.position.set(player.x, 0.015, player.z);
+  if (playerShadow) playerShadow.position.set(player.x, 0.015, player.z + 0.18);
 }
 
 var input = { ix: 0, iz: 0, keys: {} };
@@ -852,6 +860,10 @@ function recipeForRaw(rawId) {
   }
   return null;
 }
+function recipeNameForRaw(rawId) {
+  var r = recipeForRaw(rawId);
+  return r ? r.name : null;
+}
 
 function startCook(s) {
   var rec = recipeForRaw(held);
@@ -898,16 +910,25 @@ function updateStations(dt) {
       s.barMat.color.setRGB(0.43 + 0.4 * f, 0.81 - 0.3 * f, 0.56 - 0.25 * f);
       if (s.prog >= s.cookTime) {
         s.phase = "ready";
+        s.warned = false;
         SFX.ready();
         s.barMat.color.setHex(0x6fcf8f);
         s.barFill.scale.x = 0.94;
         updateStationDisplay(s);
+        if (state.phase === "playing" || state.phase === "tutorial") {
+          var readyName = recipeNameForRaw(s.raw);
+          showToast((readyName || "料理") + "が焼き上がり！");
+        }
       }
     } else if (s.phase === "ready") {
       s.burnLeft -= dt;
       if (s.burnLeft < 2.2) {
         var r = 0.75 + 0.25 * Math.sin(t * 0.02);
         s.barMat.color.setRGB(r, 0.3, 0.25);
+        if (!s.warned) {
+          s.warned = true;
+          spawnPopup("焦げそう！", { x: s.def.x, y: 2.0, z: s.def.z }, true);
+        }
       } else {
         s.barMat.color.setHex(0x6fcf8f);
       }
@@ -1059,7 +1080,7 @@ function spawnCustomer(recipeId, talentId, patience, force) {
   if (seat < 0) return null;
   var tid = talentId || rollTalent();
   var rid = recipeId || rollRecipe(tid);
-  var maxPat = patience || (TALENTS[tid].patience + randInt(-4, 6));
+  var maxPat = patience || (TALENTS[tid].patience + randInt(0, 10));
   var c = {
     talent: tid,
     recipeId: rid,
@@ -1086,6 +1107,7 @@ function spawnCustomer(recipeId, talentId, patience, force) {
   el.className = "bubble";
   el.innerHTML = '<div class="b-head"><img class="b-img" alt="">' +
     '<span class="b-dish"><i class="dot" style="background:' + recipeColor(rid) + '"></i>' + RECIPES[rid].name + "</span></div>" +
+    '<div class="b-steps">' + RECIPES[rid].steps + "</div>" +
     '<div class="b-bar"><i></i></div>';
   var img = el.querySelector(".b-img");
   img.src = "../images/talents/" + tid + ".webp";
@@ -1144,7 +1166,7 @@ function updateCustomers(dt) {
       }
     } else if (c.state === "served") {
       if (now() < c.happyUntil) {
-        c.group.position.y = Math.abs(Math.sin((c.happyUntil - now()) * 0.012)) * 0.06;
+        c.group.position.y = 0;
       } else {
         c.group.position.y = 0;
         c.state = "leaving";
@@ -1163,9 +1185,9 @@ function updateCustomers(dt) {
     var px = c.x, pz = c.z;
     c.group.position.x = px;
     c.group.position.z = pz;
-    var bob = c.state === "walking" || c.state === "leaving" ? Math.abs(Math.sin(c.walkT += dt * 9)) * 0.05 : 0;
+    var bob = c.state === "walking" || c.state === "leaving" ? Math.abs(Math.sin(c.walkT += dt * 9)) * 0.02 : 0;
     c.group.position.y += bob;
-    if (c.shadow) c.shadow.position.set(px, 0.015, pz);
+    if (c.shadow) c.shadow.position.set(px, 0.015, pz + 0.18);
     positionBubble(c.el, px, 2.4, pz);
   }
 }
@@ -1196,6 +1218,7 @@ function rebuildOrders() {
     card.innerHTML = '<img class="order-portrait" alt="">' +
       '<div class="order-info">' +
       '<div class="order-dish"><span class="o-dot" style="background:' + recipeColor(c.recipeId) + '"></span>' + RECIPES[c.recipeId].name + "</div>" +
+      '<div class="order-steps">' + RECIPES[c.recipeId].steps + "</div>" +
       '<div class="order-talent">' + t.name + "</div>" +
       '<div class="order-bar"><i></i></div></div>';
     var img = card.querySelector(".order-portrait");
@@ -1361,7 +1384,7 @@ function updatePrompt() {
     return;
   }
   el.classList.remove("hidden");
-  el.innerHTML = act.text + (isTouch ? "" : " <b>[SPACE]</b>");
+  el.innerHTML = act.text + (isKeyboardMode() ? " <b>[SPACE]</b>" : "");
   if (ab) ab.textContent = act.text.length > 8 ? act.text.slice(0, 8) + "…" : act.text;
   var v = new THREE.Vector3(player.x, 2.1, player.z).project(camera);
   if (v.z > 1) { el.classList.add("hidden"); return; }
@@ -1379,25 +1402,38 @@ function showToast(text, ms) {
 }
 
 // ---- 食材選択（棚） ----
+function neededRaws() {
+  var set = [];
+  customers.forEach(function (c) {
+    if (c.state !== "waiting") return;
+    var r = RECIPES[c.recipeId].raw;
+    if (set.indexOf(r) < 0) set.push(r);
+  });
+  return set;
+}
 function openChooser(show) {
   var el = $("shelf-chooser");
   if (!show || held || (state.phase !== "playing" && state.phase !== "tutorial")) { el.classList.add("hidden"); return; }
   el.classList.remove("hidden");
-  if (el.children.length === 0) {
-    SHELF_ITEMS.forEach(function (id) {
-      var it = ITEMS[id];
-      var b = document.createElement("button");
-      b.className = "ing-btn";
-      b.innerHTML = '<span class="i-em" style="background:' + itemColor(id) + '"></span><span class="i-name">' + it.name + "</span>";
-      b.addEventListener("click", function () {
-        setHeld(id);
-        SFX.take();
-        el.classList.add("hidden");
-        if (state.phase === "tutorial") tutCheck();
-      });
-      el.appendChild(b);
+  var needed = neededRaws();
+  var key = needed.length ? needed.join(",") : "all";
+  if (el.dataset.key === key) return;
+  el.dataset.key = key;
+  el.innerHTML = "";
+  var list = needed.length ? SHELF_ITEMS.filter(function (id) { return needed.indexOf(id) >= 0; }) : SHELF_ITEMS;
+  list.forEach(function (id) {
+    var it = ITEMS[id];
+    var b = document.createElement("button");
+    b.className = "ing-btn";
+    b.innerHTML = '<span class="i-em" style="background:' + itemColor(id) + '"></span><span class="i-name">' + it.name + "</span>";
+    b.addEventListener("click", function () {
+      setHeld(id);
+      SFX.take();
+      el.classList.add("hidden");
+      if (state.phase === "tutorial") tutCheck();
     });
-  }
+    el.appendChild(b);
+  });
 }
 
 /* ============================================================
@@ -1462,8 +1498,8 @@ function startRun(tutorial) {
   }
   hideAllScreens();
   $("hud").classList.remove("hidden");
-  $("joy-zone").classList.toggle("hidden", !isTouch);
-  $("action-btn").classList.toggle("hidden", !isTouch);
+  $("joy-zone").classList.toggle("hidden", !isTouchMode());
+  $("action-btn").classList.toggle("hidden", !isTouchMode());
   showCountdown();
 }
 function showCountdown() {
@@ -1599,7 +1635,7 @@ function setupInput() {
   document.addEventListener("pointerdown", function (e) {
     if (state.phase !== "playing" && state.phase !== "tutorial") return;
     if (e.target.closest("button, .screen, #orders-panel, #held, #prompt, #shelf-chooser")) return;
-    if (!isTouch) { ensureAudio(); doInteract(); }
+    if (isKeyboardMode()) { ensureAudio(); doInteract(); }
   });
 
   // タッチ：ジョイスティック
@@ -1726,6 +1762,16 @@ function setupScreens() {
     applyQuality();
     rebuildQualityDecor();
   });
+
+  var ct = $("set-control");
+  ct.value = settings.control;
+  ct.addEventListener("change", function () {
+    settings.control = ct.value;
+    saveSettings();
+    var t = isTouchMode();
+    $("joy-zone").classList.toggle("hidden", !t);
+    $("action-btn").classList.toggle("hidden", !t);
+  });
 }
 function rebuildQualityDecor() {
   buildCafé(settings.quality);
@@ -1734,7 +1780,7 @@ function rebuildQualityDecor() {
 function resetStationDisplays() {
   for (var i = 0; i < stations.length; i++) {
     var s = stations[i];
-    s.phase = "empty"; s.raw = null; s.out = null; s.prog = 0; s.burnLeft = 0; s.plated = null;
+    s.phase = "empty"; s.raw = null; s.out = null; s.prog = 0; s.burnLeft = 0; s.plated = null; s.warned = false;
     if (s.barFill) { s.barFill.visible = false; s.barFill.scale.x = 0.001; }
     updateStationDisplay(s);
   }
@@ -1759,8 +1805,8 @@ function updateCamera(dt) {
   var ease = 1 - Math.exp(-dt * 5);
   camTarget.x = lerp(camTarget.x, tx, ease);
   camTarget.z = lerp(camTarget.z, tz, ease);
-  var back = aspect < 1 ? 5.6 : 4.0;
-  var height = aspect < 1 ? 11.2 : 9.2;
+  var back = aspect < 1 ? 6.2 : 4.9;
+  var height = aspect < 1 ? 10.0 : 8.2;
   camera.position.set(camTarget.x, height, camTarget.z + back);
   camera.lookAt(camTarget.x, 0.85, camTarget.z - 1.8);
 }
@@ -1870,8 +1916,8 @@ function togglePause(show) {
     state.phase = state.pausedPhase || "playing";
     hideAllScreens();
     $("hud").classList.remove("hidden");
-    $("joy-zone").classList.toggle("hidden", !isTouch);
-    $("action-btn").classList.toggle("hidden", !isTouch);
+    $("joy-zone").classList.toggle("hidden", !isTouchMode());
+    $("action-btn").classList.toggle("hidden", !isTouchMode());
     if (settings.bgm > 0) bgmStart();
     lastFrame = now();
   }

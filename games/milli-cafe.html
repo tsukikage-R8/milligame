@@ -108,9 +108,17 @@
           <div class="howto-row"><span class="howto-num">4</span><div><b>お客さんに届ける</b><span>カウンターで注文に合う料理を提供しよう</span></div></div>
           <div class="howto-row"><span class="howto-num">5</span><div><b>時間内に多くこなそう</b><span>早く届けるほど高得点！コンボもつながる</span></div></div>
         </div>
+        <div class="recipe-guide">
+          <div class="recipe-guide-title">レシピ</div>
+          <div class="recipe-item"><span class="recipe-name" style="color:#ff5f9e">ケーキ</span><span>ケーキ生地 → オーブン → 盛付台 → 提供</span></div>
+          <div class="recipe-item"><span class="recipe-name" style="color:#c97a3a">パン</span><span>パン生地 → オーブン → 提供</span></div>
+          <div class="recipe-item"><span class="recipe-name" style="color:#3d7bb0">ドリンク</span><span>カップ → マシン → 提供</span></div>
+          <div class="recipe-item"><span class="recipe-name" style="color:#c2537f">パフェ</span><span>フルーツ → マシン → 盛付台 → 提供</span></div>
+        </div>
         <div class="howto-controls">
           <div><b>PC</b><span>WASD / 矢印キーで移動、SPACEで操作</span></div>
           <div><b>スマホ</b><span>左下ジョイスティックで移動、右下ボタンで操作</span></div>
+          <div><b>変更</b><span>SETTINGSで「操作方式」を選べます</span></div>
         </div>
         <div class="panel-actions">
           <button class="menu-btn primary" id="howto-start">GAME START</button>
@@ -132,6 +140,14 @@
           <label>BGM</label>
           <input type="range" id="set-bgm" min="0" max="100" step="5" value="50">
           <span id="set-bgm-val">50%</span>
+        </div>
+        <div class="setting-row">
+          <label>操作方式</label>
+          <select id="set-control">
+            <option value="auto">自動判定</option>
+            <option value="touch">タッチ操作</option>
+            <option value="keyboard">キーボード操作</option>
+          </select>
         </div>
         <div class="setting-row">
           <label>画面クオリティ</label>
