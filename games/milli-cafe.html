@@ -51,6 +51,9 @@
     <!-- コンテキストプロンプト（頭上表示） -->
     <div id="prompt" class="hidden"></div>
 
+    <!-- 提供先を示す矢印 -->
+    <div id="serve-arrow" class="hidden"></div>
+
     <!-- 所持アイテム -->
     <div id="held" class="hidden"></div>
 
@@ -81,7 +84,7 @@
     <div id="screen-title" class="screen">
       <div class="title-card">
         <div class="logo-wrap">
-          <div class="logo-emoji">&#127857;</div>
+          <div class="logo-emoji"><svg width="54" height="54" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 10h12v5a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-5Z" fill="#fff"/><path d="M16 10h2a2 2 0 0 1 0 4h-2" stroke="#fff" stroke-width="1.6" fill="none"/><path d="M3 20h14" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/><path d="M6 7V4M10 7V4M14 7V4" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></svg></div>
           <h1 class="logo">Milli <span>Café</span></h1>
           <div class="logo-sub">ミリプロファンメイドゲーム</div>
         </div>
@@ -99,11 +102,11 @@
       <div class="panel-card">
         <h2 class="panel-title">HOW TO PLAY</h2>
         <div class="howto-body">
-          <div class="howto-row"><span class="howto-emoji">&#128232;</span><div><b>1. 食材を取る</b><span>食材置き場で、注文に合った食材を選ぼう</span></div></div>
-          <div class="howto-row"><span class="howto-emoji">&#127859;</span><div><b>2. 調理する</b><span>オーブンやマシンで調理。焼きすぎると焦げちゃう！</span></div></div>
-          <div class="howto-row"><span class="howto-emoji">&#127880;</span><div><b>3. 盛り付ける</b><span>必要な料理は盛付台でお皿に</span></div></div>
-          <div class="howto-row"><span class="howto-emoji">&#127869;</span><div><b>4. お客さんに届ける</b><span>カウンターで注文に合う料理を提供しよう</span></div></div>
-          <div class="howto-row"><span class="howto-emoji">&#9200;</span><div><b>時間内に多くこなそう</b><span>早く届けるほど高得点！コンボもつながる</span></div></div>
+          <div class="howto-row"><span class="howto-num">1</span><div><b>食材を取る</b><span>食材置き場で、注文に合った食材を選ぼう</span></div></div>
+          <div class="howto-row"><span class="howto-num">2</span><div><b>調理する</b><span>オーブンやマシンで調理。焼きすぎると焦げちゃう！</span></div></div>
+          <div class="howto-row"><span class="howto-num">3</span><div><b>盛り付ける</b><span>必要な料理は盛付台でお皿に</span></div></div>
+          <div class="howto-row"><span class="howto-num">4</span><div><b>お客さんに届ける</b><span>カウンターで注文に合う料理を提供しよう</span></div></div>
+          <div class="howto-row"><span class="howto-num">5</span><div><b>時間内に多くこなそう</b><span>早く届けるほど高得点！コンボもつながる</span></div></div>
         </div>
         <div class="howto-controls">
           <div><b>PC</b><span>WASD / 矢印キーで移動、SPACEで操作</span></div>

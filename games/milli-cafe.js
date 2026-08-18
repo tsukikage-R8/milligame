@@ -41,26 +41,26 @@ var TALENT_IDS = Object.keys(TALENTS);
 
 // ---- アイテム ----
 var ITEMS = {
-  cakeBatter:  { name: "ケーキ生地", emoji: "\u{1F95A}", color: 0xffe9c4, kind: "raw",  desc: "オーブンで焼こう" },
-  breadDough:  { name: "パン生地",   emoji: "\u{1F96F}", color: 0xffd9a0, kind: "raw",  desc: "オーブンで焼こう" },
-  cup:         { name: "カップ",     emoji: "\u{1F95B}", color: 0xffffff, kind: "raw",  desc: "マシンで注ごう" },
-  fruit:       { name: "フルーツ",   emoji: "\u{1F353}", color: 0xff9ac1, kind: "raw",  desc: "マシンで組み立てよう" },
-  bakedCake:   { name: "焼き上がり", emoji: "\u{1F9C1}", color: 0xe8b06a, kind: "mid",  desc: "盛付台でお皿に" },
-  parfaitBase: { name: "パフェ土台", emoji: "\u{1F367}", color: 0xffb3d1, kind: "mid",  desc: "盛付台でお皿に" },
-  bakedBread:  { name: "焼きパン",   emoji: "\u{1F950}", color: 0xd9a05a, kind: "dish", desc: "このまま提供OK！" },
-  drink:       { name: "ドリンク",   emoji: "\u{1F964}", color: 0x8ecae6, kind: "dish", desc: "このまま提供OK！" },
-  cake:        { name: "ケーキ",     emoji: "\u{1F370}", color: 0xffc6d9, kind: "dish", desc: "このまま提供OK！" },
-  parfait:     { name: "パフェ",     emoji: "\u{1F368}", color: 0xff9ecb, kind: "dish", desc: "このまま提供OK！" },
-  burnt:       { name: "焦げた食材", emoji: "\u{1F371}", color: 0x4a3a30, kind: "burnt", desc: "ゴミ箱に捨てよう" }
+  cakeBatter:  { name: "ケーキ生地", color: 0xffe9c4, kind: "raw",  desc: "オーブンで焼こう" },
+  breadDough:  { name: "パン生地",   color: 0xffd9a0, kind: "raw",  desc: "オーブンで焼こう" },
+  cup:         { name: "カップ",     color: 0xffffff, kind: "raw",  desc: "マシンで注ごう" },
+  fruit:       { name: "フルーツ",   color: 0xff9ac1, kind: "raw",  desc: "マシンで組み立てよう" },
+  bakedCake:   { name: "焼き上がり", color: 0xe8b06a, kind: "mid",  desc: "盛付台でお皿に" },
+  parfaitBase: { name: "パフェ土台", color: 0xffb3d1, kind: "mid",  desc: "盛付台でお皿に" },
+  bakedBread:  { name: "焼きパン",   color: 0xd9a05a, kind: "dish", desc: "このまま提供OK！" },
+  drink:       { name: "ドリンク",   color: 0x8ecae6, kind: "dish", desc: "このまま提供OK！" },
+  cake:        { name: "ケーキ",     color: 0xffc6d9, kind: "dish", desc: "このまま提供OK！" },
+  parfait:     { name: "パフェ",     color: 0xff9ecb, kind: "dish", desc: "このまま提供OK！" },
+  burnt:       { name: "焦げた食材", color: 0x4a3a30, kind: "burnt", desc: "ゴミ箱に捨てよう" }
 };
 var SHELF_ITEMS = ["cakeBatter", "breadDough", "cup", "fruit"];
 
 // ---- レシピ ----
 var RECIPES = {
-  cake:    { name: "ケーキ",   emoji: "\u{1F370}", base: 300, raw: "cakeBatter",  cook: "oven",   time: 4.2, burn: 4.0, plate: true,  final: "cake" },
-  bread:   { name: "パン",     emoji: "\u{1F950}", base: 220, raw: "breadDough",  cook: "oven",   time: 3.0, burn: 4.0, plate: false, final: "bakedBread" },
-  drink:   { name: "ドリンク", emoji: "\u{1F964}", base: 200, raw: "cup",         cook: "machine", time: 2.4, burn: 4.0, plate: false, final: "drink" },
-  parfait: { name: "パフェ",   emoji: "\u{1F368}", base: 260, raw: "fruit",       cook: "machine", time: 3.6, burn: 4.0, plate: true,  final: "parfait" }
+  cake:    { name: "ケーキ",     base: 300, raw: "cakeBatter",  cook: "oven",   time: 4.2, burn: 4.0, plate: true,  final: "cake" },
+  bread:   { name: "パン",       base: 220, raw: "breadDough",  cook: "oven",   time: 3.0, burn: 4.0, plate: false, final: "bakedBread" },
+  drink:   { name: "ドリンク",   base: 200, raw: "cup",         cook: "machine", time: 2.4, burn: 4.0, plate: false, final: "drink" },
+  parfait: { name: "パフェ",     base: 260, raw: "fruit",       cook: "machine", time: 3.6, burn: 4.0, plate: true,  final: "parfait" }
 };
 var RECIPE_IDS = Object.keys(RECIPES);
 // 調理台の「素材 → 出力」対応表（出力が mid なら盛付台へ）
@@ -202,11 +202,11 @@ function setupRenderer() {
   var wrap = $("gl-wrap");
   renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance" });
   renderer.outputEncoding = THREE.sRGBEncoding;
-  renderer.setClearColor(0xfff3e2, 1);
+  renderer.setClearColor(0xe9cfb4, 1);
   wrap.appendChild(renderer.domElement);
 
   scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0xfff3e2, 20, 46);
+  scene.fog = new THREE.Fog(0xe9cfb4, 14, 34);
   camera = new THREE.PerspectiveCamera(50, 1, 0.1, 90);
 
   var amb = new THREE.AmbientLight(0xffffff, 0.62);
@@ -242,6 +242,17 @@ function mat(color, opts) {
   matCache[key] = m;
   return m;
 }
+function cssCol(n) {
+  return "#" + n.toString(16).padStart(6, "0");
+}
+function itemColor(itemId) {
+  var it = ITEMS[itemId];
+  return it ? cssCol(it.color) : "#a08ab0";
+}
+function recipeColor(rid) {
+  var fin = RECIPES[rid].final;
+  return fin ? itemColor(fin) : "#a08ab0";
+}
 function makeTex(canvas) {
   var t = new THREE.CanvasTexture(canvas);
   t.minFilter = THREE.NearestFilter;
@@ -252,10 +263,33 @@ function checkerTexture() {
   var c = document.createElement("canvas");
   c.width = c.height = 64;
   var g = c.getContext("2d");
-  g.fillStyle = "#fdeede"; g.fillRect(0, 0, 64, 64);
-  g.fillStyle = "#f6ddc8"; g.fillRect(0, 0, 32, 32); g.fillRect(32, 32, 32, 32);
+  g.fillStyle = "#f9e9d8"; g.fillRect(0, 0, 64, 64);
+  g.fillStyle = "#f1ccd7"; g.fillRect(0, 0, 32, 32); g.fillRect(32, 32, 32, 32);
   var t = makeTex(c);
   t.repeat.set(7, 5);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  return t;
+}
+function brickTexture() {
+  var c = document.createElement("canvas");
+  c.width = 128; c.height = 128;
+  var g = c.getContext("2d");
+  var bw = 16, bh = 8;
+  g.fillStyle = "#d9c3b3";
+  g.fillRect(0, 0, 128, 128);
+  var brickCols = ["#a34a3f", "#b2554a", "#99433a", "#ad4f45"];
+  for (var row = 0; row < 16; row++) {
+    var off = (row % 2) * (bw / 2);
+    for (var col = -1; col < 8; col++) {
+      var bx = col * bw + off, by = row * bh;
+      g.fillStyle = brickCols[(row + col + 8) % brickCols.length];
+      g.fillRect(bx + 1, by + 1, bw - 2, bh - 2);
+      g.fillStyle = "rgba(0,0,0,0.06)";
+      g.fillRect(bx + 1, by + bh - 2, bw - 2, 1);
+    }
+  }
+  var t = makeTex(c);
+  t.repeat.set(6, 3);
   t.wrapS = t.wrapT = THREE.RepeatWrapping;
   return t;
 }
@@ -446,6 +480,13 @@ function buildChibi(opts) {
 /* ============================================================
    [6] カフェ3Dシーン構築
    ============================================================ */
+function buildShadow() {
+  var s = new THREE.Mesh(new THREE.CircleGeometry(0.3, 18),
+    new THREE.MeshBasicMaterial({ color: 0x241a33, transparent: true, opacity: 0.16, depthWrite: false }));
+  s.rotation.x = -Math.PI / 2;
+  s.position.y = 0.015;
+  return s;
+}
 var caféGroup = null;
 var colliders = [];
 var stations = [];
@@ -462,7 +503,7 @@ function buildCafé(quality) {
   function addCollider(x0, z0, x1, z1) { colliders.push({ x0: x0, z0: z0, x1: x1, z1: z1 }); }
 
   // 周囲の地面
-  var ground = plane(120, 120, 0xf2dfc4);
+  var ground = plane(120, 120, 0xd9bf96);
   ground.position.y = -0.03;
   caféGroup.add(ground);
 
@@ -472,17 +513,39 @@ function buildCafé(quality) {
   floor.position.set(0, 0, 0);
   caféGroup.add(floor);
 
-  var cream = 0xfff6e8, pink = 0xffd9e6, wood = 0xe8b88a;
+  var wood = 0xe8b88a, woodDark = 0x8a5a3a;
 
-  // 壁
-  var north = box(12.4, 3.0, 0.3, cream); north.position.set(0, 1.5, -4.5); caféGroup.add(north);
+  // 壁（レンガ調）
+  var brickMat = new THREE.MeshLambertMaterial({
+    color: 0xc06a55,
+    flatShading: true,
+    map: low ? null : brickTexture()
+  });
+  function brickWall(w, h, d) {
+    var m = box(w, h, d, 0xc06a55);
+    m.material = brickMat;
+    caféGroup.add(m);
+    return m;
+  }
+  var north = brickWall(12.4, 3.0, 0.3); north.position.set(0, 1.5, -4.5);
   addCollider(-6.4, -4.8, 6.4, -4.4);
-  var west = box(0.3, 3.0, 9.4, cream); west.position.set(-6, 1.5, 0); caféGroup.add(west);
+  var west = brickWall(0.3, 3.0, 9.4); west.position.set(-6, 1.5, 0);
   addCollider(-6.4, -4.7, -5.6, 4.7);
-  var eTop = box(0.3, 3.0, 5.2, cream); eTop.position.set(6, 1.5, -2.0); caféGroup.add(eTop);
+  var eTop = brickWall(0.3, 3.0, 5.2); eTop.position.set(6, 1.5, -2.0);
   addCollider(5.6, -4.7, 6.4, 0.5);
-  var eBot = box(0.3, 3.0, 2.4, cream); eBot.position.set(6, 1.5, 3.5); caféGroup.add(eBot);
+  var eBot = brickWall(0.3, 3.0, 2.4); eBot.position.set(6, 1.5, 3.5);
   addCollider(5.6, 2.5, 6.4, 4.7);
+
+  // ドア枠（東側の入口）
+  var dp1 = box(0.18, 3.0, 0.18, woodDark); dp1.position.set(6.0, 1.5, 0.5); caféGroup.add(dp1);
+  var dp2 = box(0.18, 3.0, 0.18, woodDark); dp2.position.set(6.0, 1.5, 2.5); caféGroup.add(dp2);
+  var dlint = box(0.18, 0.18, 2.2, woodDark); dlint.position.set(6.0, 2.92, 1.5); caféGroup.add(dlint);
+
+  // 壁の腰板ライン（レンガの下をダーク木で引き締め）
+  var wain1 = box(12.4, 0.22, 0.14, woodDark); wain1.position.set(0, 0.11, -4.56); caféGroup.add(wain1);
+  var wain2 = box(0.14, 0.22, 9.4, woodDark); wain2.position.set(-6.11, 0.11, 0); caféGroup.add(wain2);
+  var wain3 = box(0.14, 0.22, 5.2, woodDark); wain3.position.set(6.11, 0.11, -2.0); caféGroup.add(wain3);
+  var wain4 = box(0.14, 0.22, 2.4, woodDark); wain4.position.set(6.11, 0.11, 3.5); caféGroup.add(wain4);
 
   // 窓（北側）
   function windowMesh(x, z) {
@@ -495,10 +558,6 @@ function buildCafé(quality) {
   }
   windowMesh(-2.2, -4.34);
   windowMesh(0.2, -4.34);
-
-  // 壁際のベースボード
-  var base1 = box(12.4, 0.18, 0.12, wood); base1.position.set(0, 0.1, -4.62); caféGroup.add(base1);
-  var base2 = box(0.12, 0.18, 9.4, wood); base2.position.set(-6.12, 0.1, 0); caféGroup.add(base2);
 
   // メニューボード
   var menu = new THREE.Mesh(new THREE.PlaneGeometry(3.4, 1.7), new THREE.MeshBasicMaterial({ map: menuTexture() }));
@@ -574,9 +633,12 @@ function buildCafé(quality) {
   }
 
   // キッチン背面カウンター
-  var backCounter = box(11.4, 0.9, 0.9, pink);
+  var backCounter = box(11.4, 0.9, 0.9, wood);
   backCounter.position.set(0, 0.45, -3.7);
   caféGroup.add(backCounter);
+  var counterTop = box(11.4, 0.12, 0.95, 0xfff6ee);
+  counterTop.position.set(0, 0.93, -3.7);
+  caféGroup.add(counterTop);
   addCollider(-5.8, -4.15, 5.8, -3.25);
 
   // ステーション本体
@@ -642,7 +704,7 @@ function buildCafé(quality) {
   });
 
   // 提供カウンター
-  var counter = box(11.0, 1.05, 0.7, pink);
+  var counter = box(11.0, 1.05, 0.7, 0xd8a06a);
   counter.position.set(0, 0.52, SERVE_Z);
   caféGroup.add(counter);
   addCollider(-5.6, SERVE_Z - 0.4, 5.6, SERVE_Z + 0.4);
@@ -675,7 +737,7 @@ function buildCafé(quality) {
    [7] プレイヤー
    ============================================================ */
 var player = { x: 0, z: -1, rot: 0, bob: 0, moving: false };
-var playerGroup = null, playerHand = null;
+var playerGroup = null, playerHand = null, playerShadow = null;
 var held = null;
 
 function buildPlayer() {
@@ -686,6 +748,9 @@ function buildPlayer() {
   playerHand.position.set(0, 1.0, 0.52);
   playerGroup.add(playerHand);
   scene.add(playerGroup);
+  playerShadow = buildShadow();
+  playerShadow.scale.setScalar(1.2);
+  scene.add(playerShadow);
   updatePlayerTransform(true);
 }
 
@@ -702,7 +767,7 @@ function updateHeldUI() {
   if (!held) { el.classList.add("hidden"); return; }
   var it = ITEMS[held];
   el.classList.remove("hidden");
-  el.innerHTML = '<div class="h-icon">' + (it.emoji || "\u{1F371}") + "</div>" +
+  el.innerHTML = '<div class="h-icon" style="background:' + itemColor(held) + '"></div>' +
     '<div><div class="h-name">' + it.name + '</div><div class="h-desc">' + it.desc + "</div></div>";
 }
 function setHeld(id) {
@@ -716,6 +781,7 @@ function updatePlayerTransform(instant) {
   playerGroup.rotation.y = player.rot;
   var bob = player.moving ? Math.abs(Math.sin(player.bob)) * 0.07 : 0;
   playerGroup.position.y = bob;
+  if (playerShadow) playerShadow.position.set(player.x, 0.015, player.z);
 }
 
 var input = { ix: 0, iz: 0, keys: {} };
@@ -1013,10 +1079,13 @@ function spawnCustomer(recipeId, talentId, patience, force) {
   c.group = buildChibi({ outfit: t.outfit, hair: t.hair });
   c.group.position.set(doorX, 0, doorZ);
   scene.add(c.group);
+  c.shadow = buildShadow();
+  c.shadow.position.set(doorX, 0.015, doorZ);
+  scene.add(c.shadow);
   var el = document.createElement("div");
   el.className = "bubble";
   el.innerHTML = '<div class="b-head"><img class="b-img" alt="">' +
-    '<span class="b-dish">' + RECIPES[rid].emoji + " " + RECIPES[rid].name + "</span></div>" +
+    '<span class="b-dish"><i class="dot" style="background:' + recipeColor(rid) + '"></i>' + RECIPES[rid].name + "</span></div>" +
     '<div class="b-bar"><i></i></div>';
   var img = el.querySelector(".b-img");
   img.src = "../images/talents/" + tid + ".webp";
@@ -1034,6 +1103,7 @@ function updateCustomers(dt) {
     if (!c.alive) {
       if (c.el && c.el.parentNode) c.el.parentNode.removeChild(c.el);
       scene.remove(c.group);
+      if (c.shadow) scene.remove(c.shadow);
       customers.splice(i, 1);
       rebuildOrders();
       continue;
@@ -1074,7 +1144,7 @@ function updateCustomers(dt) {
       }
     } else if (c.state === "served") {
       if (now() < c.happyUntil) {
-        c.group.position.y = Math.abs(Math.sin((c.happyUntil - now()) * 0.008)) * 0.35;
+        c.group.position.y = Math.abs(Math.sin((c.happyUntil - now()) * 0.012)) * 0.06;
       } else {
         c.group.position.y = 0;
         c.state = "leaving";
@@ -1095,6 +1165,7 @@ function updateCustomers(dt) {
     c.group.position.z = pz;
     var bob = c.state === "walking" || c.state === "leaving" ? Math.abs(Math.sin(c.walkT += dt * 9)) * 0.05 : 0;
     c.group.position.y += bob;
+    if (c.shadow) c.shadow.position.set(px, 0.015, pz);
     positionBubble(c.el, px, 2.4, pz);
   }
 }
@@ -1124,7 +1195,7 @@ function rebuildOrders() {
     card.className = "order-card" + (frac <= 0.25 ? " urgent" : "");
     card.innerHTML = '<img class="order-portrait" alt="">' +
       '<div class="order-info">' +
-      '<div class="order-dish"><span class="o-emoji">' + RECIPES[c.recipeId].emoji + "</span>" + RECIPES[c.recipeId].name + "</div>" +
+      '<div class="order-dish"><span class="o-dot" style="background:' + recipeColor(c.recipeId) + '"></span>' + RECIPES[c.recipeId].name + "</div>" +
       '<div class="order-talent">' + t.name + "</div>" +
       '<div class="order-bar"><i></i></div></div>';
     var img = card.querySelector(".order-portrait");
@@ -1317,7 +1388,7 @@ function openChooser(show) {
       var it = ITEMS[id];
       var b = document.createElement("button");
       b.className = "ing-btn";
-      b.innerHTML = '<span class="i-em">' + (it.emoji || "\u{1F371}") + '</span><span class="i-name">' + it.name + "</span>";
+      b.innerHTML = '<span class="i-em" style="background:' + itemColor(id) + '"></span><span class="i-name">' + it.name + "</span>";
       b.addEventListener("click", function () {
         setHeld(id);
         SFX.take();
@@ -1678,9 +1749,9 @@ var camAngle = 0;
 function updateCamera(dt) {
   if (state.phase === "title" || state.phase === "howto" || state.phase === "settings") {
     camAngle += dt * 0.07;
-    var r = 8.4;
-    camera.position.set(Math.sin(camAngle) * r, 11.5, Math.cos(camAngle) * r);
-    camera.lookAt(0, 0.7, 0);
+    var r = 7.0;
+    camera.position.set(Math.sin(camAngle) * r, 9.6, Math.cos(camAngle) * r);
+    camera.lookAt(0, 0.9, 0);
     return;
   }
   var tx = clamp(player.x, -3.4, 3.4);
@@ -1688,10 +1759,10 @@ function updateCamera(dt) {
   var ease = 1 - Math.exp(-dt * 5);
   camTarget.x = lerp(camTarget.x, tx, ease);
   camTarget.z = lerp(camTarget.z, tz, ease);
-  var back = aspect < 1 ? 7.4 : 5.6;
-  var height = aspect < 1 ? 15.2 : 12.2;
+  var back = aspect < 1 ? 5.6 : 4.0;
+  var height = aspect < 1 ? 11.2 : 9.2;
   camera.position.set(camTarget.x, height, camTarget.z + back);
-  camera.lookAt(camTarget.x, 0.6, camTarget.z - 2.2);
+  camera.lookAt(camTarget.x, 0.85, camTarget.z - 1.8);
 }
 
 function updateChooserVisibility() {
@@ -1714,6 +1785,21 @@ function updateTutorialArrow() {
   ar.classList.remove("hidden");
   ar.style.left = sx + "px";
   ar.style.top = sy + "px";
+}
+
+function updateServeArrow() {
+  var ar = $("serve-arrow");
+  var target = null;
+  if (held && ITEMS[held] && ITEMS[held].kind === "dish") target = findCustomer(recipeIdOfItem(held));
+  if (!target || (state.phase !== "playing" && state.phase !== "tutorial")) {
+    ar.classList.add("hidden");
+    return;
+  }
+  var v = new THREE.Vector3(SEATS[target.seat].x, 1.7, 4.0).project(camera);
+  if (v.z > 1) { ar.classList.add("hidden"); return; }
+  ar.classList.remove("hidden");
+  ar.style.left = clamp(((v.x * 0.5 + 0.5) * W), 24, W - 24) + "px";
+  ar.style.top = clamp(((-v.y * 0.5 + 0.5) * H), 22, H - 120) + "px";
 }
 
 function update(dt, t) {
@@ -1740,6 +1826,7 @@ function update(dt, t) {
           spawnCustomer("cake", "konomi", 60, true);
         }
       }
+      updateServeArrow();
       if (state.timeLeft <= 0) {
         state.timeLeft = 0;
         updateHUD();
